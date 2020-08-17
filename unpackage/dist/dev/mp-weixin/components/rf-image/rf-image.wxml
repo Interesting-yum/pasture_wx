@@ -1,0 +1,1 @@
+<image class="rf-image data-v-c1b4c778" mode="mode" lazy-load="true" src="{{src||$mAssetsPath.errorImage}}" data-event-opts="{{[['tap',[['previewImage',['$0'],['src']]]],['error',[['onImageError',['$event']]]]]}}" catchtap="__e" binderror="__e"></image>

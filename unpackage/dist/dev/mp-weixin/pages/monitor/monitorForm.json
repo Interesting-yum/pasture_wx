@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "摄像头表单",
+  "usingComponents": {
+    "inputs": "/components/QuShe-inputs/inputs"
+  }
+}

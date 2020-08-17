@@ -1,0 +1,274 @@
+<template>
+	<div>
+		<view class="page-body">
+		    <view class="page-section page-section-gap">
+		        <map id="mapId" ref="map" :style="{width: windowWidth, height:windowHeight}" :show-location="showLocation" :latitude="latitude" :longitude="longitude" 
+				:markers="covers" :polygons="polygons" :enable-satellite = "enableSatellite" :controls="controls"
+				@controltap="controltap" @tap="tap">
+		        </map>
+				<uniFab
+				         :pattern="pattern"
+				         :content="content"
+				         @trigger="trigger">
+				</uniFab>
+		    </view>
+		</view>
+	</div>
+</template>
+
+<script>
+	import uniFab from '@/components/uni-fab/uni-fab.vue'; //导入悬浮按钮
+	export default {
+		components: { uniFab },
+	    data() {
+	    return {
+			    /*悬浮按钮的配置*/
+				pattern:{},
+				content:[
+					    {
+							iconPath:"../../static/map/location.png",
+							selectedIconPath:"../../static/map/location.png",
+							text:"新建围栏",
+							active:false,
+							logic(e){
+								this.active = !this.active
+								this.iconPath = this.active?'/static/br.png':'/static/logo.png';
+								uni.showToast({icon:"none", title: this.active?"画图功能打开":"画图功能关闭", duration: 2000});
+								if(!this.active){
+									console.log(e.polygons[0].points);
+									e.polygons[0].points = e.polygons[0].points.filter(k=>k.class!="draw");
+									e.markers = e.markers.filter(k=>k.class!="draw")
+								}
+							},
+							click(e){
+								if(!this.active){
+									  this.logic(e);
+								}else{
+									 if(e.polygons[0].points.length > 0){
+										 let _this = this;
+										 uni.showModal({
+										    content: '画图功能正在运行，是否完成画图',
+										    success:  (res)=>{
+										        if (res.confirm) { 
+													_this.logic(e);
+										        } else if (res.cancel) {
+										             uni.showToast({icon:"none", title: "用户点击了取消", duration: 2000});
+										        }
+										    }
+										});
+									}else{
+										this.logic(e);
+									}
+									
+								}
+							}
+				        },
+						{
+							iconPath:"../../static/map/location.png",
+							selectedIconPath:"../../static/map/location.png",
+							text:"上一步",
+							active:false,
+							click(e){
+								[e.polygons[0].points,e.markers] = [e.polygons[0].points,e.markers].map(m =>{return  m.filter((k,i,arr)=>{
+									 return (k.class =="draw" && i == arr.length-1)?false:true
+								  })
+								});
+							}
+					    },
+						{
+							iconPath:"../../static/map/location.png",
+							selectedIconPath:"../../static/map/location.png",
+							text:"重画",
+							active:false,
+							click(e){
+								uni.showToast({icon:"none", title: "这是重画", duration: 2000});
+							}
+						},
+						{
+							iconPath:"../../static/map/location.png",
+							selectedIconPath:"../../static/map/location.png",
+							text:"完成",
+							active:false,
+							click(e){
+								e.controls.find(item=>item.id==1).logic(e);
+								uni.showToast({icon:"none", title: "这是完成", duration: 2000});
+							}
+						}],
+						
+                /*地图的配置*/
+	            id:0, // 使用 marker点击事件 需要填写id
+	            title: 'map',
+	            latitude: 39.909,
+	            longitude: 116.39742,
+				showLocation:true,
+				windowWidth:"",
+				windowHeight:"",
+				enableSatellite:false,            //是否开启卫星地图
+				isDrawing:false,                  //是否开启规划牧场模式
+				controls:[{
+					id:1,
+					iconPath: '../../static/map/卫星-A (1).png',
+					position:{
+						width:30,
+						height:30,
+						left:20,
+						top:10,
+					},
+					clickable:true,
+					click(e){
+						e.enableSatellite = !e.enableSatellite;
+					}
+				}],
+	            covers: [{
+					id:1,
+	                latitude: 30.670001,
+	                longitude: 104.060001,
+	                iconPath: '../../static/map/location.png',
+					width:25,
+					height:25,
+					callout:{
+						content:"当前您的位置",
+						borderRadius:10,
+						bgColor:"rgba(117, 169, 119, 0.81)",
+						display: 'ALWAYS'
+					}
+	            },{
+					id:2,
+	                latitude: 30.671,
+	                longitude: 104.061,
+	                iconPath: '../../static/map/niu.png',
+					width:35,
+					height:35,
+					label:{
+						content:"牛1asas3",
+						textAlign:"center",
+						bgColor:"rgba(117, 169, 119, 0.81)",
+						x:10000000,
+						y:100000
+					}
+
+	            },
+				{
+					id:3,
+				    latitude: 30.668,
+				    longitude: 104.061,
+				    iconPath: '../../static/map/niu.png',
+					width:35,
+					height:35,
+					callout:{
+						content:"牛14号",
+						borderRadius:10,
+						bgColor:"rgba(117, 169, 119, 0.81)",
+					}
+				},
+				{
+					id:4,
+				    latitude: 30.668,
+				    longitude: 104.059,
+				    iconPath: '../../static/map/niu.png',
+					width:35,
+					height:35,
+					callout:{
+						content:"牛15号",
+						borderRadius:10,
+						bgColor:"rgba(117, 169, 119, 0.81)",
+					}
+				}],
+				polygons:[{              //画图
+							points: [],
+							fillColor: '#bb6fa757',
+							strokeWidth: 3,
+							strokeColor: '#CC99CC',
+							zIndex: 11
+						  }]
+			}
+	    },
+		onLoad() {
+			let _this = this;
+			let mapContext = uni.createMapContext("mapId", this)
+			//同步获取当前设备的信息
+			let res = uni.getSystemInfoSync();
+			[this.windowWidth,this.windowHeight] = [res.windowWidth+"px",res.windowHeight+"px"]
+
+			//获取当前位置
+			uni.getLocation({
+			    type: 'wgs84',
+			    success: function (res) {
+			        console.log('当前位置的经度：' + res.longitude);
+			        console.log('当前位置的纬度：' + res.latitude);
+					let res2 = {longitude:104.06,latitude:30.67};
+					[_this.longitude,_this.latitude] = [ res.longitude,res.latitude];
+					_this.covers = _this.covers.map(item=>{
+						if(item.id!=1){
+							var plusOrMinus = Math.random() < 0.5 ? -1 : 1;
+							var num = plusOrMinus*Math.floor(Math.random()*4); 
+							res.longitude+=(num*0.0001);
+							res.latitude+=(num*0.0001);
+						}
+						[item.longitude,item.latitude]= [ res.longitude,res.latitude]; 
+						return item;
+					})
+					
+			    }
+			});
+
+			//设置牛移动的动画
+	/* 		setInterval(()=>{
+				_this.covers.filter(item=>item.id!=1).forEach(maker=>{
+					var plusOrMinus = Math.random() < 0.5 ? -1 : 1; 
+					var num = plusOrMinus*Math.floor(Math.random()*4); 
+					maker.longitude+=(num*0.0001);
+					maker.latitude+=(num*0.0001);
+					mapContext.translateMarker({
+						markerId:maker.id,
+						destination:{longitude:maker.longitude,latitude:maker.latitude}
+					}) 
+				})
+			},4000) */
+/* 			uni.getLocation({
+			    type: 'wgs84',
+			    success:  (res)=>{
+			        console.log('当前位置的经度：' + res.longitude);
+			        console.log('当前位置的纬度：' + res.latitude);
+		 			 [_this.longitude,_this.latitude] = [ res.longitude,res.latitude]; 
+					 [_this.covers[0].longitude, _this.covers[0].latitude]= [ res.longitude,res.latitude]; 
+
+			    }
+			}); */
+		},
+	    methods: {
+				trigger(e){
+					console.log(e);
+					this.content = this.content.map((item,index)=>{
+						item.active = e.index == index?true:false;
+						item.click(this);
+						return item;
+					})
+				},
+				controltap(e){
+					console.log(e);
+					let control = this.controls.find(item=>item.id==e.controlId);
+					if(control.click){
+						control.click(this);
+					}
+					
+				},
+				tap(e){
+					console.log(e);
+					if(this.content[0].active){
+						let	[lat,lng] = [e.target.latitude,e.target.longitude]
+						let obj = {  class:"draw",  latitude:lat,  longitude:lng,}
+						let callout = this.markers.some(k=>k.class == "draw")?{}:{callout:{content:"起点",display:"ALWAYS"}}
+						let marker_obj = {...obj, ...{width: 20,height: 20,rotate: 0}, ...callout}
+						this.polygons[0].points.push(obj)
+						this.markers.push(marker_obj);	
+					}
+
+				}
+	    }
+	}
+</script>
+
+<style>
+
+</style>

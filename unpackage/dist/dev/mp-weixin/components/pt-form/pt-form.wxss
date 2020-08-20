@@ -1,0 +1,72 @@
+@charset "UTF-8";
+/* 页面左右间距 */
+/* 文字尺寸 */
+/*文字颜色*/
+/* 边框颜色 */
+/* 图片加载中颜色 */
+/* 行为相关颜色 */
+.head-img {
+  width: auto;
+  height: 250rpx;
+}
+.head-img image {
+  width: 100%;
+  height: 100%;
+}
+.uni-page-head {
+  padding: 0px;
+}
+.uni-padding-wrap {
+  width: 100%;
+  padding: 0 0px;
+}
+.formView .imgType {
+  display: block;
+}
+.formView .imgType::before {
+  content: "";
+}
+.formView radio-group, .formView checkbox-group {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: reverse;
+  -webkit-flex-flow: row-reverse wrap;
+          flex-flow: row-reverse wrap;
+}
+.formView radio-group radio, .formView radio-group checkbox, .formView checkbox-group radio, .formView checkbox-group checkbox {
+  margin-right: 10rpx;
+}
+.formView radio-group :after,
+.formView radio-group .uni-list-cell:after,
+.formView checkbox-group :after,
+.formView checkbox-group .uni-list-cell:after {
+  height: 0px;
+}
+.formView radio-group .uni-list-cell-pd, .formView checkbox-group .uni-list-cell-pd {
+  padding: 11px 5px;
+}
+.formView .cu-form-group .title {
+  font-size: 28rpx;
+  min-width: 80px;
+}
+.formView .cu-form-group .input {
+  font-size: 28rpx;
+}
+.formView .cu-form-group picker::after {
+  line-height: 50px;
+}
+.formView .cu-form-group .cu-bar .action:first-child {
+  margin-left: 0px;
+}
+.formView .cu-form-group:last-child {
+  border-bottom: solid 1px #eee;
+}
+.uni-textarea-textarea {
+  overflow-y: auto;
+  border: solid 1px #cccaca;
+  padding: 3px;
+  border-radius: 5px;
+}
+

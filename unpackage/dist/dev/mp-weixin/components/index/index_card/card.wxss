@@ -1,0 +1,389 @@
+@charset "UTF-8";
+/* 页面左右间距 */
+/* 文字尺寸 */
+/*文字颜色*/
+/* 边框颜色 */
+/* 图片加载中颜色 */
+/* 行为相关颜色 */
+.hm-task-card {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: row;
+          flex-direction: row;
+  width: 100%;
+  height: 355.07rpx;
+}
+.box {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: start;
+  -webkit-align-items: flex-start;
+          align-items: flex-start;
+  position: relative;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+          flex-direction: column;
+  margin-left: 0%;
+ /* border-radius: 10.27rpx; */
+  /* box-shadow: 0px 4px 13px rgba(0, 0, 0, 0.08); */
+  box-shadow: 1.5px 1.5px 2px 1.5px rgba(190, 198, 204, 0.36), -1.5px 2px 1.5px 1.5px rgba(120, 147, 162, 0.36); 
+  background-color: #0e6fe873 !important ; 
+  background-image: url(https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1595522227408&di=3cf71b99306c49966f0f8d948e7fa062&imgtype=0&src=http%3A%2F%2Ffile06.16sucai.com%2F2016%2F0309%2F9c69d77eff2259282359f17d4fc4797e.jpg); 
+  width: 100%;
+  height: 100%;
+}
+.title {
+  position: relative;
+  opacity: 1;
+  margin-top: 32.88rpx;
+  margin-left: 41.1rpx;
+  max-width: 655.48rpx;
+  height: 49.32rpx;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 49.32rpx;
+  white-space: nowrap;
+  font-family: MicrosoftYaHei, Microsoft YaHei;
+/*  font-size: 41.1rpx; */
+  font-weight: normal;
+}
+.bd {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  position: relative;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+          justify-content: space-between;
+  margin-top: 78.08rpx;
+  margin-left: 36.99rpx;
+  width: 581.51rpx;
+  height: 55.48rpx;
+}
+.tagWrap {
+  box-sizing: border-box;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: row;
+          flex-direction: row;
+  border-radius: 10.27rpx;
+  background-color: rgba(0, 0, 0, 0.05);
+  padding-right: 53.42rpx;
+  padding-left: 55.48rpx;
+  height: 55.48rpx;
+}
+.tag {
+  margin-top: 6.16rpx;
+  line-height: 41.1rpx;
+  letter-spacing: 0.33px;
+  white-space: nowrap;
+  color: rgba(0, 0, 0, 0.5);
+  font-size: 24.66rpx;
+  font-weight: 400;
+}
+.time {
+  line-height: 41.1rpx;
+  white-space: pre;
+  /* color: #1b7f9e; */
+  font-family: MicrosoftYaHei, Microsoft YaHei;
+ /* font-size: 35.66rpx; */
+  position: absolute;
+  right: 5%;
+  top: 8%;
+  font-weight: 600;
+}
+.submain {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  position: relative;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+          justify-content: space-between;
+  margin-top: 45.82rpx;
+  margin-left: 41.1rpx;
+  width: 567.81rpx;
+  height: 82.19rpx;
+}
+.block {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: row;
+          flex-direction: row;
+  height: 82.19rpx;
+}
+.shiliangzhinengduixiangWrap {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+          justify-content: center;
+  margin-right: 16.44rpx;
+  border-radius: 82.19rpx;
+  /* background-color: rgba(0, 200, 168, 0.15); */
+  width: 82.19rpx;
+  height: 82.19rpx;
+}
+.shiliangzhinengduixiang {
+  padding-top: 0;
+  width: 39.04rpx;
+  height: 39.04rpx;
+}
+.num {
+  opacity: 1;
+  line-height: 41.1rpx;
+  white-space: nowrap;
+  color: #000000;
+  font-family: Helvetica;
+  font-size: 28.77rpx;
+  font-weight: normal;
+}
+.minutesAgo {
+  opacity: 1;
+  margin-top: 8.22rpx;
+  max-width: 127.4rpx;
+  height: 41.1rpx;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 41.1rpx;
+  white-space: nowrap;
+  color: #000000;
+  font-size: 28.77rpx;
+  font-weight: 400;
+}
+.priceWrap {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: row;
+          flex-direction: row;
+  height: 82.19rpx;
+}
+.youhuiquanWrap {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+          justify-content: center;
+  margin-right: 16.44rpx;
+  border-radius: 82.19rpx;
+ /* background-color: rgba(0, 200, 168, 0.15); */
+  width: 82.19rpx;
+  height: 82.19rpx;
+}
+.youhuiquan {
+  width: 32.88rpx;
+  height: 24.66rpx;
+}
+.price {
+  opacity: 1;
+  margin-top: 8.22rpx;
+  max-width: 73.97rpx;
+  height: 41.1rpx;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 41.1rpx;
+  white-space: nowrap;
+  color: #000000;
+  font-family: MicrosoftYaHei, Microsoft YaHei;
+  font-size: 28.77rpx;
+  font-weight: normal;
+}
+.main {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  position: relative;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+          justify-content: space-between;
+  margin-top: 32.88rpx;
+  margin-left: 41.1rpx;
+  width: 526.03rpx;
+  height: 82.19rpx;
+}
+.container {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: row;
+          flex-direction: row;
+  height: 82.19rpx;
+}
+.webduanzhifuyemiantubiaoWrap {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+          justify-content: center;
+  margin-right: 16.44rpx;
+  border-radius: 82.19rpx;
+  /* background-color: rgba(0, 200, 168, 0.15); */
+  width: 82.19rpx;
+  height: 82.19rpx;
+}
+.webduanzhifuyemiantubiao {
+  width: 41.1rpx;
+  height: 26.71rpx;
+}
+.confirmed {
+  opacity: 1;
+  margin-top: 8.22rpx;
+  max-width: 133.56rpx;
+  height: 41.1rpx;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 41.1rpx;
+  white-space: nowrap;
+  color: #000000;
+  font-family: MicrosoftYaHei, Microsoft YaHei;
+  font-size: 28.77rpx;
+  font-weight: normal;
+}
+.outer {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: row;
+          flex-direction: row;
+  height: 82.19rpx;
+}
+.didianWrap {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+          justify-content: center;
+  margin-right: 16.44rpx;
+  border-radius: 82.19rpx;
+/*  background-color: rgba(0, 200, 168, 0.15); */
+  width: 82.19rpx;
+  height: 82.19rpx;
+}
+.didian {
+  width: 30.82rpx;
+  height: 36.99rpx;
+}
+.shenzhen {
+  opacity: 1;
+  margin-top: 8.22rpx;
+  max-width: 88.36rpx;
+  height: 41.1rpx;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 41.1rpx;
+  white-space: nowrap;
+  color: #000000;
+  font-family: MicrosoftYaHei, Microsoft YaHei;
+  font-size: 28.77rpx;
+  font-weight: normal;
+}
+.cardItem{
+	/* background-color: rgba(0, 200, 168, 1); */
+}
+.cardItem ._img{
+	width: 19px;
+	height: 19px ;
+}
+text{
+	color:#000
+}
+.cardTcon {
+  font-size: 30px;
+}
+.cardItem image {
+  width: 34px;
+  height: 34px;
+}
+.hm-task-card text {
+  color: #007aff !important;
+}
+

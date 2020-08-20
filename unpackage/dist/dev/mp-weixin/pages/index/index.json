@@ -1,8 +1,0 @@
-{
-  "navigationBarTitleText": "首页",
-  "backgroundColor": "#fff",
-  "usingComponents": {
-    "uni-notice-bar": "/components/uni-notice-bar/uni-notice-bar",
-    "card": "/components/index/index_card/card"
-  }
-}

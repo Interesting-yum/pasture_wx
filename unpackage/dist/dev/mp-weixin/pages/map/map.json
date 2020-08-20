@@ -1,6 +1,0 @@
-{
-  "navigationBarTitleText": "地图信息",
-  "usingComponents": {
-    "uni-fab": "/components/uni-fab/uni-fab"
-  }
-}

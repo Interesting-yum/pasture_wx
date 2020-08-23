@@ -1,21 +1,18 @@
 <template>
   <div class="hm-task-card ">
-<!-- 	 <image class="fixed" src="../../../static/index/card/cardbg2.jpg">
-		 
-	 </image> -->
     <div class="box shadow-warp radius   bg-purple ">
       <text class="title nav-title">{{ options.title }}</text>
 	   <text class="time">{{ options.time }}</text>
       <div class="submain ">
         <div class="block text-blue">
           <div class="shiliangzhinengduixiangWrap cardItem">
-            <text class="cuIcon-babyfill  cardTcon" ></text>
+            <image :src="yidao"></image>
           </div>
 		  <text  >已到：{{ options.num }}</text>
         </div>
         <div class="priceWrap" style="margin-left: 5%;" >
           <div class="youhuiquanWrap cardItem">
-             <text class="cuIcon-warn  cardTcon" ></text>
+             <image :src="weidao"></image>
           </div>
 		   <text  >未到：{{ options.price }}</text>
         </div>
@@ -23,7 +20,7 @@
       <div class="main ">
         <div class="container">
           <div class="webduanzhifuyemiantubiaoWrap cardItem">
-             <text class="cuIcon-focus  cardTcon" ></text>
+              <image :src="zongshu"></image>
           </div>
 		   <text  >总数：{{ options.confirmed }}</text>
         </div>
@@ -55,9 +52,13 @@ export default {
       }
     }
   },
-  data() {
-    return {};
-  },
+ data() {
+ 	return {
+ 		yidao:this.$mAssetsPath.yidao,
+ 		weidao:this.$mAssetsPath.weidao,
+ 		zongshu:this.$mAssetsPath.zongshu,
+ 	}
+ },
   methods: {}
 };
 </script>
@@ -66,5 +67,17 @@ export default {
 @import './index.response.css';
 .cardTcon{
 	font-size: 30px;
+}
+.cardItem{
+	image{
+		width: 34px;
+		height: 34px;
+	}
+	
+}
+.hm-task-card{
+	text{
+	    color: #007aff !important;
+	}
 }
 </style>

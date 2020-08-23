@@ -5,26 +5,51 @@
 /* 边框颜色 */
 /* 图片加载中颜色 */
 /* 行为相关颜色 */
+.uni-media-list {
+  width: 100%;
+}
 .uni-media-list .right .text-olive {
   font-size: 25px;
 }
+.uni-media-list-logo {
+  -webkit-box-flex: 1;
+  -webkit-flex: 1 1 15%;
+          flex: 1 1 15%;
+}
+.uni-media-list-body {
+  -webkit-box-flex: 1;
+  -webkit-flex: 1 1 70%;
+          flex: 1 1 70%;
+}
 .uni-media-list-text-left {
-  position: absolute;
-  right: 5%;
-  top: 5px;
-  width: 80px;
-  padding-top: 5px;
+  -webkit-box-flex: 1;
+  -webkit-flex: 1 1 15%;
+          flex: 1 1 15%;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-flow: column;
+          flex-flow: column;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
 }
 .uni-media-list-text-left .cu-progress {
   border: solid 0.5px #bbb4b4;
-  width: 40%;
+  -webkit-align-self: center;
+          align-self: center;
+  width: 70%;
   height: 16px;
+  -webkit-box-align: inherit;
+  -webkit-align-items: inherit;
+          align-items: inherit;
+  overflow: inherit;
 }
-.uni-media-list-text-left .cu-progress ::after {
+.uni-media-list-text-left .cu-progress:after {
   content: "●";
   color: #adb5b1;
   position: absolute;
-  right: -1px;
-  /* 	top: 7px; */
+  right: -20%;
+  height: 14px;
+  line-height: 13px;
 }
 

@@ -14,19 +14,19 @@ var _App = _interopRequireDefault(__webpack_require__(/*! ./App */ 5));
 var _store = _interopRequireDefault(__webpack_require__(/*! @/store */ 15));
 
 
-var _assetsConfig = _interopRequireDefault(__webpack_require__(/*! @/config/assets.config.js */ 18));
-var _indexConfig = _interopRequireDefault(__webpack_require__(/*! @/config/index.config.js */ 19));
+var _assetsConfig = _interopRequireDefault(__webpack_require__(/*! @/config/assets.config.js */ 19));
+var _indexConfig = _interopRequireDefault(__webpack_require__(/*! @/config/index.config.js */ 20));
 var _routesConfig = _interopRequireDefault(__webpack_require__(/*! @/config/routes.config.js */ 16));
-var _formRuleConfig = _interopRequireDefault(__webpack_require__(/*! @/config/formRule.config.js */ 20));
-var _constDataConfig = _interopRequireDefault(__webpack_require__(/*! @/config/constData.config.js */ 21));
-var _websocketConfig = _interopRequireDefault(__webpack_require__(/*! @/config/websocket.config.js */ 22));
+var _formRuleConfig = _interopRequireDefault(__webpack_require__(/*! @/config/formRule.config.js */ 21));
+var _constDataConfig = _interopRequireDefault(__webpack_require__(/*! @/config/constData.config.js */ 22));
+var _websocketConfig = _interopRequireDefault(__webpack_require__(/*! @/config/websocket.config.js */ 23));
 
 
-var _request = __webpack_require__(/*! @/utils/request */ 23);
-var _graceChecker = _interopRequireDefault(__webpack_require__(/*! @/utils/graceChecker */ 27));
-var _helper = _interopRequireDefault(__webpack_require__(/*! @/utils/helper */ 26));
+var _request = __webpack_require__(/*! @/utils/request */ 24);
+var _graceChecker = _interopRequireDefault(__webpack_require__(/*! @/utils/graceChecker */ 28));
+var _helper = _interopRequireDefault(__webpack_require__(/*! @/utils/helper */ 27));
 var _router = _interopRequireDefault(__webpack_require__(/*! @/utils/router */ 17));
-var _payment = _interopRequireDefault(__webpack_require__(/*! @/utils/payment */ 28));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function ownKeys(object, enumerableOnly) {var keys = Object.keys(object);if (Object.getOwnPropertySymbols) {var symbols = Object.getOwnPropertySymbols(object);if (enumerableOnly) symbols = symbols.filter(function (sym) {return Object.getOwnPropertyDescriptor(object, sym).enumerable;});keys.push.apply(keys, symbols);}return keys;}function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};if (i % 2) {ownKeys(Object(source), true).forEach(function (key) {_defineProperty(target, key, source[key]);});} else if (Object.getOwnPropertyDescriptors) {Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));} else {ownKeys(Object(source)).forEach(function (key) {Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));});}}return target;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}var rfImage = function rfImage() {__webpack_require__.e(/*! require.ensure | components/rf-image/rf-image */ "components/rf-image/rf-image").then((function () {return resolve(__webpack_require__(/*! @/components/rf-image/rf-image */ 83));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var rfEmpty = function rfEmpty() {__webpack_require__.e(/*! require.ensure | components/rf-empty/index */ "components/rf-empty/index").then((function () {return resolve(__webpack_require__(/*! @/components/rf-empty */ 90));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var rfLoading = function rfLoading() {__webpack_require__.e(/*! require.ensure | components/rf-loading/rf-loading */ "components/rf-loading/rf-loading").then((function () {return resolve(__webpack_require__(/*! @/components/rf-loading/rf-loading */ 97));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var rfLoadProgress = function rfLoadProgress() {__webpack_require__.e(/*! require.ensure | components/rf-load-progress/rf-load-progress */ "components/rf-load-progress/rf-load-progress").then((function () {return resolve(__webpack_require__(/*! @/components/rf-load-progress/rf-load-progress */ 102));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};
+var _payment = _interopRequireDefault(__webpack_require__(/*! @/utils/payment */ 29));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function ownKeys(object, enumerableOnly) {var keys = Object.keys(object);if (Object.getOwnPropertySymbols) {var symbols = Object.getOwnPropertySymbols(object);if (enumerableOnly) symbols = symbols.filter(function (sym) {return Object.getOwnPropertyDescriptor(object, sym).enumerable;});keys.push.apply(keys, symbols);}return keys;}function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};if (i % 2) {ownKeys(Object(source), true).forEach(function (key) {_defineProperty(target, key, source[key]);});} else if (Object.getOwnPropertyDescriptors) {Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));} else {ownKeys(Object(source)).forEach(function (key) {Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));});}}return target;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}var rfImage = function rfImage() {__webpack_require__.e(/*! require.ensure | components/rf-image/rf-image */ "components/rf-image/rf-image").then((function () {return resolve(__webpack_require__(/*! @/components/rf-image/rf-image */ 106));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var rfEmpty = function rfEmpty() {__webpack_require__.e(/*! require.ensure | components/rf-empty/index */ "components/rf-empty/index").then((function () {return resolve(__webpack_require__(/*! @/components/rf-empty */ 113));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var rfLoading = function rfLoading() {__webpack_require__.e(/*! require.ensure | components/rf-loading/rf-loading */ "components/rf-loading/rf-loading").then((function () {return resolve(__webpack_require__(/*! @/components/rf-loading/rf-loading */ 120));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var rfLoadProgress = function rfLoadProgress() {__webpack_require__.e(/*! require.ensure | components/rf-load-progress/rf-load-progress */ "components/rf-load-progress/rf-load-progress").then((function () {return resolve(__webpack_require__(/*! @/components/rf-load-progress/rf-load-progress */ 125));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};
 
 
 
@@ -108,6 +108,8 @@ _router.default.beforeEach(function (navType, to) {
   }
 });
 
+//启动切面配置文件
+__webpack_require__(/*! @/config/aopConfig.js */ 32);
 _App.default.mpType = 'app';
 
 var app = new _vue.default(_objectSpread({},

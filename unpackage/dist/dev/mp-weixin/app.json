@@ -4,8 +4,8 @@
     "pages/map/map",
     "pages/list/list",
     "pages/user/user",
-    "pages/monitor/monitor",
-    "pages/monitor/monitorForm",
+    "pages/index/monitor/monitor",
+    "pages/index/monitor/monitorForm",
     "pages/user/user_userInfo/userInfo"
   ],
   "subPackages": [],
@@ -58,5 +58,5 @@
     "rf-loading": "/components/rf-loading/rf-loading",
     "rf-load-progress": "/components/rf-load-progress/rf-load-progress"
   },
-  "sitemapLocation": "sitemap37.json"
+  "sitemapLocation": "sitemap49.json"
 }

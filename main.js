@@ -101,6 +101,8 @@ $mRouter.beforeEach((navType, to) => {
 	}
 });
 
+//启动切面配置文件
+require("@/config/aopConfig.js");
 App.mpType = 'app';
 
 const app = new Vue({

@@ -20,24 +20,6 @@
   background-color: #f5f2f200;
   width: 100%;
 }
-.uni-media-list-text-left {
-  position: absolute;
-  right: 10%;
-  top: 5px;
-  width: 80px;
-  padding-top: 5px;
-}
-.uni-media-list-text-left .cu-progress {
-  border: solid 0.5px #bbb4b4;
-  width: 40%;
-  height: 16px;
-}
-.uni-media-list-text-left .cu-progress:after {
-  content: "●";
-  color: #adb5b1;
-  position: absolute;
-  right: -1px;
-}
 .uni-collapse-cell::after {
   height: 0px !important;
 }

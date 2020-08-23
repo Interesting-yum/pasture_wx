@@ -4,6 +4,7 @@
 			<view class="uni-list-cell uni-list-cell-card shadow  bg-white" v-for="(value,key) in list" :key="key">
 		
 			   <title-view 
+			   style="width: 100%;"
 			   showRightStr="rightBattery" 
 			   :title="value.title"
 			   :content="value.content"
@@ -147,25 +148,6 @@
 	background-color: #f5f2f200;
 	width: 100%;
 	
-}
-.uni-media-list-text-left{
-	position: absolute;
-	right: 10%;
-	top: 5px;
-	width: 80px;
-	padding-top: 5px;
- 	.cu-progress{
-		border: solid 0.5px #bbb4b4;
-		width: 40%;
-		height: 16px;
-		&:after{
-			content: "●";
-			color: #adb5b1;
-			position: absolute;
-			right: -1px;
-		}
-	}
-
 }
 
 

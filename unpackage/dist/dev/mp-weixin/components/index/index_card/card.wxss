@@ -379,4 +379,11 @@ text{
 .cardTcon {
   font-size: 30px;
 }
+.cardItem image {
+  width: 34px;
+  height: 34px;
+}
+.hm-task-card text {
+  color: #007aff !important;
+}
 

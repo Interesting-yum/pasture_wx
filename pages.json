@@ -6,9 +6,9 @@
 		{
 				"path": "pages/index/index",
 				"style": {
-					"navigationBarTitleText": "首页",
-					"backgroundColor":"#fff"
+					"navigationStyle": "custom"
 				}
+				
 		}, 
 
 		{
@@ -36,14 +36,14 @@
 		}, 
 		
 		{
-				"path": "pages/monitor/monitor",
+				"path": "pages/index/monitor/monitor",
 				"style": {
 					"navigationBarTitleText": "摄像头"
 				}
 		},
 		
 		{
-				"path": "pages/monitor/monitorForm",
+				"path": "pages/index/monitor/monitorForm",
 				"style": {
 					"navigationBarTitleText": "摄像头表单"
 				}

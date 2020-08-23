@@ -3,15 +3,19 @@ import Vuex from 'vuex'
 
 import $mRoutesConfig from '@/config/routes.config'
 import $mRouter from '@/utils/router'
-
+import systemStore from './systemStore' 
+console.log("systemStore",systemStore);
 Vue.use(Vuex);
 
 const ACCESSTOKEN = uni.getStorageSync('accessToken') || '';
 const REFERRER = uni.getStorageSync('referrer') || '';
 const USER = uni.getStorageSync('user') || {};
 const REFRESHTOKEN = uni.getStorageSync('refreshToken') || '';
-const systemInfo = uni.getStorageSync('systemInfo') || '';
+
 const store = new Vuex.Store({
+	modules:{
+	    systemStore,
+	},
     state: {
         //用户token
         accessToken: ACCESSTOKEN,
@@ -24,8 +28,7 @@ const store = new Vuex.Store({
         //网络状态，用于下载提醒
         networkState: 'unknown',
         refreshToken: REFRESHTOKEN,
-		//系统相关信息
-		systemInfo:systemInfo,
+
     },
     getters: {
 		// 获取网络状态
@@ -71,10 +74,7 @@ const store = new Vuex.Store({
         setNetworkState(state, provider) {
             state.networkState = provider;
         },
-		//设置系统相关信息
-		setSystemInfo(state, provider) {
-            state.systemInfo = provider;
-        }
+	
     },
     actions: {
         networkStateChange({commit}, info) {
@@ -92,4 +92,5 @@ const store = new Vuex.Store({
     }
 })
 
+console.log("store",store)
 export default store

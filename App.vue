@@ -60,13 +60,13 @@
 
 <style lang='scss'>
 	// 导入colorUI
-	@import '/static/css/colorui/main.css';
-	@import '/static/css/colorui/icon.css';
-	@import '/static/css/colorui/animation.css';
+	@import '/common/css/colorui/main.css';
+	@import '/common/css/colorui/icon.css';
+	@import '/common/css/colorui/animation.css';
 	// 导入阿里巴巴矢量图标库
-	@import './static/css/iconfont/iconfont.css';
-	@import './static/css/reset.scss';
-	@import './static/css/uni.scss';
+	@import './common/css/iconfont/iconfont.css';
+	@import './common/css/reset.scss';
+	@import './common/css/uni.scss';
 
 	
 	.nav-list {

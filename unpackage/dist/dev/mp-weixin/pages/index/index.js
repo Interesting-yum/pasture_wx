@@ -188,6 +188,15 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
+
+
+
+
+
+
+
+
 var _vuex = __webpack_require__(/*! vuex */ 11);function ownKeys(object, enumerableOnly) {var keys = Object.keys(object);if (Object.getOwnPropertySymbols) {var symbols = Object.getOwnPropertySymbols(object);if (enumerableOnly) symbols = symbols.filter(function (sym) {return Object.getOwnPropertyDescriptor(object, sym).enumerable;});keys.push.apply(keys, symbols);}return keys;}function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};if (i % 2) {ownKeys(Object(source), true).forEach(function (key) {_defineProperty(target, key, source[key]);});} else if (Object.getOwnPropertyDescriptors) {Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));} else {ownKeys(Object(source)).forEach(function (key) {Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));});}}return target;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}var card = function card() {__webpack_require__.e(/*! require.ensure | components/index/index_card/card */ "components/index/index_card/card").then((function () {return resolve(__webpack_require__(/*! @/components/index/index_card/card.vue */ 144));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var uniNoticeBar = function uniNoticeBar() {__webpack_require__.e(/*! require.ensure | components/uni-notice-bar/uni-notice-bar */ "components/uni-notice-bar/uni-notice-bar").then((function () {return resolve(__webpack_require__(/*! @/components/uni-notice-bar/uni-notice-bar.vue */ 137));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var uniSwiperDot = function uniSwiperDot() {__webpack_require__.e(/*! require.ensure | components/uni-swiper-dot/uni-swiper-dot */ "components/uni-swiper-dot/uni-swiper-dot").then((function () {return resolve(__webpack_require__(/*! @/components/uni-swiper-dot/uni-swiper-dot.vue */ 130));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default =
 
 {
@@ -196,18 +205,26 @@ var _vuex = __webpack_require__(/*! vuex */ 11);function ownKeys(object, enumera
 
   data: function data() {
     return {
+      selectPasture: {
+        name: "牧场1",
+        id: 1 },
+
       signIns: [{
         name: "1",
-        img: this.$mAssetsPath.yidao },
+        img: this.$mAssetsPath.yidao,
+        content: "已签:72" },
       {
         name: "2",
-        img: this.$mAssetsPath.weidao },
+        img: this.$mAssetsPath.weidao,
+        content: "未签:21" },
       {
         name: "3",
-        img: this.$mAssetsPath.chidao },
+        img: this.$mAssetsPath.chidao,
+        content: "迟到:10" },
       {
         name: "4",
-        img: this.$mAssetsPath.zongshu }],
+        img: this.$mAssetsPath.zongshu,
+        content: "总数:158" }],
 
       info: [{
         colorClass: 'uni-bg-red',
@@ -256,9 +273,14 @@ var _vuex = __webpack_require__(/*! vuex */ 11);function ownKeys(object, enumera
         img: this.$mAssetsPath.niuniu,
         url: "" },
       {
+        name: "信息模块",
+        num: "s",
+        img: this.$mAssetsPath.info,
+        url: "" },
+      {
         name: "管家服务",
-        num: 23,
-        img: this.$mAssetsPath.niuniu,
+        num: "b",
+        img: this.$mAssetsPath.housekeeper,
         url: "" }] };
 
 

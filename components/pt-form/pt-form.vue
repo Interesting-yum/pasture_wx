@@ -301,6 +301,13 @@
 			}
 			
 		}
+		.uni-common-mt{
+			display: flex; 
+			justify-content: space-around;
+			button{
+				 padding: 0px 45px;
+			}
+		}
 		
 	}
 	

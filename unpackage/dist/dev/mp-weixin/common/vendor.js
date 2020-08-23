@@ -9862,6 +9862,9 @@ var PATH = _indexConfig.default.assetsPath;
   record: PATH + "/index/grid/record.png",
   shebei: PATH + "/index/grid/shebei.png",
   niuniu: PATH + "/index/grid/牛牛.png",
+  info: PATH + "/index/grid/信息化.png",
+  housekeeper: PATH + "/index/grid/管家.png",
+
 
   yidao: PATH + "/index/已签到.png",
   weidao: PATH + "/index/未签到.png",
@@ -9892,7 +9895,7 @@ var PATH = _indexConfig.default.assetsPath;
 
 
 
-"https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1597949806198&di=83b137398ba99de81ecae753d449b5fa&imgtype=0&src=http%3A%2F%2Fimg000.hc360.cn%2Fhb%2FMTQ2MTU3OTU1ODAwOC02OTcwODM5MTU%3D.jpg");exports.default = _default;
+"https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1598099691740&di=cf21b35e7e83eb33ee721994c433b222&imgtype=0&src=http%3A%2F%2Fn.sinaimg.cn%2Fsinacn%2Fw640h457%2F20180125%2F8052-fyqwiqk5870272.jpg");exports.default = _default;
 
 /***/ }),
 /* 20 */

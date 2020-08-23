@@ -46,7 +46,7 @@
   left: 50%;
   top: 170px;
   width: 90%;
-  height: 120px;
+  /*  height: 120px; */
   border-radius: 8px;
   -webkit-transform: translate(-50%);
           transform: translate(-50%);
@@ -54,19 +54,53 @@
   padding: 8px;
   z-index: 999;
 }
-.qiandao .flex-sign:first-child {
+.qiandao .flex-title {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  width: 100% !important;
+}
+.qiandao .flex-title text {
+  -webkit-box-flex: 1;
+  -webkit-flex: 1 1 80%;
+          flex: 1 1 80%;
+  color: #0081FF;
+  font-size: 30rpx;
+  font-weight: 800;
+  padding-left: 20rpx;
+}
+.qiandao .flex-title picker {
+  -webkit-box-flex: 1;
+  -webkit-flex: 1 1 20%;
+          flex: 1 1 20%;
+}
+.qiandao .flex-title picker view {
+  background-color: rgba(37, 111, 134, 0.5);
+  width: 100%;
+  color: #28bebf;
+}
+.qiandao .flex-title picker view .flex-icon {
+  font-size: 20rpx;
+  color: #28bebf;
+}
+.qiandao .flex-sign:nth-child(2) {
   border-right: solid 1px #cacacadb;
   border-bottom: solid 1px #cacacadb;
 }
-.qiandao .flex-sign:nth-child(2) {
+.qiandao .flex-sign:nth-child(3) {
   border-bottom: solid 1px #cacacadb;
 }
-.qiandao .flex-sign:nth-child(3) {
+.qiandao .flex-sign:nth-child(4) {
   border-right: solid 1px #cacacadb;
 }
 .qiandao .flex-sign .flex-sign-image {
   width: 30px !important;
   height: 30px  !important;
+}
+.qiandao .flex-sign .flex-twice {
+  font-size: 10px;
+  line-height: 30px;
+  color: rgba(40, 190, 191, 0.9);
 }
 .uni-swiper-slides > ._div {
   bottom: 50px;
@@ -74,6 +108,9 @@
 .nav-list {
   margin-top: 30rpx;
   padding: 0px;
+  -webkit-box-pack: initial;
+  -webkit-justify-content: initial;
+          justify-content: initial;
 }
 .nav-list image {
   position: absolute;
@@ -89,7 +126,7 @@
 .nav-list .nav-li {
   padding: 10px;
   width: 30%;
-  margin: 0 0% 20px;
+  margin: 0 1.5% 20px;
 }
 .nav-list .nav-title {
   font-size: 10px;
@@ -102,7 +139,7 @@
   margin-top: 10px;
 }
 .nav-list .nav-name:first-letter {
-  font-size: 14px;
+  font-size: 10px;
 }
 .bg-purple {
   background-color: #28adb3;

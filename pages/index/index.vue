@@ -16,13 +16,22 @@
 			</uni-swiper-dot>
 			
             <view class="qiandao grid col-2" >
+				<view class="flex-title">
+					 <text>牲畜签到</text>
+					 <picker>
+						 <view class=" radius shadow-warp cu-tag">
+							  {{selectPasture.name}}
+							  <text class="cuIcon-playfill flex-icon"></text>
+						 </view>
+					 </picker>
+			    </view>
 				<view v-for="(sign,index) in signIns" :key="index" class="padding-xs flex flex-sign">
 					<view class="flex-sub  padding-xs  radius "><image class="flex-sign-image" :src="sign.img"></image></view>
-					<view class="flex-twice padding-xs  radius ">2</view>
+					<view class="flex-twice padding-xs  radius ">{{sign.content}}</view>
 				</view>
 			</view>  
 			
-			<view class="flex  p-xs  mb-sm margin" style="margin: 90px 8px 0px 8px;">
+			<view class="flex  p-xs  mb-sm margin" style="margin: 110px 8px 0px 8px;">
 				<view class="flex-sub">
 					<uni-notice-bar style=" border-radius: 20px;" backgroundColor="rgba(40, 173, 179, 0.18)" class="uni-notice-bar  bg-purple" showIcon="true" scrollable="true" single="true" :text="noticeText"></uni-notice-bar>		
 				</view>
@@ -57,18 +66,26 @@
 		},
 		data() {
 			return {
+				selectPasture:{
+					name:"牧场1",
+					id:1,
+				},
 				signIns:[{
 					name:"1",
-					img:this.$mAssetsPath.yidao
+					img:this.$mAssetsPath.yidao,
+					content:"已签:72",
 				},{
 					name:"2",
-					img:this.$mAssetsPath.weidao
+					img:this.$mAssetsPath.weidao,
+					content:"未签:21",
 				},{
 					name:"3",
-					img:this.$mAssetsPath.chidao
+					img:this.$mAssetsPath.chidao,
+					content:"迟到:10",
 				},{
 					name:"4",
 					img:this.$mAssetsPath.zongshu,
+					content:"总数:158",
 				}],
 				info: [{
 							colorClass: 'uni-bg-red',
@@ -117,9 +134,14 @@
 					img:this.$mAssetsPath.niuniu,
 					url:"",
 				},{
+					name:"信息模块",
+					num:"s",
+					img:this.$mAssetsPath.info,
+					url:"",
+				},{
 					name:"管家服务",
-					num:23,
-					img:this.$mAssetsPath.niuniu,
+					num:"b",
+					img:this.$mAssetsPath.housekeeper,
 					url:"",
 				}]
 				}	
@@ -226,26 +248,57 @@
 		  left: 50%; 
 		  top: 170px;  
 		  width: 90%;  
-		  height: 120px;
+		/*  height: 120px; */
 		  border-radius: 8px;
 		  transform: translate(-50%);
 		  background-color: #fff;
 		  padding: 8px;
 		  z-index: 999;
+		  .flex-title{
+			  display: flex;
+			  text{
+				  flex: 1 1 80%;
+				  color: #0081FF;
+				  font-size: 30upx;
+				  font-weight: 800;
+				  padding-left: 20upx;
+			  }
+			  picker{
+				   view{
+					   background-color: rgba(37, 111, 134, 0.5);
+					   width: 100%;
+					   color:#28bebf;
+					   .flex-icon{
+						   font-size: 20upx;
+						   color:#28bebf;
+					   }
+						
+				   }
+				   flex: 1 1 20%;
+			  }
+			  width: 100% !important;
+			  
+		  }	  
 		  .flex-sign{
-			  &:first-child{		 
+			   
+			  &:nth-child(2){		 
 			  	  border-right:  solid 1px #cacacadb;
 				  border-bottom: solid 1px #cacacadb;
 			  };
-			  &:nth-child(2){
+			  &:nth-child(3){
 				  border-bottom: solid 1px #cacacadb;
 			  }
-			  &:nth-child(3){
+			  &:nth-child(4){
 			  	  border-right:  solid 1px #cacacadb;
 			  }
 			  .flex-sign-image{
 				  	width: 30px !important;
 				  	height: 30px  !important;
+			  }
+			  .flex-twice{
+				   font-size: 10px;
+				   line-height: 30px;
+				   color: rgba(40, 190, 191, 0.9);
 			  }
 			 
 			  
@@ -258,6 +311,7 @@
 	.nav-list{
 		margin-top: 30upx;
 		padding: 0px;
+		justify-content: initial;
 		image {
 		   position: absolute;
 		   right: 0px;
@@ -272,7 +326,7 @@
 		.nav-li {
 		   padding: 10px;
 		   width: 30%;
-		   margin: 0 0% 20px;
+		   margin: 0 1.5% 20px;
 		}
 		.nav-title{
 			font-size: 10px;
@@ -284,7 +338,7 @@
 		    font-size: 10px;
 		    margin-top: 10px;
 			&:first-letter {
-			    font-size: 14px;
+			    font-size: 10px;
 			}
 		}
 	}

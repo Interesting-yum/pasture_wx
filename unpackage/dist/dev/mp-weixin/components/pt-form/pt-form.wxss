@@ -63,6 +63,16 @@
 .formView .cu-form-group:last-child {
   border-bottom: solid 1px #eee;
 }
+.formView .uni-common-mt {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-justify-content: space-around;
+          justify-content: space-around;
+}
+.formView .uni-common-mt button {
+  padding: 0px 45px;
+}
 .uni-textarea-textarea {
   overflow-y: auto;
   border: solid 1px #cccaca;

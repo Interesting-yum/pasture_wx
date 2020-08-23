@@ -1,0 +1,9 @@
+{
+  "navigationBarTitleText": "摄像头",
+  "usingComponents": {
+    "title-view": "/components/title-view/title-view",
+    "uni-collapse": "/components/uni-collapse/uni-collapse",
+    "uni-collapse-item": "/components/uni-collapse-item/uni-collapse-item",
+    "uni-fab": "/components/uni-fab/uni-fab"
+  }
+}

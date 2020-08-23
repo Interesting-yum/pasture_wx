@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "GPS设备表单",
+  "usingComponents": {
+    "pt-form": "/components/pt-form/pt-form"
+  }
+}

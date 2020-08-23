@@ -1,6 +1,0 @@
-{
-  "navigationBarTitleText": "摄像头表单",
-  "usingComponents": {
-    "pt-form": "/components/pt-form/pt-form"
-  }
-}

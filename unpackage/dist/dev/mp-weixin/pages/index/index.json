@@ -1,8 +1,0 @@
-{
-  "navigationStyle": "custom",
-  "usingComponents": {
-    "uni-swiper-dot": "/components/uni-swiper-dot/uni-swiper-dot",
-    "uni-notice-bar": "/components/uni-notice-bar/uni-notice-bar",
-    "card": "/components/index/index_card/card"
-  }
-}

@@ -4,8 +4,32 @@
  *
  * 使用：引入该js到页面，let res = graceChecker.check({phoneNo:"",code:""},formRule.loginRule)
  */
-
+import form from './form.config.js'
+const equipmentForm = form.equipmentForm;  //GPS设备的表单数据
 export default {
+	/* GPS的设备表单校验 */
+	equipmentRule:[{
+		name:equipmentForm.name.name, 
+		checkType : "string", 
+		checkRule:"1,10",  
+		errorMsg:"名称应为1-10个字符",
+		},{
+		name:equipmentForm.code.name, 
+		checkType : "string", 
+		checkRule:"10,10",  
+		errorMsg:"编码应为10个字符",
+		},{
+		name:equipmentForm.phone.name, 
+		checkType : "phoneno", 
+		checkRule:"",  
+		errorMsg:"请输入正确的手机号",
+		},{
+		name:equipmentForm.livestock.name, 
+		checkType : "int", 
+		checkRule:"",  
+		errorMsg:"绑定牲畜不能为空",
+		}
+	],
 	/* 用户密码登录 */
 	loginByPassRule: [{
 		name: 'mobile',

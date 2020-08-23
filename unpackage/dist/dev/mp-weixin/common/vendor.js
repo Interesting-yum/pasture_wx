@@ -144,7 +144,7 @@ function queue(hooks, data) {
   for (var i = 0; i < hooks.length; i++) {
     var hook = hooks[i];
     if (promise) {
-      promise = Promise.then(wrapperHook(hook));
+      promise = Promise.resolve(wrapperHook(hook));
     } else {
       var res = hook(data);
       if (isPromise(res)) {
@@ -346,9 +346,9 @@ function upx2px(number, newDeviceWidth) {
   result = Math.floor(result + EPS);
   if (result === 0) {
     if (deviceDPR === 1 || !isIOS) {
-      return 1;
+      result = 1;
     } else {
-      return 0.5;
+      result = 0.5;
     }
   }
   return number < 0 ? -result : result;
@@ -421,7 +421,10 @@ var protocols = {
 
 
 var todos = [
-'vibrate'];
+'vibrate',
+'preloadPage',
+'unPreloadPage',
+'loadSubPackage'];
 
 var canIUses = [];
 
@@ -453,7 +456,9 @@ function processArgs(methodName, fromArgs) {var argsOption = arguments.length > 
           toArgs[keyOption.name ? keyOption.name : key] = keyOption.value;
         }
       } else if (CALLBACKS.indexOf(key) !== -1) {
-        toArgs[key] = processCallback(methodName, fromArgs[key], returnValue);
+        if (isFn(fromArgs[key])) {
+          toArgs[key] = processCallback(methodName, fromArgs[key], returnValue);
+        }
       } else {
         if (!keepFromArgs) {
           toArgs[key] = fromArgs[key];
@@ -568,10 +573,6 @@ var extraApi = /*#__PURE__*/Object.freeze({
 
 
 var getEmitter = function () {
-  if (typeof getUniEmitter === 'function') {
-    /* eslint-disable no-undef */
-    return getUniEmitter;
-  }
   var Emitter;
   return function getUniEmitter() {
     if (!Emitter) {
@@ -658,6 +659,8 @@ Component = function Component() {var options = arguments.length > 0 && argument
 var PAGE_EVENT_HOOKS = [
 'onPullDownRefresh',
 'onReachBottom',
+'onAddToFavorites',
+'onShareTimeline',
 'onShareAppMessage',
 'onPageScroll',
 'onResize',
@@ -757,7 +760,7 @@ function initData(vueOptions, context) {
     try {
       data = data.call(context); // 支持 Vue.prototype 上挂的数据
     } catch (e) {
-      if (Object({"VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG) {
+      if (Object({"NODE_ENV":"development","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG) {
         console.warn('根据 Vue 的 data 函数初始化小程序 data 失败，请尽量确保 data 函数中不访问 vm 对象，否则可能影响首次数据渲染速度。', data);
       }
     }
@@ -859,6 +862,11 @@ function initProperties(props) {var isBehavior = arguments.length > 1 && argumen
       type: String,
       value: '' };
 
+    // 用于字节跳动小程序模拟抽象节点
+    properties.generic = {
+      type: Object,
+      value: null };
+
     properties.vueSlots = { // 小程序不能直接定义 $slots 的 props，所以通过 vueSlots 转换到 $slots
       type: null,
       value: [],
@@ -944,7 +952,18 @@ function getExtraValue(vm, dataPathsArray) {
       var propPath = dataPathArray[1];
       var valuePath = dataPathArray[3];
 
-      var vFor = dataPath ? vm.__get_value(dataPath, context) : context;
+      var vFor;
+      if (Number.isInteger(dataPath)) {
+        vFor = dataPath;
+      } else if (!dataPath) {
+        vFor = context;
+      } else if (typeof dataPath === 'string' && dataPath) {
+        if (dataPath.indexOf('#s#') === 0) {
+          vFor = dataPath.substr(3);
+        } else {
+          vFor = vm.__get_value(dataPath, context);
+        }
+      }
 
       if (Number.isInteger(vFor)) {
         context = value;
@@ -994,6 +1013,12 @@ function processEventExtra(vm, extra, event) {
         } else {
           if (dataPath === '$event') {// $event
             extraObj['$' + index] = event;
+          } else if (dataPath === 'arguments') {
+            if (event.detail && event.detail.__args__) {
+              extraObj['$' + index] = event.detail.__args__;
+            } else {
+              extraObj['$' + index] = [event];
+            }
           } else if (dataPath.indexOf('$event.') === 0) {// $event.target.value
             extraObj['$' + index] = vm.__get_value(dataPath.replace('$event.', ''), event);
           } else {
@@ -1074,6 +1099,15 @@ function isMatchEventType(eventType, optType) {
 
 }
 
+function getContextVm(vm) {
+  var $parent = vm.$parent;
+  // 父组件是 scoped slots 或者其他自定义组件时继续查找
+  while ($parent && $parent.$parent && ($parent.$options.generic || $parent.$parent.$options.generic || $parent.$scope._$vuePid)) {
+    $parent = $parent.$parent;
+  }
+  return $parent && $parent.$parent;
+}
+
 function handleEvent(event) {var _this = this;
   event = wrapper$1(event);
 
@@ -1106,12 +1140,8 @@ function handleEvent(event) {var _this = this;
         var methodName = eventArray[0];
         if (methodName) {
           var handlerCtx = _this.$vm;
-          if (
-          handlerCtx.$options.generic &&
-          handlerCtx.$parent &&
-          handlerCtx.$parent.$parent)
-          {// mp-weixin,mp-toutiao 抽象节点模拟 scoped slots
-            handlerCtx = handlerCtx.$parent.$parent;
+          if (handlerCtx.$options.generic) {// mp-weixin,mp-toutiao 抽象节点模拟 scoped slots
+            handlerCtx = getContextVm(handlerCtx) || handlerCtx;
           }
           if (methodName === '$emit') {
             handlerCtx.$emit.apply(handlerCtx,
@@ -1135,14 +1165,17 @@ function handleEvent(event) {var _this = this;
             }
             handler.once = true;
           }
-          ret.push(handler.apply(handlerCtx, processEventArgs(
+          var params = processEventArgs(
           _this.$vm,
           event,
           eventArray[1],
           eventArray[2],
           isCustom,
-          methodName)));
-
+          methodName) ||
+          [];
+          // 参数尾部增加原始事件对象用于复杂表达式内获取额外数据
+          // eslint-disable-next-line no-sparse-arrays
+          ret.push(handler.apply(handlerCtx, params.concat([,,,,,,,,,, event])));
         }
       });
     }
@@ -1161,7 +1194,9 @@ var hooks = [
 'onShow',
 'onHide',
 'onError',
-'onPageNotFound'];
+'onPageNotFound',
+'onThemeChange',
+'onUnhandledRejection'];
 
 
 function parseBaseApp(vm, _ref3)
@@ -1495,7 +1530,7 @@ var uni = {};
 if (typeof Proxy !== 'undefined' && "mp-weixin" !== 'app-plus') {
   uni = new Proxy({}, {
     get: function get(target, name) {
-      if (target[name]) {
+      if (hasOwn(target, name)) {
         return target[name];
       }
       if (baseApi[name]) {
@@ -2197,12 +2232,10 @@ if (true) {
   };
 
   formatComponentName = function (vm, includeFile) {
-    {
-      if(vm.$scope && vm.$scope.is){
-        return vm.$scope.is
-      }
-    }
     if (vm.$root === vm) {
+      if (vm.$options && vm.$options.__file) { // fixed by xxxxxx
+        return ('') + vm.$options.__file
+      }
       return '<Root>'
     }
     var options = typeof vm === 'function' && vm.cid != null
@@ -2237,7 +2270,7 @@ if (true) {
     if (vm._isVue && vm.$parent) {
       var tree = [];
       var currentRecursiveSequence = 0;
-      while (vm) {
+      while (vm && vm.$options.name !== 'PageBody') {
         if (tree.length > 0) {
           var last = tree[tree.length - 1];
           if (last.constructor === vm.constructor) {
@@ -2249,7 +2282,7 @@ if (true) {
             currentRecursiveSequence = 0;
           }
         }
-        tree.push(vm);
+        !vm.$options.isReserved && tree.push(vm);
         vm = vm.$parent;
       }
       return '\n\nfound in\n\n' + tree
@@ -2272,13 +2305,7 @@ var uid = 0;
  * directives subscribing to it.
  */
 var Dep = function Dep () {
-  // fixed by xxxxxx (nvue vuex)
-  /* eslint-disable no-undef */
-  if(typeof SharedObject !== 'undefined'){
-    this.id = SharedObject.uid++;
-  } else {
-    this.id = uid++;
-  }
+  this.id = uid++;
   this.subs = [];
 };
 
@@ -2315,7 +2342,7 @@ Dep.prototype.notify = function notify () {
 // can be evaluated at a time.
 // fixed by xxxxxx (nvue shared vuex)
 /* eslint-disable no-undef */
-Dep.SharedObject = typeof SharedObject !== 'undefined' ? SharedObject : {};
+Dep.SharedObject = {};
 Dep.SharedObject.target = null;
 Dep.SharedObject.targetStack = [];
 
@@ -7095,7 +7122,7 @@ function type(obj) {
 
 function flushCallbacks$1(vm) {
     if (vm.__next_tick_callbacks && vm.__next_tick_callbacks.length) {
-        if (Object({"VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG) {
+        if (Object({"NODE_ENV":"development","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG) {
             var mpInstance = vm.$scope;
             console.log('[' + (+new Date) + '][' + (mpInstance.is || mpInstance.route) + '][' + vm._uid +
                 ']:flushCallbacks[' + vm.__next_tick_callbacks.length + ']');
@@ -7116,14 +7143,14 @@ function nextTick$1(vm, cb) {
     //1.nextTick 之前 已 setData 且 setData 还未回调完成
     //2.nextTick 之前存在 render watcher
     if (!vm.__next_tick_pending && !hasRenderWatcher(vm)) {
-        if(Object({"VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG){
+        if(Object({"NODE_ENV":"development","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG){
             var mpInstance = vm.$scope;
             console.log('[' + (+new Date) + '][' + (mpInstance.is || mpInstance.route) + '][' + vm._uid +
                 ']:nextVueTick');
         }
         return nextTick(cb, vm)
     }else{
-        if(Object({"VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG){
+        if(Object({"NODE_ENV":"development","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG){
             var mpInstance$1 = vm.$scope;
             console.log('[' + (+new Date) + '][' + (mpInstance$1.is || mpInstance$1.route) + '][' + vm._uid +
                 ']:nextMPTick');
@@ -7165,6 +7192,15 @@ function cloneWithData(vm) {
     ret[key] = vm[key];
     return ret
   }, ret);
+
+  // vue-composition-api
+  var rawBindings = vm.__secret_vfa_state__ && vm.__secret_vfa_state__.rawBindings;
+  if (rawBindings) {
+    Object.keys(rawBindings).forEach(function (key) {
+      ret[key] = vm[key];
+    });
+  }
+  
   //TODO 需要把无用数据处理掉，比如 list=>l0 则 list 需要移除，否则多传输一份数据
   Object.assign(ret, vm.$mp.data || {});
   if (
@@ -7199,7 +7235,7 @@ var patch = function(oldVnode, vnode) {
     });
     var diffData = this.$shouldDiffData === false ? data : diff(data, mpData);
     if (Object.keys(diffData).length) {
-      if (Object({"VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG) {
+      if (Object({"NODE_ENV":"development","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG) {
         console.log('[' + (+new Date) + '][' + (mpInstance.is || mpInstance.route) + '][' + this._uid +
           ']差量更新',
           JSON.stringify(diffData));
@@ -7371,7 +7407,8 @@ function getTarget(obj, path) {
 
 function internalMixin(Vue) {
 
-  Vue.config.errorHandler = function(err) {
+  Vue.config.errorHandler = function(err, vm, info) {
+    Vue.util.warn(("Error in " + info + ": \"" + (err.toString()) + "\""), vm);
     console.error(err);
     /* eslint-disable no-undef */
     var app = getApp();
@@ -7486,7 +7523,7 @@ function internalMixin(Vue) {
   };
 
   Vue.prototype.__map = function(val, iteratee) {
-    //TODO 暂不考虑 string,number
+    //TODO 暂不考虑 string
     var ret, i, l, keys, key;
     if (Array.isArray(val)) {
       ret = new Array(val.length);
@@ -7500,6 +7537,13 @@ function internalMixin(Vue) {
       for (i = 0, l = keys.length; i < l; i++) {
         key = keys[i];
         ret[key] = iteratee(val[key], key, i);
+      }
+      return ret
+    } else if (typeof val === 'number') {
+      ret = new Array(val);
+      for (i = 0, l = val; i < l; i++) {
+        // 第一个参数暂时仍和小程序一致
+        ret[i] = iteratee(i, i);
       }
       return ret
     }
@@ -7516,7 +7560,10 @@ var LIFECYCLE_HOOKS$1 = [
     'onShow',
     'onHide',
     'onUniNViewMessage',
+    'onPageNotFound',
+    'onThemeChange',
     'onError',
+    'onUnhandledRejection',
     //Page
     'onLoad',
     // 'onShow',
@@ -7526,6 +7573,8 @@ var LIFECYCLE_HOOKS$1 = [
     'onPullDownRefresh',
     'onReachBottom',
     'onTabItemTap',
+    'onAddToFavorites',
+    'onShareTimeline',
     'onShareAppMessage',
     'onResize',
     'onPageScroll',
@@ -7623,9 +7672,9 @@ module.exports = g;
 
 /***/ }),
 /* 4 */
-/*!************************************************************!*\
-  !*** D:/用户目录/我的文档/HBuilderProjects/牧场管理系统1.0.2/pages.json ***!
-  \************************************************************/
+/*!*******************************************************!*\
+  !*** E:/Documents/HBuilderProjects/牧场管理系统/pages.json ***!
+  \*******************************************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
@@ -9504,9 +9553,9 @@ function normalizeComponent (
 
 /***/ }),
 /* 15 */
-/*!****************************************************************!*\
-  !*** D:/用户目录/我的文档/HBuilderProjects/牧场管理系统1.0.2/store/index.js ***!
-  \****************************************************************/
+/*!***********************************************************!*\
+  !*** E:/Documents/HBuilderProjects/牧场管理系统/store/index.js ***!
+  \***********************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -9611,9 +9660,9 @@ store;exports.default = _default;
 
 /***/ }),
 /* 16 */
-/*!*************************************************************************!*\
-  !*** D:/用户目录/我的文档/HBuilderProjects/牧场管理系统1.0.2/config/routes.config.js ***!
-  \*************************************************************************/
+/*!********************************************************************!*\
+  !*** E:/Documents/HBuilderProjects/牧场管理系统/config/routes.config.js ***!
+  \********************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -9666,9 +9715,9 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
 
 /***/ }),
 /* 17 */
-/*!*****************************************************************!*\
-  !*** D:/用户目录/我的文档/HBuilderProjects/牧场管理系统1.0.2/utils/router.js ***!
-  \*****************************************************************/
+/*!************************************************************!*\
+  !*** E:/Documents/HBuilderProjects/牧场管理系统/utils/router.js ***!
+  \************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -9718,9 +9767,9 @@ new Router();exports.default = _default;
 
 /***/ }),
 /* 18 */
-/*!**********************************************************************!*\
-  !*** D:/用户目录/我的文档/HBuilderProjects/牧场管理系统1.0.2/store/systemStore.js ***!
-  \**********************************************************************/
+/*!*****************************************************************!*\
+  !*** E:/Documents/HBuilderProjects/牧场管理系统/store/systemStore.js ***!
+  \*****************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -9754,9 +9803,9 @@ var systemInfo = uni.getStorageSync('systemInfo') || '';var _default =
 
 /***/ }),
 /* 19 */
-/*!*************************************************************************!*\
-  !*** D:/用户目录/我的文档/HBuilderProjects/牧场管理系统1.0.2/config/assets.config.js ***!
-  \*************************************************************************/
+/*!********************************************************************!*\
+  !*** E:/Documents/HBuilderProjects/牧场管理系统/config/assets.config.js ***!
+  \********************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -9850,9 +9899,9 @@ var PATH = _indexConfig.default.assetsPath;
 
 /***/ }),
 /* 20 */
-/*!************************************************************************!*\
-  !*** D:/用户目录/我的文档/HBuilderProjects/牧场管理系统1.0.2/config/index.config.js ***!
-  \************************************************************************/
+/*!*******************************************************************!*\
+  !*** E:/Documents/HBuilderProjects/牧场管理系统/config/index.config.js ***!
+  \*******************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -9880,21 +9929,45 @@ CONFIG["development"];exports.default = _default;
 
 /***/ }),
 /* 21 */
-/*!***************************************************************************!*\
-  !*** D:/用户目录/我的文档/HBuilderProjects/牧场管理系统1.0.2/config/formRule.config.js ***!
-  \***************************************************************************/
+/*!**********************************************************************!*\
+  !*** E:/Documents/HBuilderProjects/牧场管理系统/config/formRule.config.js ***!
+  \**********************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0; /*
-                                                                                                      * 应用表单校验相关配置
-                                                                                                      * 依赖：graceChecker.js 进行校验
-                                                                                                      *
-                                                                                                      * 使用：引入该js到页面，let res = graceChecker.check({phoneNo:"",code:""},formRule.loginRule)
-                                                                                                      */var _default =
+Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;
 
-{
+
+
+
+
+var _formConfig = _interopRequireDefault(__webpack_require__(/*! ./form.config.js */ 22));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };} /*
+                                                                                                                                                                     * 应用表单校验相关配置
+                                                                                                                                                                     * 依赖：graceChecker.js 进行校验
+                                                                                                                                                                     *
+                                                                                                                                                                     * 使用：引入该js到页面，let res = graceChecker.check({phoneNo:"",code:""},formRule.loginRule)
+                                                                                                                                                                     */var equipmentForm = _formConfig.default.equipmentForm; //GPS设备的表单数据
+var _default = { /* GPS的设备表单校验 */equipmentRule: [{ name: equipmentForm.name.name, checkType: "string",
+    checkRule: "1,10",
+    errorMsg: "名称应为1-10个字符" },
+  {
+    name: equipmentForm.code.name,
+    checkType: "string",
+    checkRule: "10,10",
+    errorMsg: "编码应为10个字符" },
+  {
+    name: equipmentForm.phone.name,
+    checkType: "phoneno",
+    checkRule: "",
+    errorMsg: "请输入正确的手机号" },
+  {
+    name: equipmentForm.livestock.name,
+    checkType: "int",
+    checkRule: "",
+    errorMsg: "绑定牲畜不能为空" }],
+
+
   /* 用户密码登录 */
   loginByPassRule: [{
     name: 'mobile',
@@ -10019,9 +10092,110 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
 
 /***/ }),
 /* 22 */
-/*!****************************************************************************!*\
-  !*** D:/用户目录/我的文档/HBuilderProjects/牧场管理系统1.0.2/config/constData.config.js ***!
-  \****************************************************************************/
+/*!******************************************************************!*\
+  !*** E:/Documents/HBuilderProjects/牧场管理系统/config/form.config.js ***!
+  \******************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0; /*
+                                                                                                      * 应用表单校验相关配置和表单的基础配置
+                                                                                                      * 依赖：graceChecker.js 进行校验
+                                                                                                      *
+                                                                                                      * 使用：引入该js到页面，let res = graceChecker.check({phoneNo:"",code:""},formRule.loginRule)
+                                                                                                      */var _default =
+
+{
+  /* GPS的设备表单校验 */
+  equipmentForm: {
+    name: {
+      title: "设备名",
+      placeholder: "请输入设备名啦",
+      value: "小二狗",
+      name: "name" },
+
+
+    code: {
+      title: "设备编码",
+      name: "code" },
+
+
+    phone: {
+      title: "设备卡号",
+      name: "phone",
+      icon: [{
+        name: 'div',
+        attrs: {
+          class: 'cu-tag bg-blue ' },
+
+        children: [{
+          type: 'text',
+          text: '+86' }] },
+
+      {
+        name: 'div',
+        attrs: {
+          class: "cu-tag line-blue" },
+
+        children: [{
+          type: 'text',
+          text: '中国大陆' }] }] },
+
+
+
+
+    switch: {
+      title: "测试开关",
+      type: "switch",
+      name: "switch",
+      checked: true },
+
+
+    livestock: {
+      title: "绑定牲畜",
+      type: "picker",
+      mode: "selector",
+      range: ["牲畜1", "牲畜2", "牲畜3", "牲畜4", "牲畜5", "牲畜6"],
+      value: 0,
+      name: "livestock" },
+
+
+    timeInterval: {
+      title: "指令发送间隔",
+      name: "timeInterval",
+      value: 0,
+      inputTpye: "number",
+      align: "right",
+      icon: [{
+        name: 'div',
+        attrs: {
+          style: 'color: blue;' },
+
+        children: [{
+          type: 'text',
+          text: '分' }] }] },
+
+
+
+
+    equipmentImg: {
+      title: "设备图片",
+      type: "img",
+      name: "equipmentImg",
+      imgList: [] },
+
+
+    textarea: {
+      title: "设备备注",
+      type: "textarea",
+      name: "equipmentRemarks" } } };exports.default = _default;
+
+/***/ }),
+/* 23 */
+/*!***********************************************************************!*\
+  !*** E:/Documents/HBuilderProjects/牧场管理系统/config/constData.config.js ***!
+  \***********************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -10116,10 +10290,10 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
   { state: 3, text: '评价' }] };exports.default = _default;
 
 /***/ }),
-/* 23 */
-/*!****************************************************************************!*\
-  !*** D:/用户目录/我的文档/HBuilderProjects/牧场管理系统1.0.2/config/websocket.config.js ***!
-  \****************************************************************************/
+/* 24 */
+/*!***********************************************************************!*\
+  !*** E:/Documents/HBuilderProjects/牧场管理系统/config/websocket.config.js ***!
+  \***********************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -10184,18 +10358,18 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
   ping: 'site.ping' };exports.default = _default;
 
 /***/ }),
-/* 24 */
-/*!************************************************************************!*\
-  !*** D:/用户目录/我的文档/HBuilderProjects/牧场管理系统1.0.2/utils/request/index.js ***!
-  \************************************************************************/
+/* 25 */
+/*!*******************************************************************!*\
+  !*** E:/Documents/HBuilderProjects/牧场管理系统/utils/request/index.js ***!
+  \*******************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.http = void 0;var _regenerator = _interopRequireDefault(__webpack_require__(/*! ./node_modules/@vue/babel-preset-app/node_modules/@babel/runtime/regenerator */ 8));var _request = _interopRequireDefault(__webpack_require__(/*! ./request */ 25));
-var _login = __webpack_require__(/*! @/api/login */ 26);
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.http = void 0;var _regenerator = _interopRequireDefault(__webpack_require__(/*! ./node_modules/@vue/babel-preset-app/node_modules/@babel/runtime/regenerator */ 8));var _request = _interopRequireDefault(__webpack_require__(/*! ./request */ 26));
+var _login = __webpack_require__(/*! @/api/login */ 27);
 var _index = _interopRequireDefault(__webpack_require__(/*! @/config/index.config */ 20));
-var _helper = _interopRequireDefault(__webpack_require__(/*! @/utils/helper */ 27));
+var _helper = _interopRequireDefault(__webpack_require__(/*! @/utils/helper */ 28));
 var _store = _interopRequireDefault(__webpack_require__(/*! @/store */ 15));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {try {var info = gen[key](arg);var value = info.value;} catch (error) {reject(error);return;}if (info.done) {resolve(value);} else {Promise.resolve(value).then(_next, _throw);}}function _asyncToGenerator(fn) {return function () {var self = this,args = arguments;return new Promise(function (resolve, reject) {var gen = fn.apply(self, args);function _next(value) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);}function _throw(err) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);}_next(undefined);});};}function ownKeys(object, enumerableOnly) {var keys = Object.keys(object);if (Object.getOwnPropertySymbols) {var symbols = Object.getOwnPropertySymbols(object);if (enumerableOnly) symbols = symbols.filter(function (sym) {return Object.getOwnPropertyDescriptor(object, sym).enumerable;});keys.push.apply(keys, symbols);}return keys;}function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};if (i % 2) {ownKeys(Object(source), true).forEach(function (key) {_defineProperty(target, key, source[key]);});} else if (Object.getOwnPropertyDescriptors) {Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));} else {ownKeys(Object(source)).forEach(function (key) {Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));});}}return target;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}
 
 var http = new _request.default();
@@ -10314,23 +10488,23 @@ function (error) {
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 
 /***/ }),
-/* 25 */
-/*!**************************************************************************!*\
-  !*** D:/用户目录/我的文档/HBuilderProjects/牧场管理系统1.0.2/utils/request/request.js ***!
-  \**************************************************************************/
+/* 26 */
+/*!*********************************************************************!*\
+  !*** E:/Documents/HBuilderProjects/牧场管理系统/utils/request/request.js ***!
+  \*********************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 /* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _regenerator = _interopRequireDefault(__webpack_require__(/*! ./node_modules/@vue/babel-preset-app/node_modules/@babel/runtime/regenerator */ 8));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function ownKeys(object, enumerableOnly) {var keys = Object.keys(object);if (Object.getOwnPropertySymbols) {var symbols = Object.getOwnPropertySymbols(object);if (enumerableOnly) symbols = symbols.filter(function (sym) {return Object.getOwnPropertyDescriptor(object, sym).enumerable;});keys.push.apply(keys, symbols);}return keys;}function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};if (i % 2) {ownKeys(Object(source), true).forEach(function (key) {_defineProperty(target, key, source[key]);});} else if (Object.getOwnPropertyDescriptors) {Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));} else {ownKeys(Object(source)).forEach(function (key) {Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));});}}return target;}function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {try {var info = gen[key](arg);var value = info.value;} catch (error) {reject(error);return;}if (info.done) {resolve(value);} else {Promise.resolve(value).then(_next, _throw);}}function _asyncToGenerator(fn) {return function () {var self = this,args = arguments;return new Promise(function (resolve, reject) {var gen = fn.apply(self, args);function _next(value) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);}function _throw(err) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);}_next(undefined);});};}function _classCallCheck(instance, Constructor) {if (!(instance instanceof Constructor)) {throw new TypeError("Cannot call a class as a function");}}function _defineProperties(target, props) {for (var i = 0; i < props.length; i++) {var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);}}function _createClass(Constructor, protoProps, staticProps) {if (protoProps) _defineProperties(Constructor.prototype, protoProps);if (staticProps) _defineProperties(Constructor, staticProps);return Constructor;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;} /**
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           * Request 1.0.6
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           * @Class Request
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           * @description luch-request 1.0.6 http请求插件
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           * @Author lu-ch
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           * @Date 2020-03-17
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           * @Email webwork.s@qq.com
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           * http://ext.dcloud.net.cn/plugin?id=392
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           */var
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 * Request 1.0.6
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 * @Class Request
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 * @description luch-request 1.0.6 http请求插件
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 * @Author lu-ch
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 * @Date 2020-03-17
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 * @Email webwork.s@qq.com
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 * http://ext.dcloud.net.cn/plugin?id=392
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 */var
 Request = /*#__PURE__*/function () {function Request() {var _this = this;_classCallCheck(this, Request);_defineProperty(this, "config",
     {
       baseUrl: '',
@@ -10754,10 +10928,10 @@ Request = /*#__PURE__*/function () {function Request() {var _this = this;_classC
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 
 /***/ }),
-/* 26 */
-/*!**************************************************************!*\
-  !*** D:/用户目录/我的文档/HBuilderProjects/牧场管理系统1.0.2/api/login.js ***!
-  \**************************************************************/
+/* 27 */
+/*!*********************************************************!*\
+  !*** E:/Documents/HBuilderProjects/牧场管理系统/api/login.js ***!
+  \*********************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -10804,16 +10978,16 @@ exports.smsCode = smsCode;var logout = '/tiny-shop/v1/site/logout';
 exports.logout = logout;var refreshToken = '/tiny-shop/v1/site/refresh';exports.refreshToken = refreshToken;
 
 /***/ }),
-/* 27 */
-/*!*****************************************************************!*\
-  !*** D:/用户目录/我的文档/HBuilderProjects/牧场管理系统1.0.2/utils/helper.js ***!
-  \*****************************************************************/
+/* 28 */
+/*!************************************************************!*\
+  !*** E:/Documents/HBuilderProjects/牧场管理系统/utils/helper.js ***!
+  \************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 /* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _regenerator = _interopRequireDefault(__webpack_require__(/*! ./node_modules/@vue/babel-preset-app/node_modules/@babel/runtime/regenerator */ 8));var _router = _interopRequireDefault(__webpack_require__(/*! @/utils/router */ 17));
-var _constData = _interopRequireDefault(__webpack_require__(/*! @/config/constData.config */ 22));
+var _constData = _interopRequireDefault(__webpack_require__(/*! @/config/constData.config */ 23));
 var _store = _interopRequireDefault(__webpack_require__(/*! @/store */ 15));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {try {var info = gen[key](arg);var value = info.value;} catch (error) {reject(error);return;}if (info.done) {resolve(value);} else {Promise.resolve(value).then(_next, _throw);}}function _asyncToGenerator(fn) {return function () {var self = this,args = arguments;return new Promise(function (resolve, reject) {var gen = fn.apply(self, args);function _next(value) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);}function _throw(err) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);}_next(undefined);});};}
 //常用方法集合
 var _default = {
@@ -11090,10 +11264,10 @@ var _default = {
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 
 /***/ }),
-/* 28 */
-/*!***********************************************************************!*\
-  !*** D:/用户目录/我的文档/HBuilderProjects/牧场管理系统1.0.2/utils/graceChecker.js ***!
-  \***********************************************************************/
+/* 29 */
+/*!******************************************************************!*\
+  !*** E:/Documents/HBuilderProjects/牧场管理系统/utils/graceChecker.js ***!
+  \******************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
@@ -11224,6 +11398,7 @@ module.exports = {
           }
           break;
         case 'notnull':
+          console.log("notnull?");
           if (data[rule[i].name] == null || data[rule[i].name].length < 1) {
             this.error = rule[i].errorMsg;
             return false;
@@ -11239,10 +11414,10 @@ module.exports = {
   } };
 
 /***/ }),
-/* 29 */
-/*!******************************************************************!*\
-  !*** D:/用户目录/我的文档/HBuilderProjects/牧场管理系统1.0.2/utils/payment.js ***!
-  \******************************************************************/
+/* 30 */
+/*!*************************************************************!*\
+  !*** E:/Documents/HBuilderProjects/牧场管理系统/utils/payment.js ***!
+  \*************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -11252,12 +11427,12 @@ module.exports = {
 
 
 
-var _login = __webpack_require__(/*! @/api/login */ 26);
-var _basic = __webpack_require__(/*! @/api/basic */ 30);
-var _request = __webpack_require__(/*! @/utils/request */ 24);
-var _helper = _interopRequireDefault(__webpack_require__(/*! @/utils/helper */ 27));
+var _login = __webpack_require__(/*! @/api/login */ 27);
+var _basic = __webpack_require__(/*! @/api/basic */ 31);
+var _request = __webpack_require__(/*! @/utils/request */ 25);
+var _helper = _interopRequireDefault(__webpack_require__(/*! @/utils/helper */ 28));
 var _router = _interopRequireDefault(__webpack_require__(/*! @/utils/router */ 17));
-var _product = __webpack_require__(/*! @/api/product */ 31);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function ownKeys(object, enumerableOnly) {var keys = Object.keys(object);if (Object.getOwnPropertySymbols) {var symbols = Object.getOwnPropertySymbols(object);if (enumerableOnly) symbols = symbols.filter(function (sym) {return Object.getOwnPropertyDescriptor(object, sym).enumerable;});keys.push.apply(keys, symbols);}return keys;}function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};if (i % 2) {ownKeys(Object(source), true).forEach(function (key) {_defineProperty(target, key, source[key]);});} else if (Object.getOwnPropertyDescriptors) {Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));} else {ownKeys(Object(source)).forEach(function (key) {Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));});}}return target;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {try {var info = gen[key](arg);var value = info.value;} catch (error) {reject(error);return;}if (info.done) {resolve(value);} else {Promise.resolve(value).then(_next, _throw);}}function _asyncToGenerator(fn) {return function () {var self = this,args = arguments;return new Promise(function (resolve, reject) {var gen = fn.apply(self, args);function _next(value) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);}function _throw(err) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);}_next(undefined);});};}var _default =
+var _product = __webpack_require__(/*! @/api/product */ 32);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function ownKeys(object, enumerableOnly) {var keys = Object.keys(object);if (Object.getOwnPropertySymbols) {var symbols = Object.getOwnPropertySymbols(object);if (enumerableOnly) symbols = symbols.filter(function (sym) {return Object.getOwnPropertyDescriptor(object, sym).enumerable;});keys.push.apply(keys, symbols);}return keys;}function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};if (i % 2) {ownKeys(Object(source), true).forEach(function (key) {_defineProperty(target, key, source[key]);});} else if (Object.getOwnPropertyDescriptors) {Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));} else {ownKeys(Object(source)).forEach(function (key) {Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));});}}return target;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {try {var info = gen[key](arg);var value = info.value;} catch (error) {reject(error);return;}if (info.done) {resolve(value);} else {Promise.resolve(value).then(_next, _throw);}}function _asyncToGenerator(fn) {return function () {var self = this,args = arguments;return new Promise(function (resolve, reject) {var gen = fn.apply(self, args);function _next(value) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);}function _throw(err) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);}_next(undefined);});};}var _default =
 
 {
   // 判断是否公众号（微信H5）
@@ -11443,10 +11618,10 @@ var _product = __webpack_require__(/*! @/api/product */ 31);function _interopReq
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 
 /***/ }),
-/* 30 */
-/*!**************************************************************!*\
-  !*** D:/用户目录/我的文档/HBuilderProjects/牧场管理系统1.0.2/api/basic.js ***!
-  \**************************************************************/
+/* 31 */
+/*!*********************************************************!*\
+  !*** E:/Documents/HBuilderProjects/牧场管理系统/api/basic.js ***!
+  \*********************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -11488,10 +11663,10 @@ exports.wechatConfig = wechatConfig;var notifyAnnounceIndex = '/tiny-shop/v1/com
 exports.notifyAnnounceIndex = notifyAnnounceIndex;var notifyAnnounceView = '/tiny-shop/v1/common/notify-announce/view';exports.notifyAnnounceView = notifyAnnounceView;
 
 /***/ }),
-/* 31 */
-/*!****************************************************************!*\
-  !*** D:/用户目录/我的文档/HBuilderProjects/牧场管理系统1.0.2/api/product.js ***!
-  \****************************************************************/
+/* 32 */
+/*!***********************************************************!*\
+  !*** E:/Documents/HBuilderProjects/牧场管理系统/api/product.js ***!
+  \***********************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -11563,10 +11738,10 @@ exports.wholesaleView = wholesaleView;var wholesaleGroupState = '/tiny-shop/v1/m
 exports.wholesaleGroupState = wholesaleGroupState;var discountProductIndex = '/tiny-shop/v1/marketing/discount-product/index';exports.discountProductIndex = discountProductIndex;
 
 /***/ }),
-/* 32 */
-/*!*********************************************************************!*\
-  !*** D:/用户目录/我的文档/HBuilderProjects/牧场管理系统1.0.2/config/aopConfig.js ***!
-  \*********************************************************************/
+/* 33 */
+/*!****************************************************************!*\
+  !*** E:/Documents/HBuilderProjects/牧场管理系统/config/aopConfig.js ***!
+  \****************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
@@ -11601,7 +11776,6 @@ Function.prototype.after = function (afterfn) {
 console.log("aop配置已开启");
 
 /***/ }),
-/* 33 */,
 /* 34 */,
 /* 35 */,
 /* 36 */,
@@ -11620,10 +11794,11 @@ console.log("aop配置已开启");
 /* 49 */,
 /* 50 */,
 /* 51 */,
-/* 52 */
-/*!*******************************************************************************!*\
-  !*** D:/用户目录/我的文档/HBuilderProjects/牧场管理系统1.0.2/components/uni-icons/icons.js ***!
-  \*******************************************************************************/
+/* 52 */,
+/* 53 */
+/*!**************************************************************************!*\
+  !*** E:/Documents/HBuilderProjects/牧场管理系统/components/uni-icons/icons.js ***!
+  \**************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -11761,7 +11936,6 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
   "shop": "\uE609" };exports.default = _default;
 
 /***/ }),
-/* 53 */,
 /* 54 */,
 /* 55 */,
 /* 56 */,
@@ -11770,10 +11944,11 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
 /* 59 */,
 /* 60 */,
 /* 61 */,
-/* 62 */
-/*!**********************************************************************!*\
-  !*** D:/用户目录/我的文档/HBuilderProjects/牧场管理系统1.0.2/pages/map/mapData.js ***!
-  \**********************************************************************/
+/* 62 */,
+/* 63 */
+/*!*****************************************************************!*\
+  !*** E:/Documents/HBuilderProjects/牧场管理系统/pages/map/mapData.js ***!
+  \*****************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -11973,7 +12148,6 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
     } }] };exports.default = _default;
 
 /***/ }),
-/* 63 */,
 /* 64 */,
 /* 65 */,
 /* 66 */,
@@ -12007,10 +12181,11 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
 /* 94 */,
 /* 95 */,
 /* 96 */,
-/* 97 */
-/*!****************************************************************!*\
-  !*** D:/用户目录/我的文档/HBuilderProjects/牧场管理系统1.0.2/utils/utils.js ***!
-  \****************************************************************/
+/* 97 */,
+/* 98 */
+/*!***********************************************************!*\
+  !*** E:/Documents/HBuilderProjects/牧场管理系统/utils/utils.js ***!
+  \***********************************************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 

@@ -10,7 +10,7 @@
 		"es6": true
 	},
 	"compileType": "miniprogram",
-	"libVersion": "2.9.2",
+	"libVersion": "",
 	"appid": "wx0048b936c165e1f4",
 	"projectname": "牧场管理系统",
 	"simulatorType": "wechat",

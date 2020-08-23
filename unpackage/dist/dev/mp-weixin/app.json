@@ -59,5 +59,6 @@
     "rf-empty": "/components/rf-empty/index",
     "rf-loading": "/components/rf-loading/rf-loading",
     "rf-load-progress": "/components/rf-load-progress/rf-load-progress"
-  }
+  },
+  "sitemapLocation": "sitemap36.json"
 }

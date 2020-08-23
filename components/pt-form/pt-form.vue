@@ -29,7 +29,7 @@
 							</view>
 						</view>
 						<!-- 添加按钮 -->
-						<view class="solids" @tap="ChooseImage(item)" v-if="item.imgList.length<4">
+						<view class="solids" @tap="ChooseImage($event,item)" v-if="item.imgList.length<4">
 							<text class='cuIcon-cameraadd'></text>
 						</view>
 					 </view>
@@ -100,6 +100,12 @@
 				default: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1597757755077&di=c05e66a6a8028d39060847c0c746df62&imgtype=0&src=http%3A%2F%2Fwww.jzrobot.com%2Fuploads%2Fallimg%2F190404%2F1-1Z404100UG29.jpg'
 			},
 			formDatas:{
+				type:Array,
+				default(){
+					return [];
+				},
+			},
+			rule:{
 				type:Array,
 				default(){
 					return [];
@@ -176,8 +182,7 @@
 				
 			},
 			
-			ChooseImage(item) {
-				console.log(item);
+			ChooseImage(e,item) {
 				uni.chooseImage({
 					count: 4, //默认9
 					sizeType: ['original', 'compressed'], //可以指定是原图还是压缩图，默认二者都有
@@ -188,7 +193,8 @@
 						} else {
 							item.imgList = res.tempFilePaths
 						}
-						this.$emit("ChooseImage",item);
+						console.log("this",this);
+						this.$emit("ChooseImage",e,item);
 					}
 				});
 			},
@@ -216,9 +222,8 @@
 			formSubmit: function (e) {
 				console.log(this.formDatas)
 				//进行表单检查
-				var rule = this.formDatas.map(f=>f.rule).filter(f=>f);
 				var formData = e.detail.value;
-				var checkRes = graceChecker.check(formData, rule);
+				var checkRes = graceChecker.check(formData, this.rule);
 				if(checkRes){
 					uni.showToast({title:"验证通过!", icon:"none"});
 					this.$emit("formSubmit",formData);

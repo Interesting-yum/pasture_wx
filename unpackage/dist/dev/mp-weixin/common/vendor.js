@@ -7672,9 +7672,9 @@ module.exports = g;
 
 /***/ }),
 /* 4 */
-/*!*******************************************************!*\
-  !*** E:/Documents/HBuilderProjects/牧场管理系统/pages.json ***!
-  \*******************************************************/
+/*!**********************************************************************!*\
+  !*** C:/Users/ASUS/Documents/HBuilderProjects/pasture_wx/pages.json ***!
+  \**********************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
@@ -9553,9 +9553,9 @@ function normalizeComponent (
 
 /***/ }),
 /* 15 */
-/*!***********************************************************!*\
-  !*** E:/Documents/HBuilderProjects/牧场管理系统/store/index.js ***!
-  \***********************************************************/
+/*!**************************************************************************!*\
+  !*** C:/Users/ASUS/Documents/HBuilderProjects/pasture_wx/store/index.js ***!
+  \**************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -9660,9 +9660,9 @@ store;exports.default = _default;
 
 /***/ }),
 /* 16 */
-/*!********************************************************************!*\
-  !*** E:/Documents/HBuilderProjects/牧场管理系统/config/routes.config.js ***!
-  \********************************************************************/
+/*!***********************************************************************************!*\
+  !*** C:/Users/ASUS/Documents/HBuilderProjects/pasture_wx/config/routes.config.js ***!
+  \***********************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -9715,9 +9715,9 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
 
 /***/ }),
 /* 17 */
-/*!************************************************************!*\
-  !*** E:/Documents/HBuilderProjects/牧场管理系统/utils/router.js ***!
-  \************************************************************/
+/*!***************************************************************************!*\
+  !*** C:/Users/ASUS/Documents/HBuilderProjects/pasture_wx/utils/router.js ***!
+  \***************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -9767,9 +9767,9 @@ new Router();exports.default = _default;
 
 /***/ }),
 /* 18 */
-/*!*****************************************************************!*\
-  !*** E:/Documents/HBuilderProjects/牧场管理系统/store/systemStore.js ***!
-  \*****************************************************************/
+/*!********************************************************************************!*\
+  !*** C:/Users/ASUS/Documents/HBuilderProjects/pasture_wx/store/systemStore.js ***!
+  \********************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -9803,9 +9803,9 @@ var systemInfo = uni.getStorageSync('systemInfo') || '';var _default =
 
 /***/ }),
 /* 19 */
-/*!********************************************************************!*\
-  !*** E:/Documents/HBuilderProjects/牧场管理系统/config/assets.config.js ***!
-  \********************************************************************/
+/*!***********************************************************************************!*\
+  !*** C:/Users/ASUS/Documents/HBuilderProjects/pasture_wx/config/assets.config.js ***!
+  \***********************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -9899,9 +9899,9 @@ var PATH = _indexConfig.default.assetsPath;
 
 /***/ }),
 /* 20 */
-/*!*******************************************************************!*\
-  !*** E:/Documents/HBuilderProjects/牧场管理系统/config/index.config.js ***!
-  \*******************************************************************/
+/*!**********************************************************************************!*\
+  !*** C:/Users/ASUS/Documents/HBuilderProjects/pasture_wx/config/index.config.js ***!
+  \**********************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -9929,9 +9929,9 @@ CONFIG["development"];exports.default = _default;
 
 /***/ }),
 /* 21 */
-/*!**********************************************************************!*\
-  !*** E:/Documents/HBuilderProjects/牧场管理系统/config/formRule.config.js ***!
-  \**********************************************************************/
+/*!*************************************************************************************!*\
+  !*** C:/Users/ASUS/Documents/HBuilderProjects/pasture_wx/config/formRule.config.js ***!
+  \*************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -9963,7 +9963,7 @@ var _default = { /* GPS的设备表单校验 */equipmentRule: [{ name: equipment
     errorMsg: "请输入正确的手机号" },
   {
     name: equipmentForm.livestock.name,
-    checkType: "int",
+    checkType: "notnull",
     checkRule: "",
     errorMsg: "绑定牲畜不能为空" }],
 
@@ -10092,65 +10092,42 @@ var _default = { /* GPS的设备表单校验 */equipmentRule: [{ name: equipment
 
 /***/ }),
 /* 22 */
-/*!******************************************************************!*\
-  !*** E:/Documents/HBuilderProjects/牧场管理系统/config/form.config.js ***!
-  \******************************************************************/
+/*!*********************************************************************************!*\
+  !*** C:/Users/ASUS/Documents/HBuilderProjects/pasture_wx/config/form.config.js ***!
+  \*********************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0; /*
-                                                                                                      * 应用表单校验相关配置和表单的基础配置
-                                                                                                      * 依赖：graceChecker.js 进行校验
-                                                                                                      *
-                                                                                                      * 使用：引入该js到页面，let res = graceChecker.check({phoneNo:"",code:""},formRule.loginRule)
-                                                                                                      */var _default =
+Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _default = {
+  equipmentData: {
+    name: "测试人员1",
+    code: "0123456789",
+    phone: "18161218432",
+    switch: true,
+    livestock: 0,
+    timeInterval: 7,
+    user: 17,
+    equipmentRemarks: "这是一个备注" },
 
-{
-  /* GPS的设备表单校验 */
   equipmentForm: {
     name: {
       title: "设备名",
       placeholder: "请输入设备名啦",
-      value: "小二狗",
       name: "name" },
-
 
     code: {
       title: "设备编码",
       name: "code" },
 
-
     phone: {
       title: "设备卡号",
-      name: "phone",
-      icon: [{
-        name: 'div',
-        attrs: {
-          class: 'cu-tag bg-blue ' },
-
-        children: [{
-          type: 'text',
-          text: '+86' }] },
-
-      {
-        name: 'div',
-        attrs: {
-          class: "cu-tag line-blue" },
-
-        children: [{
-          type: 'text',
-          text: '中国大陆' }] }] },
-
-
-
+      name: "phone" },
 
     switch: {
       title: "测试开关",
       type: "switch",
-      name: "switch",
-      checked: true },
-
+      name: "switch" },
 
     livestock: {
       title: "绑定牲畜",
@@ -10159,7 +10136,6 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
       range: ["牲畜1", "牲畜2", "牲畜3", "牲畜4", "牲畜5", "牲畜6"],
       value: 0,
       name: "livestock" },
-
 
     timeInterval: {
       title: "指令发送间隔",
@@ -10170,12 +10146,11 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
       icon: [{
         name: 'div',
         attrs: {
-          style: 'color: blue;' },
+          style: 'color: bule;' },
 
         children: [{
           type: 'text',
           text: '分' }] }] },
-
 
 
 
@@ -10185,17 +10160,16 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
       name: "equipmentImg",
       imgList: [] },
 
-
-    textarea: {
+    equipmentRemarks: {
       title: "设备备注",
       type: "textarea",
       name: "equipmentRemarks" } } };exports.default = _default;
 
 /***/ }),
 /* 23 */
-/*!***********************************************************************!*\
-  !*** E:/Documents/HBuilderProjects/牧场管理系统/config/constData.config.js ***!
-  \***********************************************************************/
+/*!**************************************************************************************!*\
+  !*** C:/Users/ASUS/Documents/HBuilderProjects/pasture_wx/config/constData.config.js ***!
+  \**************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -10291,9 +10265,9 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
 
 /***/ }),
 /* 24 */
-/*!***********************************************************************!*\
-  !*** E:/Documents/HBuilderProjects/牧场管理系统/config/websocket.config.js ***!
-  \***********************************************************************/
+/*!**************************************************************************************!*\
+  !*** C:/Users/ASUS/Documents/HBuilderProjects/pasture_wx/config/websocket.config.js ***!
+  \**************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -10359,9 +10333,9 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
 
 /***/ }),
 /* 25 */
-/*!*******************************************************************!*\
-  !*** E:/Documents/HBuilderProjects/牧场管理系统/utils/request/index.js ***!
-  \*******************************************************************/
+/*!**********************************************************************************!*\
+  !*** C:/Users/ASUS/Documents/HBuilderProjects/pasture_wx/utils/request/index.js ***!
+  \**********************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -10489,9 +10463,9 @@ function (error) {
 
 /***/ }),
 /* 26 */
-/*!*********************************************************************!*\
-  !*** E:/Documents/HBuilderProjects/牧场管理系统/utils/request/request.js ***!
-  \*********************************************************************/
+/*!************************************************************************************!*\
+  !*** C:/Users/ASUS/Documents/HBuilderProjects/pasture_wx/utils/request/request.js ***!
+  \************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -10929,9 +10903,9 @@ Request = /*#__PURE__*/function () {function Request() {var _this = this;_classC
 
 /***/ }),
 /* 27 */
-/*!*********************************************************!*\
-  !*** E:/Documents/HBuilderProjects/牧场管理系统/api/login.js ***!
-  \*********************************************************/
+/*!************************************************************************!*\
+  !*** C:/Users/ASUS/Documents/HBuilderProjects/pasture_wx/api/login.js ***!
+  \************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -10979,9 +10953,9 @@ exports.logout = logout;var refreshToken = '/tiny-shop/v1/site/refresh';exports.
 
 /***/ }),
 /* 28 */
-/*!************************************************************!*\
-  !*** E:/Documents/HBuilderProjects/牧场管理系统/utils/helper.js ***!
-  \************************************************************/
+/*!***************************************************************************!*\
+  !*** C:/Users/ASUS/Documents/HBuilderProjects/pasture_wx/utils/helper.js ***!
+  \***************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -11265,9 +11239,9 @@ var _default = {
 
 /***/ }),
 /* 29 */
-/*!******************************************************************!*\
-  !*** E:/Documents/HBuilderProjects/牧场管理系统/utils/graceChecker.js ***!
-  \******************************************************************/
+/*!*********************************************************************************!*\
+  !*** C:/Users/ASUS/Documents/HBuilderProjects/pasture_wx/utils/graceChecker.js ***!
+  \*********************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
@@ -11279,6 +11253,7 @@ var _default = {
  */
 module.exports = {
   error: '',
+  name: '',
   check: function check(data, rule) {
     for (var i = 0; i < rule.length; i++) {
       if (!rule[i].checkType) {
@@ -11290,7 +11265,8 @@ module.exports = {
       if (!rule[i].errorMsg) {
         return true;
       }
-      if (!data[rule[i].name]) {
+      if (data[rule[i].name] != 0 && !data[rule[i].name]) {
+        this.name = rule[i].name;
         this.error = rule[i].errorMsg;
         return false;
       }
@@ -11299,6 +11275,7 @@ module.exports = {
           var reg = new RegExp('^.{' + rule[i].checkRule + '}$');
           if (!reg.test(data[rule[i].name])) {
             this.error = rule[i].errorMsg;
+            this.name = rule[i].name;
             return false;
           }
           break;
@@ -11306,6 +11283,7 @@ module.exports = {
           var reg = new RegExp('^(-[1-9]|[1-9])[0-9]{' + rule[i].checkRule + '}$');
           if (!reg.test(data[rule[i].name])) {
             this.error = rule[i].errorMsg;
+            this.name = rule[i].name;
             return false;
           }
           break;
@@ -11313,6 +11291,7 @@ module.exports = {
         case 'between':
           if (!this.isNumber(data[rule[i].name])) {
             this.error = rule[i].errorMsg;
+            this.name = rule[i].name;
             return false;
           }
           var minMax = rule[i].checkRule.split(',');
@@ -11320,6 +11299,7 @@ module.exports = {
           minMax[1] = Number(minMax[1]);
           if (data[rule[i].name] > minMax[1] || data[rule[i].name] < minMax[0]) {
             this.error = rule[i].errorMsg;
+            this.name = rule[i].name;
             return false;
           }
           break;
@@ -11327,6 +11307,7 @@ module.exports = {
           var reg = /^-?[1-9][0-9]?$/;
           if (!reg.test(data[rule[i].name])) {
             this.error = rule[i].errorMsg;
+            this.name = rule[i].name;
             return false;
           }
           var minMax = rule[i].checkRule.split(',');
@@ -11334,6 +11315,7 @@ module.exports = {
           minMax[1] = Number(minMax[1]);
           if (data[rule[i].name] > minMax[1] || data[rule[i].name] < minMax[0]) {
             this.error = rule[i].errorMsg;
+            this.name = rule[i].name;
             return false;
           }
           break;
@@ -11341,6 +11323,7 @@ module.exports = {
           var reg = /^-?[0-9][0-9]?.+[0-9]+$/;
           if (!reg.test(data[rule[i].name])) {
             this.error = rule[i].errorMsg;
+            this.name = rule[i].name;
             return false;
           }
           var minMax = rule[i].checkRule.split(',');
@@ -11348,18 +11331,21 @@ module.exports = {
           minMax[1] = Number(minMax[1]);
           if (data[rule[i].name] > minMax[1] || data[rule[i].name] < minMax[0]) {
             this.error = rule[i].errorMsg;
+            this.name = rule[i].name;
             return false;
           }
           break;
         case 'same':
           if (data[rule[i].name] != rule[i].checkRule) {
             this.error = rule[i].errorMsg;
+            this.name = rule[i].name;
             return false;
           }
           break;
         case 'notsame':
           if (data[rule[i].name] == rule[i].checkRule) {
             this.error = rule[i].errorMsg;
+            this.name = rule[i].name;
             return false;
           }
           break;
@@ -11367,6 +11353,7 @@ module.exports = {
           var reg = /^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/;
           if (!reg.test(data[rule[i].name])) {
             this.error = rule[i].errorMsg;
+            this.name = rule[i].name;
             return false;
           }
           break;
@@ -11374,6 +11361,7 @@ module.exports = {
           var reg = /^1[0-9]{10,10}$/;
           if (!reg.test(data[rule[i].name])) {
             this.error = rule[i].errorMsg;
+            this.name = rule[i].name;
             return false;
           }
           break;
@@ -11381,6 +11369,7 @@ module.exports = {
           var reg = /^[0-9]{6}$/;
           if (!reg.test(data[rule[i].name])) {
             this.error = rule[i].errorMsg;
+            this.name = rule[i].name;
             return false;
           }
           break;
@@ -11388,12 +11377,14 @@ module.exports = {
           var reg = new RegExp(rule[i].checkRule);
           if (!reg.test(data[rule[i].name])) {
             this.error = rule[i].errorMsg;
+            this.name = rule[i].name;
             return false;
           }
           break;
         case 'in':
           if (rule[i].checkRule.indexOf(data[rule[i].name]) == -1) {
             this.error = rule[i].errorMsg;
+            this.name = rule[i].name;
             return false;
           }
           break;
@@ -11401,6 +11392,7 @@ module.exports = {
           console.log("notnull?");
           if (data[rule[i].name] == null || data[rule[i].name].length < 1) {
             this.error = rule[i].errorMsg;
+            this.name = rule[i].name;
             return false;
           }
           break;}
@@ -11415,9 +11407,9 @@ module.exports = {
 
 /***/ }),
 /* 30 */
-/*!*************************************************************!*\
-  !*** E:/Documents/HBuilderProjects/牧场管理系统/utils/payment.js ***!
-  \*************************************************************/
+/*!****************************************************************************!*\
+  !*** C:/Users/ASUS/Documents/HBuilderProjects/pasture_wx/utils/payment.js ***!
+  \****************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -11619,9 +11611,9 @@ var _product = __webpack_require__(/*! @/api/product */ 32);function _interopReq
 
 /***/ }),
 /* 31 */
-/*!*********************************************************!*\
-  !*** E:/Documents/HBuilderProjects/牧场管理系统/api/basic.js ***!
-  \*********************************************************/
+/*!************************************************************************!*\
+  !*** C:/Users/ASUS/Documents/HBuilderProjects/pasture_wx/api/basic.js ***!
+  \************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -11664,9 +11656,9 @@ exports.notifyAnnounceIndex = notifyAnnounceIndex;var notifyAnnounceView = '/tin
 
 /***/ }),
 /* 32 */
-/*!***********************************************************!*\
-  !*** E:/Documents/HBuilderProjects/牧场管理系统/api/product.js ***!
-  \***********************************************************/
+/*!**************************************************************************!*\
+  !*** C:/Users/ASUS/Documents/HBuilderProjects/pasture_wx/api/product.js ***!
+  \**************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -11739,9 +11731,9 @@ exports.wholesaleGroupState = wholesaleGroupState;var discountProductIndex = '/t
 
 /***/ }),
 /* 33 */
-/*!****************************************************************!*\
-  !*** E:/Documents/HBuilderProjects/牧场管理系统/config/aopConfig.js ***!
-  \****************************************************************/
+/*!*******************************************************************************!*\
+  !*** C:/Users/ASUS/Documents/HBuilderProjects/pasture_wx/config/aopConfig.js ***!
+  \*******************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
@@ -11796,9 +11788,9 @@ console.log("aop配置已开启");
 /* 51 */,
 /* 52 */,
 /* 53 */
-/*!**************************************************************************!*\
-  !*** E:/Documents/HBuilderProjects/牧场管理系统/components/uni-icons/icons.js ***!
-  \**************************************************************************/
+/*!*****************************************************************************************!*\
+  !*** C:/Users/ASUS/Documents/HBuilderProjects/pasture_wx/components/uni-icons/icons.js ***!
+  \*****************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -11946,9 +11938,9 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
 /* 61 */,
 /* 62 */,
 /* 63 */
-/*!*****************************************************************!*\
-  !*** E:/Documents/HBuilderProjects/牧场管理系统/pages/map/mapData.js ***!
-  \*****************************************************************/
+/*!********************************************************************************!*\
+  !*** C:/Users/ASUS/Documents/HBuilderProjects/pasture_wx/pages/map/mapData.js ***!
+  \********************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -12183,9 +12175,9 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
 /* 96 */,
 /* 97 */,
 /* 98 */
-/*!***********************************************************!*\
-  !*** E:/Documents/HBuilderProjects/牧场管理系统/utils/utils.js ***!
-  \***********************************************************/
+/*!**************************************************************************!*\
+  !*** C:/Users/ASUS/Documents/HBuilderProjects/pasture_wx/utils/utils.js ***!
+  \**************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
@@ -12226,6 +12218,20 @@ function aop(arr) {var isAllow = arguments.length > 1 && arguments[1] !== undefi
     console.log("参数不对");
   }
 
+}
+
+/**
+   * 表单自动填充数据
+   * @param {Object} data
+   * @param {Object} arr
+   */
+function hanleValue(data, arr) {
+  for (var i in data) {
+    var target = arr.find(function (f) {return f.name == i;});
+    if (target) {
+      target.value = data[i];
+    }
+  }
 }
 
 /**
@@ -12292,7 +12298,8 @@ module.exports = {
   formatTime: formatTime,
   formatLocation: formatLocation,
   dateUtils: dateUtils,
-  aop: aop };
+  aop: aop,
+  hanleValue: hanleValue };
 
 /***/ })
 ]]);

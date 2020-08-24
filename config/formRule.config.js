@@ -25,7 +25,7 @@ export default {
 		errorMsg:"请输入正确的手机号",
 		},{
 		name:equipmentForm.livestock.name, 
-		checkType : "int", 
+		checkType : "notnull", 
 		checkRule:"",  
 		errorMsg:"绑定牲畜不能为空",
 		}

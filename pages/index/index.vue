@@ -132,7 +132,7 @@
 					name:"牧场",
 					num:1,
 					img:this.$mAssetsPath.niuniu,
-					url:"",
+					url:"/pages/index/pasture/pasture",
 				},{
 					name:"信息模块",
 					num:"s",

@@ -38,6 +38,20 @@ function aop(arr,isAllow=()=>{return false},beforeFn=()=>{},afterFn=()=>{}){
 }
 
 /**
+ * 表单自动填充数据
+ * @param {Object} data
+ * @param {Object} arr
+ */
+function hanleValue(data,arr){
+	for(var i in data){
+		let target = arr.find(f=>f.name == i);
+		if(target){
+			target.value = data[i];
+		}
+	}
+}
+
+/**
  * 路径格式的转化为对象
  * @param {Object} longitude
  * @param {Object} latitude
@@ -102,4 +116,5 @@ module.exports = {
 	formatLocation: formatLocation,
 	dateUtils: dateUtils,
 	aop:aop,
+	hanleValue:hanleValue,
 }

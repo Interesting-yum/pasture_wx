@@ -8,6 +8,7 @@
     "pages/index/monitor/monitorForm",
     "pages/index/equipment/equipment",
     "pages/index/equipment/equipmentForm",
+    "pages/index/pasture/pasture",
     "pages/user/user_userInfo/userInfo"
   ],
   "subPackages": [],
@@ -59,6 +60,5 @@
     "rf-empty": "/components/rf-empty/index",
     "rf-loading": "/components/rf-loading/rf-loading",
     "rf-load-progress": "/components/rf-load-progress/rf-load-progress"
-  },
-  "sitemapLocation": "sitemap36.json"
+  }
 }

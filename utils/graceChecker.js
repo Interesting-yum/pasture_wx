@@ -6,6 +6,7 @@
  */
 module.exports = {
 	error: '',
+	name:  '',
 	check: function (data, rule) {
 		for (let i = 0; i < rule.length; i++) {
 			if (!rule[i].checkType) {
@@ -17,7 +18,8 @@ module.exports = {
 			if (!rule[i].errorMsg) {
 				return true;
 			}
-			if (!data[rule[i].name]) {
+			if (data[rule[i].name]!=0&&!data[rule[i].name]) {
+				this.name = rule[i].name;
 				this.error = rule[i].errorMsg;
 				return false;
 			}
@@ -26,6 +28,7 @@ module.exports = {
 					var reg = new RegExp('^.{' + rule[i].checkRule + '}$');
 					if (!reg.test(data[rule[i].name])) {
 						this.error = rule[i].errorMsg;
+						this.name = rule[i].name;
 						return false;
 					}
 					break;
@@ -33,6 +36,7 @@ module.exports = {
 					var reg = new RegExp('^(-[1-9]|[1-9])[0-9]{' + rule[i].checkRule + '}$');
 					if (!reg.test(data[rule[i].name])) {
 						this.error = rule[i].errorMsg;
+						this.name = rule[i].name;
 						return false;
 					}
 					break;
@@ -40,6 +44,7 @@ module.exports = {
 				case 'between':
 					if (!this.isNumber(data[rule[i].name])) {
 						this.error = rule[i].errorMsg;
+						this.name = rule[i].name;
 						return false;
 					}
 					var minMax = rule[i].checkRule.split(',');
@@ -47,6 +52,7 @@ module.exports = {
 					minMax[1] = Number(minMax[1]);
 					if (data[rule[i].name] > minMax[1] || data[rule[i].name] < minMax[0]) {
 						this.error = rule[i].errorMsg;
+						this.name = rule[i].name;
 						return false;
 					}
 					break;
@@ -54,6 +60,7 @@ module.exports = {
 					var reg = /^-?[1-9][0-9]?$/;
 					if (!reg.test(data[rule[i].name])) {
 						this.error = rule[i].errorMsg;
+						this.name = rule[i].name;
 						return false;
 					}
 					var minMax = rule[i].checkRule.split(',');
@@ -61,6 +68,7 @@ module.exports = {
 					minMax[1] = Number(minMax[1]);
 					if (data[rule[i].name] > minMax[1] || data[rule[i].name] < minMax[0]) {
 						this.error = rule[i].errorMsg;
+						this.name = rule[i].name;
 						return false;
 					}
 					break;
@@ -68,6 +76,7 @@ module.exports = {
 					var reg = /^-?[0-9][0-9]?.+[0-9]+$/;
 					if (!reg.test(data[rule[i].name])) {
 						this.error = rule[i].errorMsg;
+						this.name = rule[i].name;
 						return false;
 					}
 					var minMax = rule[i].checkRule.split(',');
@@ -75,18 +84,21 @@ module.exports = {
 					minMax[1] = Number(minMax[1]);
 					if (data[rule[i].name] > minMax[1] || data[rule[i].name] < minMax[0]) {
 						this.error = rule[i].errorMsg;
+						this.name = rule[i].name;
 						return false;
 					}
 					break;
 				case 'same':
 					if (data[rule[i].name] != rule[i].checkRule) {
 						this.error = rule[i].errorMsg;
+						this.name = rule[i].name;
 						return false;
 					}
 					break;
 				case 'notsame':
 					if (data[rule[i].name] == rule[i].checkRule) {
 						this.error = rule[i].errorMsg;
+						this.name = rule[i].name;
 						return false;
 					}
 					break;
@@ -94,6 +106,7 @@ module.exports = {
 					var reg = /^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/;
 					if (!reg.test(data[rule[i].name])) {
 						this.error = rule[i].errorMsg;
+						this.name = rule[i].name;
 						return false;
 					}
 					break;
@@ -101,6 +114,7 @@ module.exports = {
 					var reg = /^1[0-9]{10,10}$/;
 					if (!reg.test(data[rule[i].name])) {
 						this.error = rule[i].errorMsg;
+						this.name = rule[i].name;
 						return false;
 					}
 					break;
@@ -108,6 +122,7 @@ module.exports = {
 					var reg = /^[0-9]{6}$/;
 					if (!reg.test(data[rule[i].name])) {
 						this.error = rule[i].errorMsg;
+						this.name = rule[i].name;
 						return false;
 					}
 					break;
@@ -115,12 +130,14 @@ module.exports = {
 					var reg = new RegExp(rule[i].checkRule);
 					if (!reg.test(data[rule[i].name])) {
 						this.error = rule[i].errorMsg;
+						this.name = rule[i].name;
 						return false;
 					}
 					break;
 				case 'in':
 					if (rule[i].checkRule.indexOf(data[rule[i].name]) == -1) {
 						this.error = rule[i].errorMsg;
+						this.name = rule[i].name;
 						return false;
 					}
 					break;
@@ -128,6 +145,7 @@ module.exports = {
 				    console.log("notnull?")
 					if (data[rule[i].name] == null || data[rule[i].name].length < 1) {
 						this.error = rule[i].errorMsg;
+						this.name = rule[i].name;
 						return false;
 					}
 					break;

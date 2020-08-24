@@ -7,7 +7,8 @@
 			<form class="formView" @submit="formSubmit" @reset="formReset">
 				    <view  v-for="(item,index) in formDatas" 
 					 :class="{imgType:item.type=='img','align-start':item.type=='textarea'}"
-					 :key="index"   
+					 :key="index"
+					 :style="{'background-color':item.name==errorName?'rgba(181, 23, 23, 0.18)':'#fff'}"	
 					 class="cu-form-group">
 					 <view v-if="item.type=='img'" class="cu-bar bg-white ">
 					 	<view class="action">
@@ -72,9 +73,9 @@
 					  </label>
 					 </radio-group>
 					 <!-- 开关组件 -->
-					 <switch    v-else-if="item.type=='switch'"  @change="SwitchChange($event,item)" :name="item.name" :class="item.checked?'checked':''" :checked="item.checked?true:false"></switch>
+					 <switch    v-else-if="item.type=='switch'"  @change="SwitchChange($event,item)" :name="item.name" :class="item.value?'checked':''" :checked="item.value?true:false"></switch>
 					 <!-- 文本框组件 -->
-					 <textarea  v-else-if="item.type=='textarea'" maxlength="-1"  @input="input($event,item)" :name="item.name" :placeholder="item.placeholder||'请输入'+item.title"></textarea>
+					 <textarea  v-else-if="item.type=='textarea'" maxlength="-1" :value="item.value"  @input="input($event,item)" :name="item.name" :placeholder="item.placeholder||'请输入'+item.title"></textarea>
 					 <!-- 输入框组件 -->
 					 <input :type="item.inputTpye || 'text' "    v-else class="input" :style="{'text-align':item.align||'left'}"  @blur="blur($event,item)" :value="item.value" :name="item.name" :placeholder="item.placeholder||'请输入'+item.title" />
 					 <!-- 后缀图标样式 -->
@@ -114,7 +115,7 @@
 		},
 		data() {
 			return {
-         
+                 errorName:"",
 			}
 		},
 		methods: {
@@ -156,6 +157,9 @@
 					   cur+=item.range[index][pre]+((index!=item.range.length-1)?" - ":"");
 					   return cur;
 				   },"")
+				  if(!str){
+					  str = "暂无信息";
+				  }
 				  return str; 
 			},
 			SwitchChange(e,item){
@@ -228,6 +232,7 @@
 					uni.showToast({title:"验证通过!", icon:"none"});
 					this.$emit("formSubmit",formData);
 				}else{
+					this.errorName = graceChecker.name;
 					uni.showToast({ title: graceChecker.error, icon: "none" });
 				}
 			},

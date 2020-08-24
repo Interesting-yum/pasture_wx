@@ -22,10 +22,11 @@
 
 <script>
 	import ptForm from "@/components/pt-form/pt-form.vue"
-    import {aop} from "@/utils/utils.js"
+    import {aop,hanleValue} from "@/utils/utils.js"
 	import form,{equipmentForm2} from "@/config/form.config.js"
 	import formRule from "@/config/formRule.config.js"
 	const equipmentForm = form.equipmentForm;
+	const equipmentData = form.equipmentData;
 	const equipmentRule = formRule.equipmentRule;
 	export default{
 		components:{
@@ -34,7 +35,7 @@
 		data(){
 			return {
 				headImg:this.$mAssetsPath.headImg, 
-				formDatas:Object.values(equipmentForm),
+				formDatas:[],
 				rule:formRule.equipmentRule,
 			}
 		},
@@ -55,7 +56,7 @@
 			input(e,item){
 				console.log("调用者-input",e,item);	
 			},
-			ChooseImage(item){
+			ChooseImage(e,item){
 				console.log("调用者-ChooseImage",e,item);
 			},
 			ViewImage(e,item){
@@ -80,18 +81,34 @@
 		},
 		onLoad() {
 			console.log("本页的this",this);
-			aop(this,(arr,i)=>{
-			   return	arr[i] instanceof Function && !i.startsWith("$") && !i.startsWith("_") && !i.startsWith("create") &&  i!="constructor" && !i.startsWith("select")
-			},(e,item)=>{
-				// #ifdef MP-WEIXIN
-				try{
-					this.formDatas=this.formDatas.map(f=>f.name==item.name ? (f = item):f)
-				}catch(err){
-					console.log("过滤错误...","\ne：",e,"\nitem：",item, "\n错误：",err)
-				}
-				//#endif
-			})
+			this.initAop();         //初始化aop
+			this.initData();        //初始化数据
 
+		},
+		methods:{
+			/**
+			 * aop初始化方法
+			 */
+			initAop(){
+				aop(this,(arr,i)=>{
+				   return	arr[i] instanceof Function && !i.startsWith("$") && !i.startsWith("_") && !i.startsWith("create") &&  i!="constructor" && !i.startsWith("select")
+				},(e,item)=>{
+					// #ifdef MP-WEIXIN
+					try{
+						this.formDatas=this.formDatas.map(f=>f.name==item.name ? (f = item):f)
+					}catch(err){
+						console.log("过滤错误...","\ne：",e,"\nitem：",item, "\n错误：",err)
+					}
+					//#endif
+				})
+			},
+			/**
+			 * 初始化数据
+			 */
+			initData(){
+				this.formDatas = Object.values(equipmentForm);
+				hanleValue(equipmentData,this.formDatas);
+			}
 		}
 	}
 </script>

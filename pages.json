@@ -61,6 +61,12 @@
 					"navigationBarTitleText": "GPS设备表单"
 				}
 		},
+		{
+				"path": "pages/index/pasture/pasture",
+				"style": {
+					"navigationBarTitleText": "牧场"
+				}
+		},
 		
 		
 	

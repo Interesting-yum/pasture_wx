@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "牧场信息",
+  "usingComponents": {
+    "pt-form": "/components/pt-form/pt-form"
+  }
+}

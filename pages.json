@@ -1,7 +1,7 @@
 {
 	
 	"pages": [
-	
+
 
 		{
 				"path": "pages/index/index",
@@ -67,6 +67,21 @@
 					"navigationBarTitleText": "牧场"
 				}
 		},
+		{
+				"path": "pages/index/pasture/pastureMain",
+				"style": {
+					"navigationBarTitleText": "牧场主页"
+				}
+		},
+		{
+				"path": "pages/index/pasture/pastureForm",
+				"style": {
+					"navigationBarTitleText": "牧场信息"
+				}
+		},
+		
+
+		
 		
 		
 	

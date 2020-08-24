@@ -5,6 +5,7 @@
 /* 边框颜色 */
 /* 图片加载中颜色 */
 /* 行为相关颜色 */
+/* 主题的图标颜色 */
 .bg {
   -webkit-box-align: stretch;
   -webkit-align-items: stretch;
@@ -114,7 +115,7 @@
 }
 .nav-list image {
   position: absolute;
-  right: 0px;
+  right: 5px;
   top: 20px;
   border-radius: 50%;
   font-size: 26px;
@@ -136,7 +137,7 @@
 }
 .nav-list .nav-name {
   font-size: 10px;
-  margin-top: 10px;
+  margin-top: 30rpx;
 }
 .nav-list .nav-name:first-letter {
   font-size: 10px;

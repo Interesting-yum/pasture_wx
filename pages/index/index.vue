@@ -314,7 +314,7 @@
 		justify-content: initial;
 		image {
 		   position: absolute;
-		   right: 0px;
+		   right: 5px;
 		   top: 20px;
 		   border-radius: 50%;
 		   font-size: 26px;
@@ -336,7 +336,7 @@
 		}
 		.nav-name {
 		    font-size: 10px;
-		    margin-top: 10px;
+		    margin-top: 30upx;
 			&:first-letter {
 			    font-size: 10px;
 			}

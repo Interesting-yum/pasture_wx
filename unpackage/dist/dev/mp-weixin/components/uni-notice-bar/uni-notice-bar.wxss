@@ -5,6 +5,7 @@
 /* 边框颜色 */
 /* 图片加载中颜色 */
 /* 行为相关颜色 */
+/* 主题的图标颜色 */
 .uni-noticebar.data-v-24a05de4 {
   display: -webkit-box;
   display: -webkit-flex;

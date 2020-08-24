@@ -1,4 +1,6 @@
 {
-  "usingComponents": {},
-  "component": true
+  "component": true,
+  "usingComponents": {
+    "multiple-select": "/components/multiple-select/multiple-select"
+  }
 }

@@ -1,9 +1,9 @@
 (global["webpackJsonp"] = global["webpackJsonp"] || []).push([["pages/index/monitor/monitor"],{
 
 /***/ 84:
-/*!****************************************************************************************************************!*\
-  !*** C:/Users/ASUS/Documents/HBuilderProjects/pasture_wx/main.js?{"page":"pages%2Findex%2Fmonitor%2Fmonitor"} ***!
-  \****************************************************************************************************************/
+/*!*************************************************************************************************!*\
+  !*** E:/Documents/HBuilderProjects/牧场管理系统/main.js?{"page":"pages%2Findex%2Fmonitor%2Fmonitor"} ***!
+  \*************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -17,9 +17,9 @@ createPage(_monitor.default);
 /***/ }),
 
 /***/ 85:
-/*!*******************************************************************************************!*\
-  !*** C:/Users/ASUS/Documents/HBuilderProjects/pasture_wx/pages/index/monitor/monitor.vue ***!
-  \*******************************************************************************************/
+/*!****************************************************************************!*\
+  !*** E:/Documents/HBuilderProjects/牧场管理系统/pages/index/monitor/monitor.vue ***!
+  \****************************************************************************/
 /*! no static exports found */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -58,9 +58,9 @@ component.options.__file = "pages/index/monitor/monitor.vue"
 /***/ }),
 
 /***/ 86:
-/*!**************************************************************************************************************************!*\
-  !*** C:/Users/ASUS/Documents/HBuilderProjects/pasture_wx/pages/index/monitor/monitor.vue?vue&type=template&id=1c1eb7bf& ***!
-  \**************************************************************************************************************************/
+/*!***********************************************************************************************************!*\
+  !*** E:/Documents/HBuilderProjects/牧场管理系统/pages/index/monitor/monitor.vue?vue&type=template&id=1c1eb7bf& ***!
+  \***********************************************************************************************************/
 /*! exports provided: render, staticRenderFns, recyclableRender, components */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -80,9 +80,9 @@ __webpack_require__.r(__webpack_exports__);
 /***/ }),
 
 /***/ 87:
-/*!**************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/@dcloudio/vue-cli-plugin-uni/packages/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/@dcloudio/vue-cli-plugin-uni/packages/webpack-preprocess-loader??ref--16-0!./node_modules/@dcloudio/webpack-uni-mp-loader/lib/template.js!./node_modules/@dcloudio/vue-cli-plugin-uni/packages/webpack-uni-app-loader/page-meta.js!./node_modules/@dcloudio/vue-cli-plugin-uni/packages/vue-loader/lib??vue-loader-options!./node_modules/@dcloudio/webpack-uni-mp-loader/lib/style.js!C:/Users/ASUS/Documents/HBuilderProjects/pasture_wx/pages/index/monitor/monitor.vue?vue&type=template&id=1c1eb7bf& ***!
-  \**************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/*!***********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/@dcloudio/vue-cli-plugin-uni/packages/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/@dcloudio/vue-cli-plugin-uni/packages/webpack-preprocess-loader??ref--16-0!./node_modules/@dcloudio/webpack-uni-mp-loader/lib/template.js!./node_modules/@dcloudio/vue-cli-plugin-uni/packages/webpack-uni-app-loader/page-meta.js!./node_modules/@dcloudio/vue-cli-plugin-uni/packages/vue-loader/lib??vue-loader-options!./node_modules/@dcloudio/webpack-uni-mp-loader/lib/style.js!E:/Documents/HBuilderProjects/牧场管理系统/pages/index/monitor/monitor.vue?vue&type=template&id=1c1eb7bf& ***!
+  \***********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
 /*! exports provided: render, staticRenderFns, recyclableRender, components */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -94,13 +94,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "components", function() { return components; });
 var components = {
   titleView: function() {
-    return __webpack_require__.e(/*! import() | components/title-view/title-view */ "components/title-view/title-view").then(__webpack_require__.bind(null, /*! @/components/title-view/title-view.vue */ 168))
+    return __webpack_require__.e(/*! import() | components/title-view/title-view */ "components/title-view/title-view").then(__webpack_require__.bind(null, /*! @/components/title-view/title-view.vue */ 190))
   },
   uniCollapse: function() {
-    return __webpack_require__.e(/*! import() | components/uni-collapse/uni-collapse */ "components/uni-collapse/uni-collapse").then(__webpack_require__.bind(null, /*! @/components/uni-collapse/uni-collapse.vue */ 182))
+    return __webpack_require__.e(/*! import() | components/uni-collapse/uni-collapse */ "components/uni-collapse/uni-collapse").then(__webpack_require__.bind(null, /*! @/components/uni-collapse/uni-collapse.vue */ 204))
   },
   uniCollapseItem: function() {
-    return __webpack_require__.e(/*! import() | components/uni-collapse-item/uni-collapse-item */ "components/uni-collapse-item/uni-collapse-item").then(__webpack_require__.bind(null, /*! @/components/uni-collapse-item/uni-collapse-item.vue */ 189))
+    return __webpack_require__.e(/*! import() | components/uni-collapse-item/uni-collapse-item */ "components/uni-collapse-item/uni-collapse-item").then(__webpack_require__.bind(null, /*! @/components/uni-collapse-item/uni-collapse-item.vue */ 211))
   }
 }
 var render = function() {
@@ -117,9 +117,9 @@ render._withStripped = true
 /***/ }),
 
 /***/ 88:
-/*!********************************************************************************************************************!*\
-  !*** C:/Users/ASUS/Documents/HBuilderProjects/pasture_wx/pages/index/monitor/monitor.vue?vue&type=script&lang=js& ***!
-  \********************************************************************************************************************/
+/*!*****************************************************************************************************!*\
+  !*** E:/Documents/HBuilderProjects/牧场管理系统/pages/index/monitor/monitor.vue?vue&type=script&lang=js& ***!
+  \*****************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -133,9 +133,9 @@ __webpack_require__.r(__webpack_exports__);
 /***/ }),
 
 /***/ 89:
-/*!***************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/babel-loader/lib!./node_modules/@dcloudio/vue-cli-plugin-uni/packages/webpack-preprocess-loader??ref--12-1!./node_modules/@dcloudio/webpack-uni-mp-loader/lib/script.js!./node_modules/@dcloudio/vue-cli-plugin-uni/packages/vue-loader/lib??vue-loader-options!./node_modules/@dcloudio/webpack-uni-mp-loader/lib/style.js!C:/Users/ASUS/Documents/HBuilderProjects/pasture_wx/pages/index/monitor/monitor.vue?vue&type=script&lang=js& ***!
-  \***************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/*!************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib!./node_modules/@dcloudio/vue-cli-plugin-uni/packages/webpack-preprocess-loader??ref--12-1!./node_modules/@dcloudio/webpack-uni-mp-loader/lib/script.js!./node_modules/@dcloudio/vue-cli-plugin-uni/packages/vue-loader/lib??vue-loader-options!./node_modules/@dcloudio/webpack-uni-mp-loader/lib/style.js!E:/Documents/HBuilderProjects/牧场管理系统/pages/index/monitor/monitor.vue?vue&type=script&lang=js& ***!
+  \************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -184,7 +184,7 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
 
 
 
-var _vuex = __webpack_require__(/*! vuex */ 11);function ownKeys(object, enumerableOnly) {var keys = Object.keys(object);if (Object.getOwnPropertySymbols) {var symbols = Object.getOwnPropertySymbols(object);if (enumerableOnly) symbols = symbols.filter(function (sym) {return Object.getOwnPropertyDescriptor(object, sym).enumerable;});keys.push.apply(keys, symbols);}return keys;}function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};if (i % 2) {ownKeys(Object(source), true).forEach(function (key) {_defineProperty(target, key, source[key]);});} else if (Object.getOwnPropertyDescriptors) {Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));} else {ownKeys(Object(source)).forEach(function (key) {Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));});}}return target;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}var uniCollapse = function uniCollapse() {__webpack_require__.e(/*! require.ensure | components/uni-collapse/uni-collapse */ "components/uni-collapse/uni-collapse").then((function () {return resolve(__webpack_require__(/*! @/components/uni-collapse/uni-collapse.vue */ 182));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var uniCollapseItem = function uniCollapseItem() {__webpack_require__.e(/*! require.ensure | components/uni-collapse-item/uni-collapse-item */ "components/uni-collapse-item/uni-collapse-item").then((function () {return resolve(__webpack_require__(/*! @/components/uni-collapse-item/uni-collapse-item.vue */ 189));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var titleView = function titleView() {__webpack_require__.e(/*! require.ensure | components/title-view/title-view */ "components/title-view/title-view").then((function () {return resolve(__webpack_require__(/*! @/components/title-view/title-view.vue */ 168));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var uniFab = function uniFab() {__webpack_require__.e(/*! require.ensure | components/uni-fab/uni-fab */ "components/uni-fab/uni-fab").then((function () {return resolve(__webpack_require__(/*! @/components/uni-fab/uni-fab.vue */ 196));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default =
+var _vuex = __webpack_require__(/*! vuex */ 11);function ownKeys(object, enumerableOnly) {var keys = Object.keys(object);if (Object.getOwnPropertySymbols) {var symbols = Object.getOwnPropertySymbols(object);if (enumerableOnly) symbols = symbols.filter(function (sym) {return Object.getOwnPropertyDescriptor(object, sym).enumerable;});keys.push.apply(keys, symbols);}return keys;}function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};if (i % 2) {ownKeys(Object(source), true).forEach(function (key) {_defineProperty(target, key, source[key]);});} else if (Object.getOwnPropertyDescriptors) {Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));} else {ownKeys(Object(source)).forEach(function (key) {Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));});}}return target;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}var uniCollapse = function uniCollapse() {__webpack_require__.e(/*! require.ensure | components/uni-collapse/uni-collapse */ "components/uni-collapse/uni-collapse").then((function () {return resolve(__webpack_require__(/*! @/components/uni-collapse/uni-collapse.vue */ 204));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var uniCollapseItem = function uniCollapseItem() {__webpack_require__.e(/*! require.ensure | components/uni-collapse-item/uni-collapse-item */ "components/uni-collapse-item/uni-collapse-item").then((function () {return resolve(__webpack_require__(/*! @/components/uni-collapse-item/uni-collapse-item.vue */ 211));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var titleView = function titleView() {__webpack_require__.e(/*! require.ensure | components/title-view/title-view */ "components/title-view/title-view").then((function () {return resolve(__webpack_require__(/*! @/components/title-view/title-view.vue */ 190));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var uniFab = function uniFab() {__webpack_require__.e(/*! require.ensure | components/uni-fab/uni-fab */ "components/uni-fab/uni-fab").then((function () {return resolve(__webpack_require__(/*! @/components/uni-fab/uni-fab.vue */ 218));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default =
 {
   components: {
     uniCollapse: uniCollapse,
@@ -275,9 +275,9 @@ var _vuex = __webpack_require__(/*! vuex */ 11);function ownKeys(object, enumera
 /***/ }),
 
 /***/ 90:
-/*!*****************************************************************************************************************************!*\
-  !*** C:/Users/ASUS/Documents/HBuilderProjects/pasture_wx/pages/index/monitor/monitor.vue?vue&type=style&index=0&lang=scss& ***!
-  \*****************************************************************************************************************************/
+/*!**************************************************************************************************************!*\
+  !*** E:/Documents/HBuilderProjects/牧场管理系统/pages/index/monitor/monitor.vue?vue&type=style&index=0&lang=scss& ***!
+  \**************************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -291,9 +291,9 @@ __webpack_require__.r(__webpack_exports__);
 /***/ }),
 
 /***/ 91:
-/*!*******************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/mini-css-extract-plugin/dist/loader.js??ref--8-oneOf-1-0!./node_modules/css-loader/dist/cjs.js??ref--8-oneOf-1-1!./node_modules/@dcloudio/vue-cli-plugin-uni/packages/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/@dcloudio/vue-cli-plugin-uni/packages/webpack-preprocess-loader??ref--8-oneOf-1-2!./node_modules/postcss-loader/src??ref--8-oneOf-1-3!./node_modules/sass-loader/dist/cjs.js??ref--8-oneOf-1-4!./node_modules/@dcloudio/vue-cli-plugin-uni/packages/webpack-preprocess-loader??ref--8-oneOf-1-5!./node_modules/@dcloudio/vue-cli-plugin-uni/packages/vue-loader/lib??vue-loader-options!./node_modules/@dcloudio/webpack-uni-mp-loader/lib/style.js!C:/Users/ASUS/Documents/HBuilderProjects/pasture_wx/pages/index/monitor/monitor.vue?vue&type=style&index=0&lang=scss& ***!
-  \*******************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/*!****************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/mini-css-extract-plugin/dist/loader.js??ref--8-oneOf-1-0!./node_modules/css-loader/dist/cjs.js??ref--8-oneOf-1-1!./node_modules/@dcloudio/vue-cli-plugin-uni/packages/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/@dcloudio/vue-cli-plugin-uni/packages/webpack-preprocess-loader??ref--8-oneOf-1-2!./node_modules/postcss-loader/src??ref--8-oneOf-1-3!./node_modules/sass-loader/dist/cjs.js??ref--8-oneOf-1-4!./node_modules/@dcloudio/vue-cli-plugin-uni/packages/webpack-preprocess-loader??ref--8-oneOf-1-5!./node_modules/@dcloudio/vue-cli-plugin-uni/packages/vue-loader/lib??vue-loader-options!./node_modules/@dcloudio/webpack-uni-mp-loader/lib/style.js!E:/Documents/HBuilderProjects/牧场管理系统/pages/index/monitor/monitor.vue?vue&type=style&index=0&lang=scss& ***!
+  \****************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 

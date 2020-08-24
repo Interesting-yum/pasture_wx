@@ -49,7 +49,7 @@ export default {
 	//主页图片
 	record   : PATH + "/index/grid/record.png",
 	shebei   : PATH + "/index/grid/shebei.png",
-	niuniu   : PATH + "/index/grid/牛牛.png",
+	niuniu   : PATH + "/index/grid/围栏.png",
 	info     : PATH + "/index/grid/info.png",
 	housekeeper     : PATH + "/index/grid/housekeeper.png", 
 	
@@ -84,4 +84,10 @@ export default {
 	
 	//摄像头模块
 	headImg : "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1598099691740&di=cf21b35e7e83eb33ee721994c433b222&imgtype=0&src=http%3A%2F%2Fn.sinaimg.cn%2Fsinacn%2Fw640h457%2F20180125%2F8052-fyqwiqk5870272.jpg",
+
+    //牧场模块
+	lun1:"https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=3857917291,1566540578&fm=26&gp=0.jpg",
+	lun2:"https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=1072899347,3009270015&fm=26&gp=0.jpg",
+	lun3:"https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=2767695830,491356518&fm=26&gp=0.jpg",
+	lun4:"https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=1576110167,1955716119&fm=26&gp=0.jpg",
 }	

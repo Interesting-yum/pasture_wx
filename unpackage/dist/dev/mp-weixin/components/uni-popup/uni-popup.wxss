@@ -5,6 +5,7 @@
 /* 边框颜色 */
 /* 图片加载中颜色 */
 /* 行为相关颜色 */
+/* 主题的图标颜色 */
 .uni-popup.data-v-7da806a4 {
   position: fixed;
   top: 0;

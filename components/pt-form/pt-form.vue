@@ -1,7 +1,7 @@
 <template>
 	<view>
-		<view class="head-img">
-			<image mode="aspectFill" :src="headImg"></image>
+		<view class="head-img" v-if="headImg!='noHave'">
+			<image  mode="aspectFill" :src="headImg"></image>
 		</view>
 		<view class="uni-padding-wrap">
 			<form class="formView" @submit="formSubmit" @reset="formReset">
@@ -51,6 +51,18 @@
 						  {{getPickerValueByMode(item)}}
 					 </view>
 					 </picker>
+					 
+					 <view v-else-if="item.type=='multipleSelect'">
+						 <view class="text-area">
+						   <text class="value" @tap="multipleSelectTap($event,item)">{{item.multipleSelect.info || "请选择"}}</text>
+						 </view>
+						 <multiple-select
+						   v-model="item.multipleSelect.show"
+						   :data="item.multipleSelect.list"
+						   :default-selected="item.multipleSelect.defaultSelected"
+						   @confirm="change"
+						 ></multiple-select>
+					 </view>
 					 <!-- 复选框组件 -->
 					 <checkbox-group  v-else-if="item.type=='checkbox'" :name="item.name" class="block" @change="CheckboxChange($event,item)">
 						  <label class="uni-list-cell uni-list-cell-pd" v-for="(checkbox,checkboxIndex) in item.checkboxs" :key="checkboxIndex">
@@ -94,11 +106,15 @@
 <script>
 	//来自 graceUI 的表单验证， 使用说明见手册 http://grace.hcoder.net/doc/info/73-3.html
 	var  graceChecker = require("@/utils/graceChecker.js");
+	import multipleSelect from "@/components/multiple-select/multiple-select";
 	export default {
+		components: {
+		  multipleSelect
+		},
 		props:{
 			headImg:{
 				type:String,
-				default: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1597757755077&di=c05e66a6a8028d39060847c0c746df62&imgtype=0&src=http%3A%2F%2Fwww.jzrobot.com%2Fuploads%2Fallimg%2F190404%2F1-1Z404100UG29.jpg'
+				default: "noHave"
 			},
 			formDatas:{
 				type:Array,
@@ -171,6 +187,10 @@
 				item.radioValue = e.detail.value
 				this.$emit("RadioChange",e,item)
 			},
+			multipleSelectTap(e,item){
+				item.multipleSelect.show=true;
+				this.$emit("multipleSelectTap",e,item)
+			},
 			CheckboxChange(e,item){
 				console.log("复选框",e,item);
 				let values = e.detail.value,
@@ -222,6 +242,9 @@
 						this.$emit("ViewImage",e,item)
 					}
 				})
+			},
+			confirm(e,item){
+				this.$emit("confirm",e,item)
 			},
 			formSubmit: function (e) {
 				console.log(this.formDatas)

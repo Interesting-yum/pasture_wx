@@ -6,8 +6,11 @@
 			   :showImg = "showImg"
 			   :title="value.title"
 			   :content="value.content"
-			   :titleImg ="equipmentImg"
-			   showRightStr = "rightBattery"
+			   :titleImg ="titleImg"
+			   showRightStr = "rightIcon"
+			   @iconTap = "iconTap($event,value)"
+			   icon="sort"
+			   color="blue"
 			   style="flex: 1 1 auto"
 			   >
 			   </title-view >
@@ -41,59 +44,36 @@
 		data() {
 			return {
 				showImg:false,
-				equipmentImg:this.$mAssetsPath.shebei,
+				titleImg:this.$mAssetsPath.niuniu,
 				pattern:{
 					buttonColor:"#0081ff"
 				},
 				content:[{
-					iconPath:this.$mAssetsPath.shebei,
+					iconPath:this.$mAssetsPath.niuniu,
 					selectedIconPath:"",
 					text:"新增设备",
 					name: '删除'
 				}],
-				cuIconColor:"blue",
-				cuIconList: [{
-					cuIcon: 'form',
-					name: '信息',
-					url:"./equipmentForm"
-				}, {
-					cuIcon: 'pullup',
-					name: '发送指令'
-				}, {
-					cuIcon: 'circlefill',
-					name: '故障报修'
-				}, {
-					cuIcon: 'roundclose',
-					name: '删除'
-				}],
+
 				list: [{
 						title: "设备器1号",
 						content: "868120204824731",
-						eq:"74%",
 					},
 					{
 						title: "设备器2号",
 						content: "57845412545632",
-						eq:"54%",
-						
 					},  
 					{
 						title: "设备器3号",
 						content: "57845412545632",
-						eq:"14%",
-
 					},
 					{
 						title: "设备器4号",
 						content: "57845412545632",
-						eq:"100%",
-
 					},
 					{
 						title: "设备器5号",
-						content: "57845412545632",
-						eq:"96%",
-						
+						content: "57845412545632",	
 					}
 				]
 			}
@@ -109,6 +89,13 @@
 			},
 			uniFabTrigger(e){
 				console.log(e);
+			},
+			iconTap(e,value){
+				console.log("e",e);
+				console.log("value",value)
+				uni.navigateTo({
+					 url: 'pastureMain'
+				})
 			}
 		}
 	}

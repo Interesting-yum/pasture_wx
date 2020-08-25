@@ -16,13 +16,13 @@
 		@formSubmit="formSubmit"
 		@CheckboxChange="CheckboxChange"
 		@multipleSelectTap="multipleSelectTap"
+		@multipleSelect="multipleSelect"
 		></pt-form>
-
+        
 	</view>
 </template>
 
 <script>
-
 	import ptForm from "@/components/pt-form/pt-form.vue"
     import {aop,hanleValue} from "@/utils/utils.js"
 	import form,{equipmentForm2} from "@/config/form.config.js"
@@ -39,6 +39,9 @@
 			}
 		},
 		methods:{
+			iconTap(e){
+				console.log(e);
+			},
 			change(e,item){
 				console.log("调用者-change",e,item)
 				
@@ -76,18 +79,12 @@
 			multipleSelectTap(e,item){
 				console.log("multipleSelectTap",e,item);	
 			},
+			multipleSelect(e,item){
+				console.log("multipleSelectTap",e,item);
+			},
 			formSubmit(e){
 				console.log("调用者-RadioChange",e);
-			}
-			
-		},
-		onLoad() {
-			console.log("本页的this",this);
-			this.initAop();         //初始化aop
-			this.initData();        //初始化数据
-
-		},
-		methods:{
+			},
 			/**
 			 * aop初始化方法
 			 */
@@ -111,7 +108,15 @@
 				this.formDatas = Object.values(pastureForm);
 				hanleValue([],this.formDatas);
 			}
-		}
+			
+		},
+		onLoad() {
+			console.log("本页的this",this);
+			this.initAop();        //初始化aop
+			this.initData();        //初始化数据
+
+		},
+
 	}
 </script>
 

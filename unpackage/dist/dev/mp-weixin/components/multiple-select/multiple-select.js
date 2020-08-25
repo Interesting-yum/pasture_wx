@@ -172,6 +172,13 @@ var _default2 =
     } },
 
   props: {
+    //数据对象
+    item: {
+      type: Object,
+      default: function _default() {
+        return null;
+      } },
+
     // 双向绑定
     value: {
       type: Boolean,
@@ -259,16 +266,25 @@ var _default2 =
 
 
   methods: {
+    /*打开的方法*/
+    open: function open() {var _this2 = this;return _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee2() {return _regenerator.default.wrap(function _callee2$(_context2) {while (1) {switch (_context2.prev = _context2.next) {case 0:
+                _this2.show = true;_context2.next = 3;return (
+                  _this2.$nextTick());case 3:
+                _this2.activeClass = true;
+                if (true) {
+                  _this2.selectedArrOld = JSON.parse(JSON.stringify(_this2.selectedArr));
+                }case 5:case "end":return _context2.stop();}}}, _callee2);}))();
+    },
     // 设置默认选中通用办法
-    setItemActiveState: function setItemActiveState() {var _this2 = this;
+    setItemActiveState: function setItemActiveState() {var _this3 = this;
       if (this.data.length && this.defaultSelected.length) {
         this.data.forEach(function (item, i) {
-          for (var n = 0; n < _this2.defaultSelected.length; n++) {
+          for (var n = 0; n < _this3.defaultSelected.length; n++) {
             if (
             !item.disabled &&
-            item[_this2.valueName] === _this2.defaultSelected[n])
+            item[_this3.valueName] === _this3.defaultSelected[n])
             {
-              _this2.selectedArr.splice(i, 1, true);
+              _this3.selectedArr.splice(i, 1, true);
               break;
             }
           }
@@ -295,45 +311,49 @@ var _default2 =
       this.$emit("cancel");
     },
     // 返回去除了disabled状态后的对照列表
-    returnWipeDisabledList: function returnWipeDisabledList() {var _this3 = this;
+    returnWipeDisabledList: function returnWipeDisabledList() {var _this4 = this;
       var arr = [];
       this.selectedArr.forEach(function (el, index) {
-        if (!_this3.data[index].disabled) arr.push(el);
+        if (!_this4.data[index].disabled) arr.push(el);
       });
       return arr;
     },
     // 全选/非全选事件
-    onAllToggle: function onAllToggle() {var _this4 = this;
+    onAllToggle: function onAllToggle() {var _this5 = this;
       var wipeDisabledList = this.returnWipeDisabledList();
       // 如果去除了disabled的对照列表有false的数据，代表未全选
       if (wipeDisabledList.includes(false)) {
         this.selectedArr.forEach(function (el, index) {
-          if (!_this4.data[index].disabled)
-          _this4.selectedArr.splice(index, 1, true);
+          if (!_this5.data[index].disabled)
+          _this5.selectedArr.splice(index, 1, true);
         });
       } else {
         this.selectedArr.forEach(function (el, index) {
-          if (!_this4.data[index].disabled)
-          el = _this4.selectedArr.splice(index, 1, false);
+          if (!_this5.data[index].disabled)
+          el = _this5.selectedArr.splice(index, 1, false);
         });
       }
     },
     // 确定事件
-    onConfirm: function onConfirm() {var _this5 = this;
+    onConfirm: function onConfirm() {var _this6 = this;
       this.show = false;
       var selectedData = [];
       this.selectedArr.forEach(function (el, index) {
         if (el) {
-          selectedData.push(_this5.data[index]);
+          selectedData.push(_this6.data[index]);
         }
       });
       if (this.mode === "multiple") {
-        this.$emit("confirm", selectedData);
+        this.$emit("confirm", selectedData, this.item);
       } else {
         var backData = selectedData[0] || {};
-        this.$emit("confirm", backData);
+        this.$emit("confirm", backData, this.item);
       }
-    } } };exports.default = _default2;
+    } },
+
+  mounted: function mounted() {
+    this.onConfirm();
+  } };exports.default = _default2;
 
 /***/ }),
 

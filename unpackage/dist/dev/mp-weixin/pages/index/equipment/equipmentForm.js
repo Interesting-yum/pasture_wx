@@ -160,11 +160,11 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
 
 var _utils = __webpack_require__(/*! @/utils/utils.js */ 98);
 var _formConfig = _interopRequireWildcard(__webpack_require__(/*! @/config/form.config.js */ 22));
-var _formRuleConfig = _interopRequireDefault(__webpack_require__(/*! @/config/formRule.config.js */ 21));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function _getRequireWildcardCache() {if (typeof WeakMap !== "function") return null;var cache = new WeakMap();_getRequireWildcardCache = function _getRequireWildcardCache() {return cache;};return cache;}function _interopRequireWildcard(obj) {if (obj && obj.__esModule) {return obj;}if (obj === null || typeof obj !== "object" && typeof obj !== "function") {return { default: obj };}var cache = _getRequireWildcardCache();if (cache && cache.has(obj)) {return cache.get(obj);}var newObj = {};var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor;for (var key in obj) {if (Object.prototype.hasOwnProperty.call(obj, key)) {var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null;if (desc && (desc.get || desc.set)) {Object.defineProperty(newObj, key, desc);} else {newObj[key] = obj[key];}}}newObj.default = obj;if (cache) {cache.set(obj, newObj);}return newObj;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}var ptForm = function ptForm() {Promise.all(/*! require.ensure | components/pt-form/pt-form */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/pt-form/pt-form")]).then((function () {return resolve(__webpack_require__(/*! @/components/pt-form/pt-form.vue */ 225));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};
+var _formRuleConfig = _interopRequireDefault(__webpack_require__(/*! @/config/formRule.config.js */ 21));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function _getRequireWildcardCache() {if (typeof WeakMap !== "function") return null;var cache = new WeakMap();_getRequireWildcardCache = function _getRequireWildcardCache() {return cache;};return cache;}function _interopRequireWildcard(obj) {if (obj && obj.__esModule) {return obj;}if (obj === null || typeof obj !== "object" && typeof obj !== "function") {return { default: obj };}var cache = _getRequireWildcardCache();if (cache && cache.has(obj)) {return cache.get(obj);}var newObj = {};var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor;for (var key in obj) {if (Object.prototype.hasOwnProperty.call(obj, key)) {var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null;if (desc && (desc.get || desc.set)) {Object.defineProperty(newObj, key, desc);} else {newObj[key] = obj[key];}}}newObj.default = obj;if (cache) {cache.set(obj, newObj);}return newObj;}var ptForm = function ptForm() {Promise.all(/*! require.ensure | components/pt-form/pt-form */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/pt-form/pt-form")]).then((function () {return resolve(__webpack_require__(/*! @/components/pt-form/pt-form.vue */ 225));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};
 var equipmentForm = _formConfig.default.equipmentForm;
 var equipmentData = _formConfig.default.equipmentData;
-var equipmentRule = _formRuleConfig.default.equipmentRule;var _default = _defineProperty({
-
+var equipmentRule = _formRuleConfig.default.equipmentRule;var _default =
+{
   components: {
     ptForm: ptForm },
 
@@ -212,6 +212,29 @@ var equipmentRule = _formRuleConfig.default.equipmentRule;var _default = _define
     },
     formSubmit: function formSubmit(e) {
       console.log("调用者-RadioChange", e);
+    },
+    /**
+        * aop初始化方法
+        */
+    initAop: function initAop() {var _this = this;
+      (0, _utils.aop)(this, function (arr, i) {
+        return arr[i] instanceof Function && !i.startsWith("$") && !i.startsWith("_") && !i.startsWith("create") && i != "constructor" && !i.startsWith("select");
+      }, function (e, item) {
+
+        try {
+          _this.formDatas = _this.formDatas.map(function (f) {return f.name == item.name ? f = item : f;});
+        } catch (err) {
+          console.log("过滤错误...", "\ne：", e, "\nitem：", item, "\n错误：", err);
+        }
+
+      });
+    },
+    /**
+        * 初始化数据
+        */
+    initData: function initData() {
+      this.formDatas = Object.values(equipmentForm);
+      (0, _utils.hanleValue)(equipmentData, this.formDatas);
     } },
 
 
@@ -220,31 +243,7 @@ var equipmentRule = _formRuleConfig.default.equipmentRule;var _default = _define
     this.initAop(); //初始化aop
     this.initData(); //初始化数据
 
-  } }, "methods",
-{
-  /**
-   * aop初始化方法
-   */
-  initAop: function initAop() {var _this = this;
-    (0, _utils.aop)(this, function (arr, i) {
-      return arr[i] instanceof Function && !i.startsWith("$") && !i.startsWith("_") && !i.startsWith("create") && i != "constructor" && !i.startsWith("select");
-    }, function (e, item) {
-
-      try {
-        _this.formDatas = _this.formDatas.map(function (f) {return f.name == item.name ? f = item : f;});
-      } catch (err) {
-        console.log("过滤错误...", "\ne：", e, "\nitem：", item, "\n错误：", err);
-      }
-
-    });
-  },
-  /**
-      * 初始化数据
-      */
-  initData: function initData() {
-    this.formDatas = Object.values(equipmentForm);
-    (0, _utils.hanleValue)(equipmentData, this.formDatas);
-  } });exports.default = _default;
+  } };exports.default = _default;
 
 /***/ }),
 

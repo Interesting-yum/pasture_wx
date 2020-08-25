@@ -56,6 +56,13 @@ export default {
     }
   },
   props: {
+	//数据对象
+	item:{
+		type: Object,
+		default(){
+			return null
+		}
+	},
     // 双向绑定
     value: {
       type: Boolean,
@@ -143,6 +150,15 @@ export default {
     }
   },
   methods: {
+	/*打开的方法*/  
+	async open(){
+		  this.show = true;
+		  await this.$nextTick();
+		  this.activeClass = true;
+		  if (true) {
+		    this.selectedArrOld = JSON.parse(JSON.stringify(this.selectedArr));
+		  }
+	},
     // 设置默认选中通用办法
     setItemActiveState() {
       if (this.data.length && this.defaultSelected.length) {
@@ -212,12 +228,15 @@ export default {
         }
       });
       if (this.mode === "multiple") {
-        this.$emit("confirm", selectedData);
+        this.$emit("confirm", selectedData,this.item);
       } else {
         let backData = selectedData[0] || {};
-        this.$emit("confirm", backData);
+        this.$emit("confirm", backData,this.item);
       }
     }
+  },
+  mounted() {
+  	 this.onConfirm();
   }
 };
 </script>
@@ -266,6 +285,8 @@ export default {
       }
       .all {
         color: $uni-color-success;
+		font-size: 15px;
+		line-height: 35px;
         .all-active {
           &::after {
             display: inline-block;
@@ -275,7 +296,7 @@ export default {
         }
       }
       .confirm {
-        color: $uni-color-primary;
+        color: $font-color-spec;
       }
     }
     .body-warp {
@@ -296,13 +317,14 @@ export default {
       }
       .select-item {
         display: flex;
-        font-size: 26rpx;
+        font-size: 32rpx;
         line-height: 58rpx;
+		margin: 13px 0px;
         color: #303133;
         position: relative;
         transition: all 0.3s;
         &.selected {
-          color: $uni-color-primary;
+          color: $uni-color-success;
         }
         &.disabled {
           color: $uni-text-color-disable;

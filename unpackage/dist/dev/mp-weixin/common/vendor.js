@@ -760,7 +760,7 @@ function initData(vueOptions, context) {
     try {
       data = data.call(context); // 支持 Vue.prototype 上挂的数据
     } catch (e) {
-      if (Object({"NODE_ENV":"development","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG) {
+      if (Object({"VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG) {
         console.warn('根据 Vue 的 data 函数初始化小程序 data 失败，请尽量确保 data 函数中不访问 vm 对象，否则可能影响首次数据渲染速度。', data);
       }
     }
@@ -7122,7 +7122,7 @@ function type(obj) {
 
 function flushCallbacks$1(vm) {
     if (vm.__next_tick_callbacks && vm.__next_tick_callbacks.length) {
-        if (Object({"NODE_ENV":"development","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG) {
+        if (Object({"VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG) {
             var mpInstance = vm.$scope;
             console.log('[' + (+new Date) + '][' + (mpInstance.is || mpInstance.route) + '][' + vm._uid +
                 ']:flushCallbacks[' + vm.__next_tick_callbacks.length + ']');
@@ -7143,14 +7143,14 @@ function nextTick$1(vm, cb) {
     //1.nextTick 之前 已 setData 且 setData 还未回调完成
     //2.nextTick 之前存在 render watcher
     if (!vm.__next_tick_pending && !hasRenderWatcher(vm)) {
-        if(Object({"NODE_ENV":"development","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG){
+        if(Object({"VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG){
             var mpInstance = vm.$scope;
             console.log('[' + (+new Date) + '][' + (mpInstance.is || mpInstance.route) + '][' + vm._uid +
                 ']:nextVueTick');
         }
         return nextTick(cb, vm)
     }else{
-        if(Object({"NODE_ENV":"development","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG){
+        if(Object({"VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG){
             var mpInstance$1 = vm.$scope;
             console.log('[' + (+new Date) + '][' + (mpInstance$1.is || mpInstance$1.route) + '][' + vm._uid +
                 ']:nextMPTick');
@@ -7235,7 +7235,7 @@ var patch = function(oldVnode, vnode) {
     });
     var diffData = this.$shouldDiffData === false ? data : diff(data, mpData);
     if (Object.keys(diffData).length) {
-      if (Object({"NODE_ENV":"development","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG) {
+      if (Object({"VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG) {
         console.log('[' + (+new Date) + '][' + (mpInstance.is || mpInstance.route) + '][' + this._uid +
           ']差量更新',
           JSON.stringify(diffData));
@@ -10118,7 +10118,7 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
     name: "测试人员1",
     code: "0123456789",
     phone: "18161218432",
-    switch: true,
+    switch: false,
     livestock: 0,
     timeInterval: 7,
     user: 17,
@@ -10161,7 +10161,8 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
     switch: {
       title: "测试开关",
       type: "switch",
-      name: "switch" },
+      name: "switch",
+      value: false },
 
     livestock: {
       title: "绑定牲畜",
@@ -10206,24 +10207,112 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
       title: "牧场名",
       name: "pastureName" },
 
+    map: {
+      title: "地图范围",
+      type: "map",
+      icon: [{
+        name: 'div',
+        attrs: {
+          class: 'cuIcon-locationfill text-purple text-lg' } }] },
+
+
+
     livestock: {
-      title: "绑定牲2",
+      title: "绑定牲畜",
       type: "multipleSelect",
       multipleSelect: {
         show: false, //是否显示 - 双向绑定
         info: "",
-        list: [], //数据源
+        list: [{
+          label: "牲畜1",
+          value: "1" },
+
+        {
+          label: "牲畜2",
+          value: "2",
+          disabled: true //禁用
+        },
+        {
+          label: "牲畜3",
+          value: "3" },
+
+        {
+          label: "牲畜4",
+          value: "4" },
+
+        {
+          label: "牲畜5",
+          value: "5" }],
+        //数据源
         defaultSelected: ["3", "5"] //默认选中项
       },
       name: "pastureLivestock",
       icon: [{
         name: 'div',
         attrs: {
-          style: 'color: bule;' },
+          class: 'cuIcon-right text-olive text-lg' } }] },
 
-        children: [{
-          type: 'text',
-          text: '>' }] }] } } };exports.default = _default;
+
+
+    equipment: {
+      title: "绑定GPS",
+      type: "multipleSelect",
+      multipleSelect: {
+        show: false, //是否显示 - 双向绑定
+        info: "",
+        list: [{
+          label: "曼德力1号",
+          value: "1" },
+
+        {
+          label: "德川康2号",
+          value: "2" },
+
+        {
+          label: "北斗3号",
+          value: "3" },
+
+        {
+          label: "朱沟里5",
+          value: "5" }]
+        //数据源
+      },
+      name: "pastureEquipment",
+      icon: [{
+        name: 'div',
+        attrs: {
+          class: 'cuIcon-right text-olive text-lg' } }] },
+
+
+
+    record: {
+      title: "绑定摄像头",
+      type: "multipleSelect",
+      multipleSelect: {
+        show: false, //是否显示 - 双向绑定
+        info: "",
+        list: [{
+          label: "摄像头1号",
+          value: "1" },
+
+        {
+          label: "摄像头2号",
+          value: "2" },
+
+        {
+          label: "摄像头3号",
+          value: "3" },
+
+        {
+          label: "摄像头5号",
+          value: "5" }]
+        //数据源
+      },
+      name: "pastureRecord",
+      icon: [{
+        name: 'div',
+        attrs: {
+          class: 'cuIcon-right text-olive text-lg' } }] } } };exports.default = _default;
 
 /***/ }),
 /* 23 */

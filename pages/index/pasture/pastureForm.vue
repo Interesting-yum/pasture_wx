@@ -74,7 +74,7 @@
 				console.log("调用者-CheckboxChange",e,item);	
 			},
 			multipleSelectTap(e,item){
-				console.log("multipleSelectTap",e,item);	
+				console.log("调用者-multipleSelectTap",e,item);	
 			},
 			formSubmit(e){
 				console.log("调用者-RadioChange",e);

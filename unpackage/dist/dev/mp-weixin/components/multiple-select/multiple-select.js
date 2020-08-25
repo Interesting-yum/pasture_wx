@@ -1,9 +1,9 @@
 (global["webpackJsonp"] = global["webpackJsonp"] || []).push([["components/multiple-select/multiple-select"],{
 
 /***/ 253:
-/*!*******************************************************************************************!*\
-  !*** E:/Documents/HBuilderProjects/牧场管理系统/components/multiple-select/multiple-select.vue ***!
-  \*******************************************************************************************/
+/*!*************************************************************************************************************!*\
+  !*** C:/Users/ASUS/Documents/HBuilderProjects/ThorUI组件库后台模板/components/multiple-select/multiple-select.vue ***!
+  \*************************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -42,9 +42,9 @@ component.options.__file = "components/multiple-select/multiple-select.vue"
 /***/ }),
 
 /***/ 254:
-/*!**************************************************************************************************************************************!*\
-  !*** E:/Documents/HBuilderProjects/牧场管理系统/components/multiple-select/multiple-select.vue?vue&type=template&id=97178e90&scoped=true& ***!
-  \**************************************************************************************************************************************/
+/*!********************************************************************************************************************************************************!*\
+  !*** C:/Users/ASUS/Documents/HBuilderProjects/ThorUI组件库后台模板/components/multiple-select/multiple-select.vue?vue&type=template&id=97178e90&scoped=true& ***!
+  \********************************************************************************************************************************************************/
 /*! exports provided: render, staticRenderFns, recyclableRender, components */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -64,9 +64,9 @@ __webpack_require__.r(__webpack_exports__);
 /***/ }),
 
 /***/ 255:
-/*!**************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/@dcloudio/vue-cli-plugin-uni/packages/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/@dcloudio/vue-cli-plugin-uni/packages/webpack-preprocess-loader??ref--16-0!./node_modules/@dcloudio/webpack-uni-mp-loader/lib/template.js!./node_modules/@dcloudio/vue-cli-plugin-uni/packages/webpack-uni-app-loader/page-meta.js!./node_modules/@dcloudio/vue-cli-plugin-uni/packages/vue-loader/lib??vue-loader-options!./node_modules/@dcloudio/webpack-uni-mp-loader/lib/style.js!E:/Documents/HBuilderProjects/牧场管理系统/components/multiple-select/multiple-select.vue?vue&type=template&id=97178e90&scoped=true& ***!
-  \**************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/*!********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/@dcloudio/vue-cli-plugin-uni/packages/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/@dcloudio/vue-cli-plugin-uni/packages/webpack-preprocess-loader??ref--16-0!./node_modules/@dcloudio/webpack-uni-mp-loader/lib/template.js!./node_modules/@dcloudio/vue-cli-plugin-uni/packages/webpack-uni-app-loader/page-meta.js!./node_modules/@dcloudio/vue-cli-plugin-uni/packages/vue-loader/lib??vue-loader-options!./node_modules/@dcloudio/webpack-uni-mp-loader/lib/style.js!C:/Users/ASUS/Documents/HBuilderProjects/ThorUI组件库后台模板/components/multiple-select/multiple-select.vue?vue&type=template&id=97178e90&scoped=true& ***!
+  \********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
 /*! exports provided: render, staticRenderFns, recyclableRender, components */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -91,9 +91,9 @@ render._withStripped = true
 /***/ }),
 
 /***/ 256:
-/*!********************************************************************************************************************!*\
-  !*** E:/Documents/HBuilderProjects/牧场管理系统/components/multiple-select/multiple-select.vue?vue&type=script&lang=js& ***!
-  \********************************************************************************************************************/
+/*!**************************************************************************************************************************************!*\
+  !*** C:/Users/ASUS/Documents/HBuilderProjects/ThorUI组件库后台模板/components/multiple-select/multiple-select.vue?vue&type=script&lang=js& ***!
+  \**************************************************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -107,9 +107,9 @@ __webpack_require__.r(__webpack_exports__);
 /***/ }),
 
 /***/ 257:
-/*!***************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/babel-loader/lib!./node_modules/@dcloudio/vue-cli-plugin-uni/packages/webpack-preprocess-loader??ref--12-1!./node_modules/@dcloudio/webpack-uni-mp-loader/lib/script.js!./node_modules/@dcloudio/vue-cli-plugin-uni/packages/vue-loader/lib??vue-loader-options!./node_modules/@dcloudio/webpack-uni-mp-loader/lib/style.js!E:/Documents/HBuilderProjects/牧场管理系统/components/multiple-select/multiple-select.vue?vue&type=script&lang=js& ***!
-  \***************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/*!*********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib!./node_modules/@dcloudio/vue-cli-plugin-uni/packages/webpack-preprocess-loader??ref--12-1!./node_modules/@dcloudio/webpack-uni-mp-loader/lib/script.js!./node_modules/@dcloudio/vue-cli-plugin-uni/packages/vue-loader/lib??vue-loader-options!./node_modules/@dcloudio/webpack-uni-mp-loader/lib/style.js!C:/Users/ASUS/Documents/HBuilderProjects/ThorUI组件库后台模板/components/multiple-select/multiple-select.vue?vue&type=script&lang=js& ***!
+  \*********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -160,9 +160,9 @@ var _default2 =
       selectedArrOld: [] //选择对照列表上一次的数据
     };
   },
-  onShow: function onShow() {
-    this.show = this.value;
-  },
+  /*  onShow() {
+         this.show = this.value;
+       }, */
   computed: {
     // 返回是否全选
     isAll: function isAll() {
@@ -220,7 +220,7 @@ var _default2 =
       } },
 
     // 数据源
-    data: {
+    dataList: {
       type: Array,
       required: true,
       default: function _default() {
@@ -241,7 +241,7 @@ var _default2 =
       this.$emit("input", newVal);
       this.$emit("change", newVal);
     },
-    data: {
+    dataList: {
       // 设置初始选择对照列表
       handler: function handler(list) {
         this.selectedArr = list.map(function (el) {return false;});
@@ -259,16 +259,24 @@ var _default2 =
 
 
   methods: {
+    open: function open() {var _this2 = this;return _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee2() {return _regenerator.default.wrap(function _callee2$(_context2) {while (1) {switch (_context2.prev = _context2.next) {case 0:
+                _this2.show = true;_context2.next = 3;return (
+                  _this2.$nextTick());case 3:
+                _this2.activeClass = true;
+                if (true) {
+                  _this2.selectedArrOld = JSON.parse(JSON.stringify(_this2.selectedArr));
+                }case 5:case "end":return _context2.stop();}}}, _callee2);}))();
+    },
     // 设置默认选中通用办法
-    setItemActiveState: function setItemActiveState() {var _this2 = this;
-      if (this.data.length && this.defaultSelected.length) {
-        this.data.forEach(function (item, i) {
-          for (var n = 0; n < _this2.defaultSelected.length; n++) {
+    setItemActiveState: function setItemActiveState() {var _this3 = this;
+      if (this.dataList.length && this.defaultSelected.length) {
+        this.dataList.forEach(function (item, i) {
+          for (var n = 0; n < _this3.defaultSelected.length; n++) {
             if (
             !item.disabled &&
-            item[_this2.valueName] === _this2.defaultSelected[n])
+            item[_this3.valueName] === _this3.defaultSelected[n])
             {
-              _this2.selectedArr.splice(i, 1, true);
+              _this3.selectedArr.splice(i, 1, true);
               break;
             }
           }
@@ -280,7 +288,7 @@ var _default2 =
         * @index {Number} 点击下标
         */
     onSelected: function onSelected(index) {
-      if (this.data[index].disabled) return;
+      if (this.dataList[index].disabled) return;
       var index2Active = this.selectedArr[index];
       this.selectedArr.splice(index, 1, !index2Active);
     },
@@ -295,52 +303,52 @@ var _default2 =
       this.$emit("cancel");
     },
     // 返回去除了disabled状态后的对照列表
-    returnWipeDisabledList: function returnWipeDisabledList() {var _this3 = this;
+    returnWipeDisabledList: function returnWipeDisabledList() {var _this4 = this;
       var arr = [];
       this.selectedArr.forEach(function (el, index) {
-        if (!_this3.data[index].disabled) arr.push(el);
+        if (!_this4.dataList[index].disabled) arr.push(el);
       });
       return arr;
     },
     // 全选/非全选事件
-    onAllToggle: function onAllToggle() {var _this4 = this;
+    onAllToggle: function onAllToggle() {var _this5 = this;
       var wipeDisabledList = this.returnWipeDisabledList();
       // 如果去除了disabled的对照列表有false的数据，代表未全选
       if (wipeDisabledList.includes(false)) {
         this.selectedArr.forEach(function (el, index) {
-          if (!_this4.data[index].disabled)
-          _this4.selectedArr.splice(index, 1, true);
+          if (!_this5.dataList[index].disabled)
+          _this5.selectedArr.splice(index, 1, true);
         });
       } else {
         this.selectedArr.forEach(function (el, index) {
-          if (!_this4.data[index].disabled)
-          el = _this4.selectedArr.splice(index, 1, false);
+          if (!_this5.dataList[index].disabled)
+          el = _this5.selectedArr.splice(index, 1, false);
         });
       }
     },
     // 确定事件
-    onConfirm: function onConfirm() {var _this5 = this;
+    onConfirm: function onConfirm() {var _this6 = this;
       this.show = false;
-      var selectedData = [];
+      var selecteddataList = [];
       this.selectedArr.forEach(function (el, index) {
         if (el) {
-          selectedData.push(_this5.data[index]);
+          selecteddataList.push(_this6.dataList[index]);
         }
       });
       if (this.mode === "multiple") {
-        this.$emit("confirm", selectedData);
+        this.$emit("confirm", selecteddataList);
       } else {
-        var backData = selectedData[0] || {};
-        this.$emit("confirm", backData);
+        var backdataList = selecteddataList[0] || {};
+        this.$emit("confirm", backdataList);
       }
     } } };exports.default = _default2;
 
 /***/ }),
 
 /***/ 258:
-/*!*****************************************************************************************************************************************************!*\
-  !*** E:/Documents/HBuilderProjects/牧场管理系统/components/multiple-select/multiple-select.vue?vue&type=style&index=0&id=97178e90&lang=scss&scoped=true& ***!
-  \*****************************************************************************************************************************************************/
+/*!***********************************************************************************************************************************************************************!*\
+  !*** C:/Users/ASUS/Documents/HBuilderProjects/ThorUI组件库后台模板/components/multiple-select/multiple-select.vue?vue&type=style&index=0&id=97178e90&lang=scss&scoped=true& ***!
+  \***********************************************************************************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -354,9 +362,9 @@ __webpack_require__.r(__webpack_exports__);
 /***/ }),
 
 /***/ 259:
-/*!*******************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/mini-css-extract-plugin/dist/loader.js??ref--8-oneOf-1-0!./node_modules/css-loader/dist/cjs.js??ref--8-oneOf-1-1!./node_modules/@dcloudio/vue-cli-plugin-uni/packages/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/@dcloudio/vue-cli-plugin-uni/packages/webpack-preprocess-loader??ref--8-oneOf-1-2!./node_modules/postcss-loader/src??ref--8-oneOf-1-3!./node_modules/sass-loader/dist/cjs.js??ref--8-oneOf-1-4!./node_modules/@dcloudio/vue-cli-plugin-uni/packages/webpack-preprocess-loader??ref--8-oneOf-1-5!./node_modules/@dcloudio/vue-cli-plugin-uni/packages/vue-loader/lib??vue-loader-options!./node_modules/@dcloudio/webpack-uni-mp-loader/lib/style.js!E:/Documents/HBuilderProjects/牧场管理系统/components/multiple-select/multiple-select.vue?vue&type=style&index=0&id=97178e90&lang=scss&scoped=true& ***!
-  \*******************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/*!*************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/mini-css-extract-plugin/dist/loader.js??ref--8-oneOf-1-0!./node_modules/css-loader/dist/cjs.js??ref--8-oneOf-1-1!./node_modules/@dcloudio/vue-cli-plugin-uni/packages/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/@dcloudio/vue-cli-plugin-uni/packages/webpack-preprocess-loader??ref--8-oneOf-1-2!./node_modules/postcss-loader/src??ref--8-oneOf-1-3!./node_modules/sass-loader/dist/cjs.js??ref--8-oneOf-1-4!./node_modules/@dcloudio/vue-cli-plugin-uni/packages/webpack-preprocess-loader??ref--8-oneOf-1-5!./node_modules/@dcloudio/vue-cli-plugin-uni/packages/vue-loader/lib??vue-loader-options!./node_modules/@dcloudio/webpack-uni-mp-loader/lib/style.js!C:/Users/ASUS/Documents/HBuilderProjects/ThorUI组件库后台模板/components/multiple-select/multiple-select.vue?vue&type=style&index=0&id=97178e90&lang=scss&scoped=true& ***!
+  \*************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 

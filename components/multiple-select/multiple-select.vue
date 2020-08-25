@@ -11,13 +11,13 @@
       </view>
       <view class="body-warp">
         <view class="body">
-          <slot v-if="!data.length" name="tips">
+          <slot v-if="!dataList.length" name="tips">
             <view class="empty-tips">暂无数据~</view>
           </slot>
           <view
             class="select-item"
             :class="[item.disabled ? 'disabled' : '',selectedArr[index] ? 'selected' : '']"
-            v-for="(item,index) in data"
+            v-for="(item,index) in dataList"
             :key="item[valueName]"
             @tap="onSelected(index)"
           >
@@ -44,9 +44,9 @@ export default {
       selectedArrOld: [] //选择对照列表上一次的数据
     };
   },
-  onShow() {
+/*  onShow() {
     this.show = this.value;
-  },
+  }, */
   computed: {
     // 返回是否全选
     isAll() {
@@ -104,7 +104,7 @@ export default {
       }
     },
     // 数据源
-    data: {
+    dataList: {
       type: Array,
       required: true,
       default: () => {
@@ -125,7 +125,7 @@ export default {
       this.$emit("input", newVal);
       this.$emit("change", newVal);
     },
-    data: {
+    dataList: {
       // 设置初始选择对照列表
       handler(list) {
         this.selectedArr = list.map(el => false);
@@ -143,10 +143,18 @@ export default {
     }
   },
   methods: {
+	async open(){
+		this.show = true;
+		await this.$nextTick();
+		this.activeClass = true;
+		if (true) {
+		  this.selectedArrOld = JSON.parse(JSON.stringify(this.selectedArr));
+		}
+	},
     // 设置默认选中通用办法
     setItemActiveState() {
-      if (this.data.length && this.defaultSelected.length) {
-        this.data.forEach((item, i) => {
+      if (this.dataList.length && this.defaultSelected.length) {
+        this.dataList.forEach((item, i) => {
           for (let n = 0; n < this.defaultSelected.length; n++) {
             if (
               !item.disabled &&
@@ -164,7 +172,7 @@ export default {
      * @index {Number} 点击下标
      */
     onSelected(index) {
-      if (this.data[index].disabled) return;
+      if (this.dataList[index].disabled) return;
       let index2Active = this.selectedArr[index];
       this.selectedArr.splice(index, 1, !index2Active);
     },
@@ -182,7 +190,7 @@ export default {
     returnWipeDisabledList() {
       let arr = [];
       this.selectedArr.forEach((el, index) => {
-        if (!this.data[index].disabled) arr.push(el);
+        if (!this.dataList[index].disabled) arr.push(el);
       });
       return arr;
     },
@@ -192,12 +200,12 @@ export default {
       // 如果去除了disabled的对照列表有false的数据，代表未全选
       if (wipeDisabledList.includes(false)) {
         this.selectedArr.forEach((el, index) => {
-          if (!this.data[index].disabled)
+          if (!this.dataList[index].disabled)
             this.selectedArr.splice(index, 1, true);
         });
       } else {
         this.selectedArr.forEach((el, index) => {
-          if (!this.data[index].disabled)
+          if (!this.dataList[index].disabled)
             el = this.selectedArr.splice(index, 1, false);
         });
       }
@@ -205,17 +213,17 @@ export default {
     // 确定事件
     onConfirm() {
       this.show = false;
-      let selectedData = [];
+      let selecteddataList = [];
       this.selectedArr.forEach((el, index) => {
         if (el) {
-          selectedData.push(this.data[index]);
+          selecteddataList.push(this.dataList[index]);
         }
       });
       if (this.mode === "multiple") {
-        this.$emit("confirm", selectedData);
+        this.$emit("confirm", selecteddataList);
       } else {
-        let backData = selectedData[0] || {};
-        this.$emit("confirm", backData);
+        let backdataList = selecteddataList[0] || {};
+        this.$emit("confirm", backdataList);
       }
     }
   }

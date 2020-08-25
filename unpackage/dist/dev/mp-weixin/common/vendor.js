@@ -760,7 +760,7 @@ function initData(vueOptions, context) {
     try {
       data = data.call(context); // 支持 Vue.prototype 上挂的数据
     } catch (e) {
-      if (Object({"NODE_ENV":"development","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG) {
+      if (Object({"VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG) {
         console.warn('根据 Vue 的 data 函数初始化小程序 data 失败，请尽量确保 data 函数中不访问 vm 对象，否则可能影响首次数据渲染速度。', data);
       }
     }
@@ -7122,7 +7122,7 @@ function type(obj) {
 
 function flushCallbacks$1(vm) {
     if (vm.__next_tick_callbacks && vm.__next_tick_callbacks.length) {
-        if (Object({"NODE_ENV":"development","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG) {
+        if (Object({"VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG) {
             var mpInstance = vm.$scope;
             console.log('[' + (+new Date) + '][' + (mpInstance.is || mpInstance.route) + '][' + vm._uid +
                 ']:flushCallbacks[' + vm.__next_tick_callbacks.length + ']');
@@ -7143,14 +7143,14 @@ function nextTick$1(vm, cb) {
     //1.nextTick 之前 已 setData 且 setData 还未回调完成
     //2.nextTick 之前存在 render watcher
     if (!vm.__next_tick_pending && !hasRenderWatcher(vm)) {
-        if(Object({"NODE_ENV":"development","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG){
+        if(Object({"VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG){
             var mpInstance = vm.$scope;
             console.log('[' + (+new Date) + '][' + (mpInstance.is || mpInstance.route) + '][' + vm._uid +
                 ']:nextVueTick');
         }
         return nextTick(cb, vm)
     }else{
-        if(Object({"NODE_ENV":"development","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG){
+        if(Object({"VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG){
             var mpInstance$1 = vm.$scope;
             console.log('[' + (+new Date) + '][' + (mpInstance$1.is || mpInstance$1.route) + '][' + vm._uid +
                 ']:nextMPTick');
@@ -7235,7 +7235,7 @@ var patch = function(oldVnode, vnode) {
     });
     var diffData = this.$shouldDiffData === false ? data : diff(data, mpData);
     if (Object.keys(diffData).length) {
-      if (Object({"NODE_ENV":"development","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG) {
+      if (Object({"VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG) {
         console.log('[' + (+new Date) + '][' + (mpInstance.is || mpInstance.route) + '][' + this._uid +
           ']差量更新',
           JSON.stringify(diffData));
@@ -7672,9 +7672,9 @@ module.exports = g;
 
 /***/ }),
 /* 4 */
-/*!*******************************************************!*\
-  !*** E:/Documents/HBuilderProjects/牧场管理系统/pages.json ***!
-  \*******************************************************/
+/*!*************************************************************************!*\
+  !*** C:/Users/ASUS/Documents/HBuilderProjects/ThorUI组件库后台模板/pages.json ***!
+  \*************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
@@ -9553,9 +9553,9 @@ function normalizeComponent (
 
 /***/ }),
 /* 15 */
-/*!***********************************************************!*\
-  !*** E:/Documents/HBuilderProjects/牧场管理系统/store/index.js ***!
-  \***********************************************************/
+/*!*****************************************************************************!*\
+  !*** C:/Users/ASUS/Documents/HBuilderProjects/ThorUI组件库后台模板/store/index.js ***!
+  \*****************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -9660,9 +9660,9 @@ store;exports.default = _default;
 
 /***/ }),
 /* 16 */
-/*!********************************************************************!*\
-  !*** E:/Documents/HBuilderProjects/牧场管理系统/config/routes.config.js ***!
-  \********************************************************************/
+/*!**************************************************************************************!*\
+  !*** C:/Users/ASUS/Documents/HBuilderProjects/ThorUI组件库后台模板/config/routes.config.js ***!
+  \**************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -9715,9 +9715,9 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
 
 /***/ }),
 /* 17 */
-/*!************************************************************!*\
-  !*** E:/Documents/HBuilderProjects/牧场管理系统/utils/router.js ***!
-  \************************************************************/
+/*!******************************************************************************!*\
+  !*** C:/Users/ASUS/Documents/HBuilderProjects/ThorUI组件库后台模板/utils/router.js ***!
+  \******************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -9767,9 +9767,9 @@ new Router();exports.default = _default;
 
 /***/ }),
 /* 18 */
-/*!*****************************************************************!*\
-  !*** E:/Documents/HBuilderProjects/牧场管理系统/store/systemStore.js ***!
-  \*****************************************************************/
+/*!***********************************************************************************!*\
+  !*** C:/Users/ASUS/Documents/HBuilderProjects/ThorUI组件库后台模板/store/systemStore.js ***!
+  \***********************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -9803,9 +9803,9 @@ var systemInfo = uni.getStorageSync('systemInfo') || '';var _default =
 
 /***/ }),
 /* 19 */
-/*!********************************************************************!*\
-  !*** E:/Documents/HBuilderProjects/牧场管理系统/config/assets.config.js ***!
-  \********************************************************************/
+/*!**************************************************************************************!*\
+  !*** C:/Users/ASUS/Documents/HBuilderProjects/ThorUI组件库后台模板/config/assets.config.js ***!
+  \**************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -9905,9 +9905,9 @@ var PATH = _indexConfig.default.assetsPath;
 
 /***/ }),
 /* 20 */
-/*!*******************************************************************!*\
-  !*** E:/Documents/HBuilderProjects/牧场管理系统/config/index.config.js ***!
-  \*******************************************************************/
+/*!*************************************************************************************!*\
+  !*** C:/Users/ASUS/Documents/HBuilderProjects/ThorUI组件库后台模板/config/index.config.js ***!
+  \*************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -9935,9 +9935,9 @@ CONFIG["development"];exports.default = _default;
 
 /***/ }),
 /* 21 */
-/*!**********************************************************************!*\
-  !*** E:/Documents/HBuilderProjects/牧场管理系统/config/formRule.config.js ***!
-  \**********************************************************************/
+/*!****************************************************************************************!*\
+  !*** C:/Users/ASUS/Documents/HBuilderProjects/ThorUI组件库后台模板/config/formRule.config.js ***!
+  \****************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -10098,9 +10098,9 @@ var _default = { /* GPS的设备表单校验 */equipmentRule: [{ name: equipment
 
 /***/ }),
 /* 22 */
-/*!******************************************************************!*\
-  !*** E:/Documents/HBuilderProjects/牧场管理系统/config/form.config.js ***!
-  \******************************************************************/
+/*!************************************************************************************!*\
+  !*** C:/Users/ASUS/Documents/HBuilderProjects/ThorUI组件库后台模板/config/form.config.js ***!
+  \************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -10210,26 +10210,59 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
       title: "绑定牲2",
       type: "multipleSelect",
       multipleSelect: {
-        show: false, //是否显示 - 双向绑定
-        info: "",
-        list: [], //数据源
+        show: true, //是否显示 - 双向绑定
+        info: "", //数据信息
+        list: [{
+          label: "皮皮虾",
+          value: "1" },
+
+        {
+          label: "小龙虾",
+          value: "2",
+          disabled: true //禁用
+        },
+        {
+          label: "大龙虾",
+          value: "3" },
+
+        {
+          label: "石头蟹",
+          value: "4" },
+
+        {
+          label: "兰花蟹",
+          value: "5" },
+
+        {
+          label: "面包蟹",
+          value: "6" },
+
+        {
+          label: "石斑鱼",
+          value: "7" },
+
+        {
+          label: "鲫鱼",
+          value: "8" },
+
+        {
+          label: "鲨鱼",
+          value: "9" }],
+        //数据源
         defaultSelected: ["3", "5"] //默认选中项
       },
       name: "pastureLivestock",
       icon: [{
-        name: 'div',
+        name: 'text',
         attrs: {
-          style: 'color: bule;' },
-
-        children: [{
-          type: 'text',
-          text: '>' }] }] } } };exports.default = _default;
+          class: "cuIcon-playfill",
+          style: 'color: bule;' } }] } } };exports.default = _default;
 
 /***/ }),
 /* 23 */
-/*!***********************************************************************!*\
-  !*** E:/Documents/HBuilderProjects/牧场管理系统/config/constData.config.js ***!
-  \***********************************************************************/
+/*!*****************************************************************************************!*\
+  !*** C:/Users/ASUS/Documents/HBuilderProjects/ThorUI组件库后台模板/config/constData.config.js ***!
+  \*****************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -10325,9 +10358,9 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
 
 /***/ }),
 /* 24 */
-/*!***********************************************************************!*\
-  !*** E:/Documents/HBuilderProjects/牧场管理系统/config/websocket.config.js ***!
-  \***********************************************************************/
+/*!*****************************************************************************************!*\
+  !*** C:/Users/ASUS/Documents/HBuilderProjects/ThorUI组件库后台模板/config/websocket.config.js ***!
+  \*****************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -10393,9 +10426,9 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
 
 /***/ }),
 /* 25 */
-/*!*******************************************************************!*\
-  !*** E:/Documents/HBuilderProjects/牧场管理系统/utils/request/index.js ***!
-  \*******************************************************************/
+/*!*************************************************************************************!*\
+  !*** C:/Users/ASUS/Documents/HBuilderProjects/ThorUI组件库后台模板/utils/request/index.js ***!
+  \*************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -10523,9 +10556,9 @@ function (error) {
 
 /***/ }),
 /* 26 */
-/*!*********************************************************************!*\
-  !*** E:/Documents/HBuilderProjects/牧场管理系统/utils/request/request.js ***!
-  \*********************************************************************/
+/*!***************************************************************************************!*\
+  !*** C:/Users/ASUS/Documents/HBuilderProjects/ThorUI组件库后台模板/utils/request/request.js ***!
+  \***************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -10963,9 +10996,9 @@ Request = /*#__PURE__*/function () {function Request() {var _this = this;_classC
 
 /***/ }),
 /* 27 */
-/*!*********************************************************!*\
-  !*** E:/Documents/HBuilderProjects/牧场管理系统/api/login.js ***!
-  \*********************************************************/
+/*!***************************************************************************!*\
+  !*** C:/Users/ASUS/Documents/HBuilderProjects/ThorUI组件库后台模板/api/login.js ***!
+  \***************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -11013,9 +11046,9 @@ exports.logout = logout;var refreshToken = '/tiny-shop/v1/site/refresh';exports.
 
 /***/ }),
 /* 28 */
-/*!************************************************************!*\
-  !*** E:/Documents/HBuilderProjects/牧场管理系统/utils/helper.js ***!
-  \************************************************************/
+/*!******************************************************************************!*\
+  !*** C:/Users/ASUS/Documents/HBuilderProjects/ThorUI组件库后台模板/utils/helper.js ***!
+  \******************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -11299,9 +11332,9 @@ var _default = {
 
 /***/ }),
 /* 29 */
-/*!******************************************************************!*\
-  !*** E:/Documents/HBuilderProjects/牧场管理系统/utils/graceChecker.js ***!
-  \******************************************************************/
+/*!************************************************************************************!*\
+  !*** C:/Users/ASUS/Documents/HBuilderProjects/ThorUI组件库后台模板/utils/graceChecker.js ***!
+  \************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
@@ -11467,9 +11500,9 @@ module.exports = {
 
 /***/ }),
 /* 30 */
-/*!*************************************************************!*\
-  !*** E:/Documents/HBuilderProjects/牧场管理系统/utils/payment.js ***!
-  \*************************************************************/
+/*!*******************************************************************************!*\
+  !*** C:/Users/ASUS/Documents/HBuilderProjects/ThorUI组件库后台模板/utils/payment.js ***!
+  \*******************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -11671,9 +11704,9 @@ var _product = __webpack_require__(/*! @/api/product */ 32);function _interopReq
 
 /***/ }),
 /* 31 */
-/*!*********************************************************!*\
-  !*** E:/Documents/HBuilderProjects/牧场管理系统/api/basic.js ***!
-  \*********************************************************/
+/*!***************************************************************************!*\
+  !*** C:/Users/ASUS/Documents/HBuilderProjects/ThorUI组件库后台模板/api/basic.js ***!
+  \***************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -11716,9 +11749,9 @@ exports.notifyAnnounceIndex = notifyAnnounceIndex;var notifyAnnounceView = '/tin
 
 /***/ }),
 /* 32 */
-/*!***********************************************************!*\
-  !*** E:/Documents/HBuilderProjects/牧场管理系统/api/product.js ***!
-  \***********************************************************/
+/*!*****************************************************************************!*\
+  !*** C:/Users/ASUS/Documents/HBuilderProjects/ThorUI组件库后台模板/api/product.js ***!
+  \*****************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -11791,9 +11824,9 @@ exports.wholesaleGroupState = wholesaleGroupState;var discountProductIndex = '/t
 
 /***/ }),
 /* 33 */
-/*!****************************************************************!*\
-  !*** E:/Documents/HBuilderProjects/牧场管理系统/config/aopConfig.js ***!
-  \****************************************************************/
+/*!**********************************************************************************!*\
+  !*** C:/Users/ASUS/Documents/HBuilderProjects/ThorUI组件库后台模板/config/aopConfig.js ***!
+  \**********************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
@@ -11848,9 +11881,9 @@ console.log("aop配置已开启");
 /* 51 */,
 /* 52 */,
 /* 53 */
-/*!**************************************************************************!*\
-  !*** E:/Documents/HBuilderProjects/牧场管理系统/components/uni-icons/icons.js ***!
-  \**************************************************************************/
+/*!********************************************************************************************!*\
+  !*** C:/Users/ASUS/Documents/HBuilderProjects/ThorUI组件库后台模板/components/uni-icons/icons.js ***!
+  \********************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -11998,9 +12031,9 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
 /* 61 */,
 /* 62 */,
 /* 63 */
-/*!*****************************************************************!*\
-  !*** E:/Documents/HBuilderProjects/牧场管理系统/pages/map/mapData.js ***!
-  \*****************************************************************/
+/*!***********************************************************************************!*\
+  !*** C:/Users/ASUS/Documents/HBuilderProjects/ThorUI组件库后台模板/pages/map/mapData.js ***!
+  \***********************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -12235,9 +12268,9 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
 /* 96 */,
 /* 97 */,
 /* 98 */
-/*!***********************************************************!*\
-  !*** E:/Documents/HBuilderProjects/牧场管理系统/utils/utils.js ***!
-  \***********************************************************/
+/*!*****************************************************************************!*\
+  !*** C:/Users/ASUS/Documents/HBuilderProjects/ThorUI组件库后台模板/utils/utils.js ***!
+  \*****************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 

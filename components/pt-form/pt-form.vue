@@ -1,3 +1,47 @@
+/**
+ * pt-from表单使用说明
+ *    props:
+ *		  headImg:
+ *				类型:String
+ *				内容:"表单标题图片路径,如果不需要,调用者可以不需要设置"
+ *				默认:"noHave"
+ *		  formDatas:
+ *				类型:Array
+ *				内容:"表单内的组件数组,"
+ *				默认:[]
+ *              单个对象属性:{
+ *					type:
+ *						类型:String
+ *						内容:"组件的类型,"
+ *						属性介绍:{	 
+ *	                       img 
+ *							  内容      :  "图片文件上传组件",
+ *                            私有参数  :  {imgList,}
+ *						   picker 
+ *							  内容      :  "选择器组件",
+ *                            私有参数  :   {range,range-key,start,end,mode}
+ *						      img:"图片文件上传组件",
+ *						} 
+ *                  mode:{
+ *						类型:String
+ *						内容:"picker组件的模式类型,同uniapp官网picker组件一样"   					 
+ *					 }
+ *					name:
+ *						类型:String
+ *						内容:"组件的name属性,方便表单赋值和取值,"   
+ *					title:
+ *						类型:String
+ *						内容:"组件的标题,"
+ *					imgList:
+ *						类型:Array
+ *						内容:"图片文件对象的数组"
+ *						单个对象属性:{
+ *	                       
+ *						}
+ *              
+ *					}
+ *
+ */
 <template>
 	<view>
 		<view class="head-img" v-if="headImg!='noHave'">
@@ -58,6 +102,7 @@
 						 </view>
 						 <multiple-select
 						   v-model="item.multipleSelect.show"
+						   :ref="item.name"
 						   :data="item.multipleSelect.list"
 						   :default-selected="item.multipleSelect.defaultSelected"
 						   @confirm="change"
@@ -188,8 +233,9 @@
 				this.$emit("RadioChange",e,item)
 			},
 			multipleSelectTap(e,item){
-				item.multipleSelect.show=true;
-				this.$emit("multipleSelectTap",e,item)
+				/* item.multipleSelect.show=true; */
+				this.$refs[item.name][0].open();
+				this.$emit("multipleSelectTap",e,item); 
 			},
 			CheckboxChange(e,item){
 				console.log("复选框",e,item);
@@ -244,6 +290,7 @@
 				})
 			},
 			confirm(e,item){
+				this.$refs[item.name][0].info = item.data.map((el) => el.label).join(",");
 				this.$emit("confirm",e,item)
 			},
 			formSubmit: function (e) {

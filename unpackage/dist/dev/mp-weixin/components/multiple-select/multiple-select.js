@@ -172,6 +172,13 @@ var _default2 =
     } },
 
   props: {
+    //数据对象
+    item: {
+      type: Object,
+      default: function _default() {
+        return null;
+      } },
+
     // 双向绑定
     value: {
       type: Boolean,
@@ -259,6 +266,10 @@ var _default2 =
 
 
   methods: {
+<<<<<<< HEAD
+=======
+    /*打开的方法*/
+>>>>>>> 0ebf11d1357c8177501705dac093e2e47c4a61f9
     open: function open() {var _this2 = this;return _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee2() {return _regenerator.default.wrap(function _callee2$(_context2) {while (1) {switch (_context2.prev = _context2.next) {case 0:
                 _this2.show = true;_context2.next = 3;return (
                   _this2.$nextTick());case 3:
@@ -269,8 +280,13 @@ var _default2 =
     },
     // 设置默认选中通用办法
     setItemActiveState: function setItemActiveState() {var _this3 = this;
+<<<<<<< HEAD
       if (this.dataList.length && this.defaultSelected.length) {
         this.dataList.forEach(function (item, i) {
+=======
+      if (this.data.length && this.defaultSelected.length) {
+        this.data.forEach(function (item, i) {
+>>>>>>> 0ebf11d1357c8177501705dac093e2e47c4a61f9
           for (var n = 0; n < _this3.defaultSelected.length; n++) {
             if (
             !item.disabled &&
@@ -306,7 +322,11 @@ var _default2 =
     returnWipeDisabledList: function returnWipeDisabledList() {var _this4 = this;
       var arr = [];
       this.selectedArr.forEach(function (el, index) {
+<<<<<<< HEAD
         if (!_this4.dataList[index].disabled) arr.push(el);
+=======
+        if (!_this4.data[index].disabled) arr.push(el);
+>>>>>>> 0ebf11d1357c8177501705dac093e2e47c4a61f9
       });
       return arr;
     },
@@ -316,12 +336,20 @@ var _default2 =
       // 如果去除了disabled的对照列表有false的数据，代表未全选
       if (wipeDisabledList.includes(false)) {
         this.selectedArr.forEach(function (el, index) {
+<<<<<<< HEAD
           if (!_this5.dataList[index].disabled)
+=======
+          if (!_this5.data[index].disabled)
+>>>>>>> 0ebf11d1357c8177501705dac093e2e47c4a61f9
           _this5.selectedArr.splice(index, 1, true);
         });
       } else {
         this.selectedArr.forEach(function (el, index) {
+<<<<<<< HEAD
           if (!_this5.dataList[index].disabled)
+=======
+          if (!_this5.data[index].disabled)
+>>>>>>> 0ebf11d1357c8177501705dac093e2e47c4a61f9
           el = _this5.selectedArr.splice(index, 1, false);
         });
       }
@@ -332,6 +360,7 @@ var _default2 =
       var selecteddataList = [];
       this.selectedArr.forEach(function (el, index) {
         if (el) {
+<<<<<<< HEAD
           selecteddataList.push(_this6.dataList[index]);
         }
       });
@@ -340,8 +369,22 @@ var _default2 =
       } else {
         var backdataList = selecteddataList[0] || {};
         this.$emit("confirm", backdataList);
+=======
+          selectedData.push(_this6.data[index]);
+        }
+      });
+      if (this.mode === "multiple") {
+        this.$emit("confirm", selectedData, this.item);
+      } else {
+        var backData = selectedData[0] || {};
+        this.$emit("confirm", backData, this.item);
+>>>>>>> 0ebf11d1357c8177501705dac093e2e47c4a61f9
       }
-    } } };exports.default = _default2;
+    } },
+
+  mounted: function mounted() {
+    this.onConfirm();
+  } };exports.default = _default2;
 
 /***/ }),
 

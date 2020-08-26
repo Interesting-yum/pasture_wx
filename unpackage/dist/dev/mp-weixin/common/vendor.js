@@ -10118,7 +10118,7 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
     name: "测试人员1",
     code: "0123456789",
     phone: "18161218432",
-    switch: true,
+    switch: false,
     livestock: 0,
     timeInterval: 7,
     user: 17,
@@ -10161,7 +10161,8 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
     switch: {
       title: "测试开关",
       type: "switch",
-      name: "switch" },
+      name: "switch",
+      value: false },
 
     livestock: {
       title: "绑定牲畜",
@@ -10206,10 +10207,21 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
       title: "牧场名",
       name: "pastureName" },
 
+    map: {
+      title: "地图范围",
+      type: "map",
+      icon: [{
+        name: 'div',
+        attrs: {
+          class: 'cuIcon-locationfill text-purple text-lg' } }] },
+
+
+
     livestock: {
-      title: "绑定牲2",
+      title: "绑定牲畜",
       type: "multipleSelect",
       multipleSelect: {
+<<<<<<< HEAD
         show: true, //是否显示 - 双向绑定
         info: "", //数据信息
         list: [{
@@ -10218,10 +10230,21 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
 
         {
           label: "小龙虾",
+=======
+        show: false, //是否显示 - 双向绑定
+        info: "",
+        list: [{
+          label: "牲畜1",
+          value: "1" },
+
+        {
+          label: "牲畜2",
+>>>>>>> 0ebf11d1357c8177501705dac093e2e47c4a61f9
           value: "2",
           disabled: true //禁用
         },
         {
+<<<<<<< HEAD
           label: "大龙虾",
           value: "3" },
 
@@ -10248,6 +10271,18 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
         {
           label: "鲨鱼",
           value: "9" }],
+=======
+          label: "牲畜3",
+          value: "3" },
+
+        {
+          label: "牲畜4",
+          value: "4" },
+
+        {
+          label: "牲畜5",
+          value: "5" }],
+>>>>>>> 0ebf11d1357c8177501705dac093e2e47c4a61f9
         //数据源
         defaultSelected: ["3", "5"] //默认选中项
       },
@@ -10255,8 +10290,74 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
       icon: [{
         name: 'text',
         attrs: {
+<<<<<<< HEAD
           class: "cuIcon-playfill",
           style: 'color: bule;' } }] } } };exports.default = _default;
+=======
+          class: 'cuIcon-right text-olive text-lg' } }] },
+
+
+
+    equipment: {
+      title: "绑定GPS",
+      type: "multipleSelect",
+      multipleSelect: {
+        show: false, //是否显示 - 双向绑定
+        info: "",
+        list: [{
+          label: "曼德力1号",
+          value: "1" },
+
+        {
+          label: "德川康2号",
+          value: "2" },
+
+        {
+          label: "北斗3号",
+          value: "3" },
+
+        {
+          label: "朱沟里5",
+          value: "5" }]
+        //数据源
+      },
+      name: "pastureEquipment",
+      icon: [{
+        name: 'div',
+        attrs: {
+          class: 'cuIcon-right text-olive text-lg' } }] },
+
+
+
+    record: {
+      title: "绑定摄像头",
+      type: "multipleSelect",
+      multipleSelect: {
+        show: false, //是否显示 - 双向绑定
+        info: "",
+        list: [{
+          label: "摄像头1号",
+          value: "1" },
+
+        {
+          label: "摄像头2号",
+          value: "2" },
+
+        {
+          label: "摄像头3号",
+          value: "3" },
+
+        {
+          label: "摄像头5号",
+          value: "5" }]
+        //数据源
+      },
+      name: "pastureRecord",
+      icon: [{
+        name: 'div',
+        attrs: {
+          class: 'cuIcon-right text-olive text-lg' } }] } } };exports.default = _default;
+>>>>>>> 0ebf11d1357c8177501705dac093e2e47c4a61f9
 
 /***/ }),
 /* 23 */

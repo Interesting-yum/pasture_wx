@@ -95,17 +95,19 @@
 						  {{getPickerValueByMode(item)}}
 					 </view>
 					 </picker>
-					 
-					 <view v-else-if="item.type=='multipleSelect'">
-						 <view class="text-area">
-						   <text class="value" @tap="multipleSelectTap($event,item)">{{item.multipleSelect.info || "请选择"}}</text>
+					 <view v-else-if="item.type=='map'" @tap="mapTap($event,item)"><text>12</text></view>
+					 <!-- 多选的选择器 -->
+					 <view v-else-if="item.type=='multipleSelect'" >
+						 <view class="text-area" @tap="multipleSelectTap($event,item)">
+						   <text class="value" >{{item.multipleSelect.info || "请选择"}}</text>
 						 </view>
 						 <multiple-select
 						   v-model="item.multipleSelect.show"
 						   :ref="item.name"
-						   :data="item.multipleSelect.list"
+						   :dataList="item.multipleSelect.list"
 						   :default-selected="item.multipleSelect.defaultSelected"
-						   @confirm="change"
+						   :item="item"
+						   @confirm="multipleChange"
 						 ></multiple-select>
 					 </view>
 					 <!-- 复选框组件 -->
@@ -187,6 +189,12 @@
 				item.value = e.detail.value;
 				this.$emit("change",e,item)
 			},
+			multipleChange(e,item){
+				item.multipleSelect.info = e.map((el) => el.label).join(",");
+				this.$emit("multipleSelect",e,item)
+				console.log("itemsaas",item);
+				console.log("esasasa",e);
+			},
 			columnchange(e,item){
 				console.log("picker多咧选择器触发改变");
 				console.log("item",item);
@@ -224,7 +232,7 @@
 				  return str; 
 			},
 			SwitchChange(e,item){
-				item.checked = e.detail.value
+				item.value = e.detail.value
 				this.$emit("SwitchChange",e,item)
 			},
 			RadioChange(e,item){
@@ -233,10 +241,10 @@
 				this.$emit("RadioChange",e,item)
 			},
 			multipleSelectTap(e,item){
-				/* item.multipleSelect.show=true; */
 				this.$refs[item.name][0].open();
 				this.$emit("multipleSelectTap",e,item); 
 			},
+
 			CheckboxChange(e,item){
 				console.log("复选框",e,item);
 				let values = e.detail.value,
@@ -251,7 +259,9 @@
 				this.$emit("CheckboxChange",e,item)	
 				
 			},
-			
+			mapTap(e,item){
+				this.$emit("mapTap",e,item)	
+			},
 			ChooseImage(e,item) {
 				uni.chooseImage({
 					count: 4, //默认9

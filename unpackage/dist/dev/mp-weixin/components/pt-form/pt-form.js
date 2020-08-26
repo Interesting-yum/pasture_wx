@@ -246,6 +246,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+<<<<<<< HEAD
 //
 //
 //
@@ -289,6 +290,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+=======
+>>>>>>> 0ebf11d1357c8177501705dac093e2e47c4a61f9
 
 //来自 graceUI 的表单验证， 使用说明见手册 http://grace.hcoder.net/doc/info/73-3.html
 var graceChecker = __webpack_require__(/*! @/utils/graceChecker.js */ 29);var multipleSelect = function multipleSelect() {Promise.all(/*! require.ensure | components/multiple-select/multiple-select */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/multiple-select/multiple-select")]).then((function () {return resolve(__webpack_require__(/*! @/components/multiple-select/multiple-select */ 253));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default2 =
@@ -328,6 +331,12 @@ var graceChecker = __webpack_require__(/*! @/utils/graceChecker.js */ 29);var mu
       item.value = e.detail.value;
       this.$emit("change", e, item);
     },
+    multipleChange: function multipleChange(e, item) {
+      item.multipleSelect.info = e.map(function (el) {return el.label;}).join(",");
+      this.$emit("multipleSelect", e, item);
+      console.log("itemsaas", item);
+      console.log("esasasa", e);
+    },
     columnchange: function columnchange(e, item) {
       console.log("picker多咧选择器触发改变");
       console.log("item", item);
@@ -365,7 +374,7 @@ var graceChecker = __webpack_require__(/*! @/utils/graceChecker.js */ 29);var mu
       return str;
     },
     SwitchChange: function SwitchChange(e, item) {
-      item.checked = e.detail.value;
+      item.value = e.detail.value;
       this.$emit("SwitchChange", e, item);
     },
     RadioChange: function RadioChange(e, item) {
@@ -374,10 +383,15 @@ var graceChecker = __webpack_require__(/*! @/utils/graceChecker.js */ 29);var mu
       this.$emit("RadioChange", e, item);
     },
     multipleSelectTap: function multipleSelectTap(e, item) {
+<<<<<<< HEAD
       /* item.multipleSelect.show=true; */
+=======
+      /* item.multipleSelect.show = true; */
+>>>>>>> 0ebf11d1357c8177501705dac093e2e47c4a61f9
       this.$refs[item.name][0].open();
       this.$emit("multipleSelectTap", e, item);
     },
+
     CheckboxChange: function CheckboxChange(e, item) {
       console.log("复选框", e, item);
       var values = e.detail.value,

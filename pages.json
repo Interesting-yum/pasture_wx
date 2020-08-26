@@ -18,8 +18,13 @@
 			}
 		},
 		
+		{
+			"path": "pages/map/mapPage",
+			"style": {
+				"navigationBarTitleText": "地图"
+			}
+		},
 
-		
 		{
 			"path": "pages/list/list",
 			"style": {

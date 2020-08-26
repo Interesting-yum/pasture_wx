@@ -59,6 +59,8 @@
 }
 .select-container .select-box .header .all.data-v-97178e90 {
   color: #4cd964;
+  font-size: 15px;
+  line-height: 35px;
 }
 .select-container .select-box .header .all .all-active.data-v-97178e90::after {
   display: inline-block;
@@ -66,7 +68,7 @@
   padding-left: 8rpx;
 }
 .select-container .select-box .header .confirm.data-v-97178e90 {
-  color: #fa436a;
+  color: #4399fc;
 }
 .select-container .select-box .body-warp.data-v-97178e90 {
   width: 100%;
@@ -89,15 +91,16 @@
   display: -webkit-box;
   display: -webkit-flex;
   display: flex;
-  font-size: 26rpx;
+  font-size: 32rpx;
   line-height: 58rpx;
+  margin: 13px 0px;
   color: #303133;
   position: relative;
   -webkit-transition: all 0.3s;
   transition: all 0.3s;
 }
 .select-container .select-box .body .select-item.selected.data-v-97178e90 {
-  color: #fa436a;
+  color: #4cd964;
 }
 .select-container .select-box .body .select-item.disabled.data-v-97178e90 {
   color: #c0c0c0;

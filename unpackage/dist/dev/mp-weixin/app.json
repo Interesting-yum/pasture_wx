@@ -63,5 +63,9 @@
     "rf-loading": "/components/rf-loading/rf-loading",
     "rf-load-progress": "/components/rf-load-progress/rf-load-progress"
   },
+<<<<<<< HEAD
   "sitemapLocation": "sitemap42.json"
+=======
+  "sitemapLocation": "sitemap61.json"
+>>>>>>> 0ebf11d1357c8177501705dac093e2e47c4a61f9
 }

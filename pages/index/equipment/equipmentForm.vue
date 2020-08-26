@@ -76,16 +76,7 @@
 			},
 			formSubmit(e){
 				console.log("调用者-RadioChange",e);
-			}
-			
-		},
-		onLoad() {
-			console.log("本页的this",this);
-			this.initAop();         //初始化aop
-			this.initData();        //初始化数据
-
-		},
-		methods:{
+			},
 			/**
 			 * aop初始化方法
 			 */
@@ -107,9 +98,16 @@
 			 */
 			initData(){
 				this.formDatas = Object.values(equipmentForm);
-				hanleValue(equipmentData,this.formDatas);
+				hanleValue(equipmentData,this.formDatas); 
 			}
-		}
+			
+		},
+		onLoad() {
+			console.log("本页的this",this);
+			this.initAop();         //初始化aop
+			this.initData();        //初始化数据
+
+		},
 	}
 </script>
 

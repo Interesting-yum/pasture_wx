@@ -96,7 +96,7 @@ $mRouter.beforeEach((navType, to) => {
 		}
 	} else {
 		uni[navType]({
-			url: $mHelper.objParseUrlAndParam(to.route, to.query)
+			url: $mHelper.objParseUrlAndParam(to.route.path, to.query)
 		});
 	}
 });

@@ -1,166 +1,395 @@
-<template >
-	<view class="view_back container" :style="{backgroundImage:`url(${indexBackgroundImage})`,backgroundSize: 'cover'}">
-	<view class="uni-flex uni-row"  style="height: 100px; -webkit-justify-content: center;justify-content: center;-webkit-align-items: center;align-items: center;">
-	<view class="text uni-flex appLogin"  data-logintype="weixin"  @click="appLogin">
-		<image class="image" src="https://img-cdn-qiniu.dcloud.net.cn/uni-ui/grid-2.png" mode="aspectFill" />
-		<text>微信授权登录</text>
-	</view>
-
-	</view>
+<template>
+	<view class="login">
+		<!--顶部返回按钮-->
+		<!-- <text class="back-btn iconfont iconzuo" @tap="navBack"></text> -->
+		<view class="login-top bg-active">
+			<view class="desc">
+				<view class="title">Hi~</view>
+				<text>{{ appName }}欢迎您</text>
+			</view>
+			<image class="login-pic" src="/static/login-pic.png"></image>
+		</view>
+		<view class="login-type-content">
+			<image class="login-bg" src="/static/login-bg.png" :style="{height: tabCurrentIndex === 1 ? '150vw' : '94vw'}"></image>
+			<view class="main">
+				<view class="nav-bar">
+					<view
+							class="nav-bar-item"
+							v-for="(item, index) in typeList"
+							:key="index"
+							:class="tabCurrentIndex === index ? 'nav-bar-item-active text-active' : ''"
+							@tap="tabClick(index)"
+					>
+						{{ item.text }}
+					</view>
+				</view>
+				<block v-if="tabCurrentIndex === 0">
+					<view class="login-type-form">
+						<view class="input-item">
+							<text class="iconfont iconef-zhanghao"></text>
+							<input
+									class="login-type-input"
+									type="number"
+									name="mobile"
+									v-model="loginParams.mobile"
+									placeholder="请输入手机号码"
+									maxlength="11"
+							/>
+						</view>
+						<view class="input-item" v-if="loginByPass">
+							<text class="iconfont iconmima"></text>
+							<input
+									class="login-type-input"
+									type="password"
+									v-model="loginParams.password"
+									placeholder="请输入密码"
+									maxlength="20"
+							/>
+						</view>
+						<view class="input-item input-item-sms-code" v-if="!loginByPass">
+							<text class="iconfont iconmima1"></text>
+							<view class="input-wrapper">
+								<view class="rf-input-wrapper">
+									<input
+											type="number"
+											class="login-type-input"
+											v-model="loginParams.code"
+											placeholder="请输入验证码"
+											maxlength="4"
+									/>
+								</view>
+								<button
+										class="sms-code-btn"
+										@tap.stop="getSmsCode('login')"
+								>
+									<text>获取验证码</text>
+								</button>
+							</view>
+						</view>
+					</view>
+					<view class="login-type-tips">
+						<view @tap="showLoginBySmsCode" class="forget-section">
+							{{ loginByPass ? '验证码登录' : '密码登录' }}
+						</view>
+						<text @tap="navTo('/pages/public/password')">忘记密码？</text>
+					</view>
+					<button
+							class="confirm-btn bg-active"
+							:disabled="btnLoading"
+							:loading="btnLoading"
+							@tap="toLogin"
+					>
+						登录
+					</button>
+				</block>
+				<block v-if="tabCurrentIndex === 1">
+					<view class="login-type-form">
+						<view class="input-item">
+							<text class="iconfont icondianhua"></text>
+							<input
+									class="login-type-input"
+									type="number"
+									name="mobile"
+									v-model="registerParams.mobile"
+									placeholder="请输入手机号码"
+									maxlength="11"
+							/>
+						</view>
+						<view class="input-item input-item-sms-code">
+							<text class="iconfont iconmima1"></text>
+							<view class="input-wrapper">
+								<view class="rf-input-wrapper">
+									<input
+											type="number"
+											class="login-type-input"
+											v-model="registerParams.code"
+											placeholder="请输入验证码"
+											maxlength="4"
+									/>
+								</view>
+								<button
+										class="sms-code-btn"
+										:disabled="smsCodeBtnDisabled"
+										@tap.stop="getSmsCode('register', registerParams.mobile)"
+								>
+									<text v-if="!smsCodeBtnDisabled">获取验证码</text>
+									<text v-else class="sms-code-resend">{{
+										`重新发送 (${codeSeconds})`
+										}}</text>
+								</button>
+							</view>
+						</view>
+						<view class="input-item">
+							<text class="iconfont iconmima"></text>
+							<input
+									class="login-type-input"
+									type="password"
+									v-model="registerParams.password"
+									placeholder="请输入密码"
+									maxlength="20"
+							/>
+						</view>
+						<view class="input-item">
+							<text class="iconfont iconmima"></text>
+							<input
+									class="login-type-input"
+									type="password"
+									v-model="registerParams.password_repetition"
+									placeholder="请输入确认密码"
+									maxlength="20"
+							/>
+						</view>
+						<view class="input-item">
+							<text class="iconfont iconef-zhanghao"></text>
+							<input
+									class="login-type-input"
+									type="text"
+									v-model="registerParams.nickname"
+									placeholder="请输入昵称"
+									maxlength="20"
+							/>
+						</view>
+						<!-- <view class="input-item">
+							<text class="iconfont cuIcon-"></text>
+							<input
+									class="login-type-input"
+									type="text"
+									v-model="registerParams.promoCode"
+									placeholder="请输入邀请码"
+									maxlength="20"
+							/>
+						</view> -->
+					</view>
+					<button
+							class="confirm-btn bg-active"
+							:disabled="btnLoading"
+							:loading="btnLoading"
+							@tap="toRegister"
+					>
+						注册
+					</button>
+				</block>
+			</view>
+		</view>
+    <view class="login-type-bottom text-active">
+      {{ appName }} 版权所有
+    </view>
 	</view>
 </template>
-
 <script>
 	export default {
-		 name: 'login',
-		 data() {
-		     return {
-		         loginData: null,
-				 indexBackgroundImage:"../../static/backImg/timg.jpg"
-		     }
-		 },
-		 onLoad() {
-			/* this.commonData = this.commonData; */
-			console.log( "onLoad"  , this.commonData);
-		 },
+		data() {
+			return {
+				loginParams: {
+					mobile: '',
+					code: '',
+					password: ''
+				},
+				registerParams: {
+					mobile: '',
+					password: '',
+					password_repetition: '',
+					promoCode: '',
+					nickname: '',
+					code: ''
+				},
+				btnLoading: false,
+				reqBody: {},
+				codeSeconds: 0, // 验证码发送时间间隔
+				loginByPass: true,
+				smsCodeBtnDisabled: true,
+				userInfo: null,
+				appName: '安曲牧场',
+				tabCurrentIndex: 0,
+				typeList: [
+					{
+						text: '登录'
+					},
+					{
+						text: '注册'
+					}
+				]
+			};
+		},
+		onLoad(options) {
+			this.tabCurrentIndex = parseInt(options.type || 0, 10);
+		},
 		methods: {
-			appLogin(){
-				
-		
-                let me = this;
-			    uni.getProvider({
-			        service: 'oauth',
-			        success: (res)=>{
-			            console.log(res.provider);
-			                uni.login({
-			                    provider: 'weixin',
-			                    success: (loginRes) =>{
-			                        console.log('-------获取openid(unionid)-----');
-			                        /* console.log(JSON.stringify(loginRes)); */
-			                        // 获取用户信息
-			                        uni.getUserInfo({
-			                            provider: 'weixin',
-			                            success: (infoRes)=> {
-											console.log('用户：', infoRes);
-											/* me.commonData.setData_user(infoRes.userInfo); */
-											uni.setStorage({//将用户信息保存在本地
-											     key: 'uerInfo',
-											     data: infoRes.userInfo
-											})
-											
-											uni.setStorage({//是否第一次登陆
-											     key: 'isOnceShow',
-											     data: true
-											})
-											uni.navigateBack();
-
-											uni.$emit('appLogin',infoRes.userInfo);
-			                            }
-			                        });
-			                    },
-			                });
-			        }
-			    });
+			// 发送验证码并进入倒计时
+			async getSmsCode(usage = 'login') {
+		    uni.showToast({ title: '点击了获取验证码' });
 			},
-			//第二种授权登录
-			appOAuthLogin(e) {
-			  var me = this;
-			  // 1 获取用户的登录类型
-			  var logintype = e.currentTarget.dataset.logintype;
-			  // 2 授权登录，弹出授权窗口
-			  uni.login({
-			    provider: logintype,
-			    success(loginRes) {
-			      // 3 授权登录成功以后，获取用户的信息
-			      uni.getUserInfo({
-			        provider: logintype,
-			        success(info) {
-			          var userInfo = info.userInfo;
-			          var face = "";
-			          var nickname = "";
-			          var openIdOrUid = "";
-			          if (logintype == "weixin") {
-			            openIdOrUid = userInfo.openId;
-			            face = userInfo.avatarUrl;
-			            nickname = userInfo.nickName;
-			          } else if (logintype == "qq") {
-			            openIdOrUid = userInfo.openId;
-			            face = userInfo.figureurl_qq_2;
-			            nickname = userInfo.nickname;
-			          } else if (logintype == "sinaweibo") {
-			            openIdOrUid = userInfo.id;
-			            face = userInfo.avatar_large;
-			            nickname = userInfo.nickname;
-			          }
-			          
-			          // 4 调用开发者后台，执行一键注册或登录
-			          uni.request({
-			            url: me.serverUrl + "/appUnionLogin/" + logintype,
-			            data: {
-			              "openIdOrUid": openIdOrUid,
-			              "nickname": nickname,
-			              "face": face
-			            },
-			            method: "POST",
-			            success(result) {
-			              if (result.data.status == 200) {
-			                var userInfo = result.data.data;
-			                // 5 保存用户信息到全局的缓存中
-			                uni.setStorageSync("globalUser", userInfo);
-			                // 6 切换页面跳转，使用tab切换的api
-			                uni.switchTab({
-			                  url: "../me/me"
-			                });
-			              }
-			            }
-			          })
-			        }
-			      })
-			    }
-			  });
+			// 切换登录方式
+			showLoginBySmsCode() {
+				this.loginByPass = !this.loginByPass;
 			},
-			//第三种测试方式
-			test(){
-				uni.getProvider({
-				  service: 'oauth',
-				  success: function (res) {
-				    console.log(res.provider);
-				  }
-				});
+			// 返回上一页
+			navBack() {
+				uni.navigateBack();
+			},
+			// 统一跳转路由
+			navTo(url) {
+		    uni.navigateTo({ url });
+			},
+			// 提交表单
+			async toLogin() {
+		    uni.showToast({ title: '点击了登录按钮' });
+			},
+			// 切换登录/注册
+			tabClick(index) {
+				this.tabCurrentIndex = index;
+			},
+			// 注册账号
+			async toRegister() {
+		    uni.showToast({ title: '点击了注册按钮' });
 			}
-
-			
 		}
-
-	}
+	};
 </script>
-
 <style lang="scss">
-	
-	.appLogin{
-		background-color:$uni-btn-color;
-		margin: 20rpx;
-		padding: 0px 1
-		0px 0px 10px; 
-		width: 30%;
-		font-size: 25upx;
-		border-radius: 5px;
-        -webkit-flex: 1;
-		flex: 1;
-		height: 200px;
-		-webkit-justify-content: center;
-		justify-content: center;
-		-webkit-align-items: center;
-		 align-items: center;
-		/* line-height: 50upx; */
+	page {
+		background: #fff;
 	}
-	.appLogin image{
-		width: 50upx;
-		height: 50upx;
-	}
-		.view_back{
-			height:650px;
-			width: 100%;
+	.login {
+		width: 100%;
+		position: relative;
+    .bg-active {
+      background-color: #2f85fc;
+      color: #fff;
+    }
+    .text-active, .iconfont {
+      color: #2f85fc;
+    }
+		.back-btn {
+			position: absolute;
+			left: 40rpx;
+			z-index: 9999;
+			padding-top: var(--status-bar-height);
+			top: 40rpx;
+			font-size: 48rpx;
+			color: #fff;
 		}
+		.login-top {
+			height: 380rpx;
+			position: relative;
+			.desc {
+				color: #fff;
+				position: absolute;
+				top: 120rpx;
+				left: 40rpx;
+				font-size: 48rpx;
+				.title {
+					font-size: 48rpx;
+				}
+			}
+			.login-pic {
+				position: absolute;
+				width: 220rpx;
+				height: 270rpx;
+				right: 30rpx;
+				top: 100rpx;
+			}
+		}
+		.login-type-content {
+			position: relative;
+			top: -72rpx;
+			.login-bg {
+				width: 94vw;
+				height: 94vw;
+				margin: 0 3vw;
+			}
+			.main {
+				width: 94vw;
+				position: absolute;
+				top: 0;
+				left: 3vw;
+				.nav-bar {
+					display: flex;
+					height: 100rpx;
+					justify-content: center;
+					align-items: center;
+					position: relative;
+					z-index: 10;
+					.nav-bar-item {
+						flex: 1;
+						display: flex;
+						height: 100%;
+						line-height: 96rpx;
+						font-size: 32rpx;
+						display: flex;
+						margin: 0 120rpx;
+						justify-content: center;
+					}
+					.nav-bar-item-active {
+						border-bottom: 5rpx solid;
+					}
+				}
+				.login-type-form {
+					width: 80%;
+					margin: 50rpx auto;
+					.input-item {
+						position: relative;
+						height: 90rpx;
+						line-height: 90rpx;
+						margin-bottom: 30rpx;
+						.iconfont {
+							font-size: 50rpx;
+							position: absolute;
+							left: 0;
+						}
+						.login-type-input {
+							height: 90rpx;
+							padding-left: 80rpx;
+							border-bottom: 1rpx solid rgba(0, 0, 0, .1);
+						}
+						.sms-code-btn, sms-code-resend {
+							width: 240rpx;
+							font-size: 26rpx;
+						}
+					}
+				}
+				.login-type-tips {
+					padding: 0 50rpx;
+					display: flex;
+					justify-content: space-between;
+          font-size: 28upx;
+          color: #666;
+				}
+				.confirm-btn {
+          margin-top: 60upx;
+          width: 80%;
+					height: 80rpx;
+					line-height: 80rpx;
+				}
+			}
+		}
+		.login-type-bottom {
+			width: 100%;
+			padding-bottom: 30rpx;
+			text-align: center;
+			font-size: 32rpx;
+		}
+    // 发送验证码样式
+    .input-item-sms-code {
+      .input-wrapper {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
 
+      .sms-code-btn {
+        width: 200upx;
+        background-color: #fff;
+        display: flex;
+        padding: 15upx 0;
+        justify-content: center;
+        align-items: center;
+        border-radius: 12upx;
+      }
+
+      .sms-code-resend {
+        color: #666;
+      }
+    }
+	}
 </style>

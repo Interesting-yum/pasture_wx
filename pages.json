@@ -9,7 +9,14 @@
 					"navigationStyle": "custom"
 				}
 				
-		}, 
+		},
+		
+		{
+				"path": "pages/user/user_login/login",
+				"style": {
+					"navigationBarTitleText": "登录"
+				}
+		},
 
 		{
 			"path": "pages/map/map",
@@ -19,7 +26,7 @@
 		},
 		
 		{
-			"path": "pages/map/mapPage",
+			"path": "pages/map/map",
 			"style": {
 				"navigationBarTitleText": "地图"
 			}

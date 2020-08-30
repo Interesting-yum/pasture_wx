@@ -116,14 +116,16 @@
 			},
 			
 			login(){
+				var _this = this;
 				uni.showModal({
 				    title: this.App_title,
 					content:"是否跳转登录界面",
 				    success: function (res) {
 				        if (res.confirm) {
-				           uni.navigateTo({
-				           		url: '../index/login'
-				           });
+							_this.$mRouter.push({route:_this.$mRoutesConfig.login})
+				           /* uni.navigateTo({
+				           		url: '/pages/user/user_login/login'
+				           }); */
 				        } else if (res.cancel) {
 				            console.log('用户点击取消');
 				        }

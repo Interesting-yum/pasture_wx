@@ -6,7 +6,7 @@
 </template>
 
 <script>
-	import mapPage from "@/pages/map/mapPage.nvue"
+	import mapPage from "@/pages/map/map.nvue"
 	export default {
 		    components:{
 				mapPage

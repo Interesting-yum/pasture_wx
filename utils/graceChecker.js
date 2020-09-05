@@ -142,7 +142,6 @@ module.exports = {
 					}
 					break;
 				case 'notnull':
-				    console.log("notnull?")
 					if (data[rule[i].name] == null || data[rule[i].name].length < 1) {
 						this.error = rule[i].errorMsg;
 						this.name = rule[i].name;

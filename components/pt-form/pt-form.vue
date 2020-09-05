@@ -16,7 +16,7 @@
  *						属性介绍:{	 
  *	                       img 
  *							  内容      :  "图片文件上传组件",
- *                            私有参数  :  {imgList,}
+ *                            私有参数  :  {value,}
  *						   picker 
  *							  内容      :  "选择器组件",
  *                            私有参数  :   {range,range-key,start,end,mode}
@@ -32,7 +32,7 @@
  *					title:
  *						类型:String
  *						内容:"组件的标题,"
- *					imgList:
+ *					value:
  *						类型:Array
  *						内容:"图片文件对象的数组"
  *						单个对象属性:{
@@ -59,7 +59,7 @@
 					 		{{item.title}}
 					 	</view>
 					 	<view class="action">
-					 		{{item.imgList.length}}/4
+					 		{{item.value.length}}/4
 					 	</view>
 					 </view>
 					 <view v-else class="title">{{item.title}}</view>
@@ -67,14 +67,14 @@
 					 <!-- 图片上传组件 -->
 					 <view v-if="item.type=='img'" class="grid col-4 grid-square flex-sub" :name="item.name">
 						<!-- 图片容器 -->
-						<view class="bg-img" v-for="(img,imgIndex) in item.imgList" :key="imgIndex" @tap="ViewImage($event,item)" :data-url="item.imgList[index]">
-						<image :src="item.imgList[imgIndex]" mode="aspectFill"></image>
+						<view class="bg-img" v-for="(img,imgIndex) in item.value" :key="imgIndex" @tap="ViewImage($event,item)" :data-url="item.value[index]">
+						<image :src="item.value[imgIndex]" mode="aspectFill"></image>
 							<view class="cu-tag bg-red" @tap.stop="DelImg($event,item)" :data-index="imgIndex">
 								<text class='cuIcon-close'></text>
 							</view>
 						</view>
 						<!-- 添加按钮 -->
-						<view class="solids" @tap="ChooseImage($event,item)" v-if="item.imgList.length<4">
+						<view class="solids" @tap="ChooseImage($event,item)" v-if="item.value.length<4">
 							<text class='cuIcon-cameraadd'></text>
 						</view>
 					 </view>
@@ -95,17 +95,22 @@
 						  {{getPickerValueByMode(item)}}
 					 </view>
 					 </picker>
-					 <view v-else-if="item.type=='map'" @tap="mapTap($event,item)"><text>12</text></view>
+					 <!-- 地图路线选择组件 -->
+					 <view class="flexFull" style="width: 60%;flex-wrap: nowrap;overflow: hidden;" v-else-if="item.type=='map'" @tap="mapTap($event,item)">
+						 <text>{{item.value || '请选择'}}</text>
+						 <input style="display: none;" :name="item.name" :value="item.value" />
+					 </view>
 					 <!-- 多选的选择器 -->
-					 <view v-else-if="item.type=='multipleSelect'" >
+					 <view class="flexFull" v-else-if="item.type=='multipleSelect'" >
 						 <view class="text-area" @tap="multipleSelectTap($event,item)">
 						   <text class="value" >{{item.multipleSelect.info || "请选择"}}</text>
+						   <input style="display: none;" :name="item.name" :value="item.value" />
 						 </view>
 						 <multiple-select
 						   v-model="item.multipleSelect.show"
 						   :ref="item.name"
 						   :dataList="item.multipleSelect.list"
-						   :default-selected="item.multipleSelect.defaultSelected"
+						   :default-selected="item.value"
 						   :item="item"
 						   @confirm="multipleChange"
 						 ></multiple-select>
@@ -190,10 +195,9 @@
 				this.$emit("change",e,item)
 			},
 			multipleChange(e,item){
+				item.value = e.map((el) => el.value);
 				item.multipleSelect.info = e.map((el) => el.label).join(",");
 				this.$emit("multipleSelect",e,item)
-				console.log("itemsaas",item);
-				console.log("esasasa",e);
 			},
 			columnchange(e,item){
 				console.log("picker多咧选择器触发改变");
@@ -268,10 +272,10 @@
 					sizeType: ['original', 'compressed'], //可以指定是原图还是压缩图，默认二者都有
 					sourceType: ['album'], //从相册选择
 					success: (res) => {
-						if (item.imgList.length != 0) {
-							item.imgList = item.imgList.concat(res.tempFilePaths)
+						if (item.value.length != 0) {
+							item.value = item.value.concat(res.tempFilePaths)
 						} else {
-							item.imgList = res.tempFilePaths
+							item.value = res.tempFilePaths
 						}
 						console.log("this",this);
 						this.$emit("ChooseImage",e,item);
@@ -280,7 +284,7 @@
 			},
 			ViewImage(e,item) {
 				uni.previewImage({
-					urls: item.imgList,
+					urls: item.value,
 					current: e.currentTarget.dataset.url
 				});
 				this.$emit("ViewImage",e,item)
@@ -293,7 +297,7 @@
 					cancelText: '取消',
 					success: res => {
 						if (res.confirm) {
-							item.imgList.splice(e.currentTarget.dataset.index, 1)
+							item.value.splice(e.currentTarget.dataset.index, 1)
 						}
 						this.$emit("ViewImage",e,item)
 					}
@@ -305,8 +309,17 @@
 			},
 			formSubmit: function (e) {
 				console.log(this.formDatas)
+				//错误表单组件提示为空
+				this.errorName = ""; 
 				//进行表单检查
-				var formData = e.detail.value;
+				/* var formData = e.detail.value; */
+				var formData = this.formDatas.reduce((cur,per,arr,i)=>{
+					 if(per.value  instanceof Array){
+						 per.value = per.value.toString();
+					 } 
+					 cur[per.name] = per.value;
+					 return cur;
+				 },{})
 				var checkRes = graceChecker.check(formData, this.rule);
 				if(checkRes){
 					uni.showToast({title:"验证通过!", icon:"none"});
@@ -370,6 +383,12 @@
 			.title{
 				font-size:$font-base;
 				min-width: 80px;
+			}
+			.flexFull{
+				font-size:$font-base;
+				flex: 1;
+				text-align: right;
+				margin-right: 10upx;
 			}
 			.input{
 				font-size:$font-base;

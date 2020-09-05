@@ -12,6 +12,7 @@ import $mFormRule from '@/config/formRule.config.js';
 import $mConstDataConfig from '@/config/constData.config.js';
 import $mWebsocketConfig from '@/config/websocket.config.js';
 
+
 // 引入全局方法
 import { http } from '@/utils/request';
 import $mGraceChecker from '@/utils/graceChecker';
@@ -33,8 +34,27 @@ uni.getNetworkType({
 });
 
 uni.onNetworkStatusChange(function(res) {
-	store.dispatch('networkStateChange', res.networkType);
+	store.dispatch('setLocation', res.networkType);
 });
+
+store.commit('setUserId',{id:1});
+
+//通过授权获取当前位置
+// #ifdef MP-WEIXIN
+uni.authorize({
+    scope: 'scope.userLocation',
+    success() {
+		uni.getLocation().then(e=>{
+			console.log("e",e);
+			let location = {
+				latitude:e[1].latitude,
+				longitude:e[1].longitude
+			}
+			store.dispatch('locationChange', location); 
+		})
+    }
+})
+// #endif
 
 //挂载全局自定义方法
 Vue.prototype.$mStore = store;
@@ -104,6 +124,8 @@ $mRouter.beforeEach((navType, to) => {
 //启动切面配置文件
 require("@/config/aopConfig.js");
 App.mpType = 'app';
+
+
 
 const app = new Vue({
 	...App,

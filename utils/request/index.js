@@ -57,6 +57,7 @@ async function handleRefreshToken(refresh_token) {
 	});
 }
 http.interceptor.response(async (response) => { /* 请求之后拦截器 */
+    console.log("code",response)
 	switch (response.data.code) {
 		case 200:
 			return response.data;

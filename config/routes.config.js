@@ -13,6 +13,10 @@
 
 export default {
 	// 权限路由 在main.js可实现路由拦截 所以路由都需要注册 待完善
+	info:{
+		name: '信息中心',
+		path: '/pages/index/info/info',
+	},
 	promoCode: {
 		name: '创建订单',
 		path: '/pages/order/create/order',

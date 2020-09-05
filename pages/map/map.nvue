@@ -1,28 +1,37 @@
 <template>
-	<view class="page" >
-	 <mapPage class="mapPage"></mapPage>
+	<view class="page" :style="{height:systemInfo.bodyHeight+'px'}">
+	 <mapPage class="mapPage" ref="mapPage" style="height: 100%;"></mapPage>
 	</view>
 
 </template>
 
 <script>
-	import mapPage from "@/pages/map/mapPage.nvue"
+
+	import mapPage   from "@/pages/map/mapPage.nvue"
+    import {mapState} from 'vuex'
 	export default {
 		    components:{
 				mapPage
 			},
 		    data() {
-			return {}
+			   return {
+			   }
 			},
-
 			onLoad() {
-
+              
 			},
 			computed:{
-
+					...mapState({ systemInfo:state=>state.systemStore.systemInfo}),
 			},
 			methods:{
 
+			},
+			onShow(){
+				this.$refs.mapPage.option.mode = "tabBarMap";
+				 console.log("map",this.$refs);
+			},
+			mounted(){
+				 
 			},
 		    
 			onPullDownRefresh() {

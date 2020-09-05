@@ -45,6 +45,9 @@ const store = new Vuex.Store({
         }
     },
     mutations: {
+		setUserId(state, provider){
+			state.userInfo = provider
+		},
         login(state, provider) {
 			state.accessToken=provider.access_token;
 			state.refreshToken=provider.refresh_token;

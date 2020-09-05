@@ -46,7 +46,12 @@ function hanleValue(data,arr){
 	for(var i in data){
 		let target = arr.find(f=>f.name == i);
 		if(target){
-			target.value = data[i];
+			if(data[i].includes(",")){
+				target.value = data[i].split(",");
+			}else{
+				target.value = data[i];
+			}
+			
 		}
 	}
 }

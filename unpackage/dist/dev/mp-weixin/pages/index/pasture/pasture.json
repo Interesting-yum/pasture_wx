@@ -1,9 +1,7 @@
 {
   "navigationBarTitleText": "牧场",
   "usingComponents": {
-    "title-view": "/components/title-view/title-view",
-    "uni-collapse": "/components/uni-collapse/uni-collapse",
-    "uni-collapse-item": "/components/uni-collapse-item/uni-collapse-item",
+    "list-item": "/components/listItem/listItem",
     "uni-fab": "/components/uni-fab/uni-fab"
   }
 }

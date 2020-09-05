@@ -32,9 +32,9 @@
 			</view>  
 			
 			<view class="flex  p-xs  mb-sm margin" style="margin: 110px 8px 0px 8px;">
-				<view class="flex-sub">
+				<navigator class="flex-sub" url="info/infoAll">
 					<uni-notice-bar style=" border-radius: 20px;" backgroundColor="rgba(40, 173, 179, 0.18)" class="uni-notice-bar  bg-purple" showIcon="true" scrollable="true" single="true" :text="noticeText"></uni-notice-bar>		
-				</view>
+				</navigator>
 			</view>
 			
 			<view class="nav-list margin">
@@ -137,7 +137,7 @@
 					name:"信息模块",
 					num:"s",
 					img:this.$mAssetsPath.info,
-					url:"",
+					url:"/pages/index/info/info",
 				},{
 					name:"管家服务",
 					num:"b",

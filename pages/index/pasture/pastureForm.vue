@@ -28,7 +28,10 @@
     import {aop,hanleValue} from "@/utils/utils.js"
 	import form,{equipmentForm2} from "@/config/form.config.js"
 	import formRule from "@/config/formRule.config.js"
+	import {addPasture} from "@/api/pasture.js"
 	const pastureForm = form.pastureForm;
+	const pastureData = form.pastureData;
+	const pastureRule = formRule.pastureRule;
 	export default{
 		components:{
 			ptForm,
@@ -36,7 +39,7 @@
 		data(){
 			return { 
 				formDatas:[],
-				rule:formRule.equipmentRule,
+				rule:pastureRule,
 			}
 		},
 		methods:{
@@ -84,12 +87,20 @@
 				console.log("multipleSelectTap",e,item);
 			},
 			mapTap(e,item){
-				uni.navigateTo({
-					url:"../../map/mapClone"
-				});
+				uni.navigateTo({url:"../../map/mapPage?mode=editPasture&&item="+ encodeURIComponent(JSON.stringify(item))});
+			},
+			async formToServer(e) {
+				console.log("addPasture:",`${addPasture}`)
+                 this.$http.post(`${addPasture}`, e).then((rep) => {
+					  this.$mHelper.toast("添加成功");
+                      setTimeout(()=>{
+						  uni.navigateBack();
+					  },500)
+				 })
 			},
 			formSubmit(e){
 				console.log("调用者-RadioChange",e);
+				this.formToServer(e);
 			},
 			/**
 			 * aop初始化方法
@@ -102,17 +113,29 @@
 					try{
 						this.formDatas=this.formDatas.map(f=>f.name==item.name ? (f = item):f)
 					}catch(err){
-						console.log("过滤错误...","\ne：",e,"\nitem：",item, "\n错误：",err)
+						/* console.log("过滤错误...","\ne：",e,"\nitem：",item, "\n错误：",err) */
 					}
 					//#endif
 				})
+			},
+			updateRange(e,item){
+				console.log("回来了？",e)
+				console.log("回来了？",item)
+				let locationStr = e.map((el) => "["+el.latitude+","+el.longitude+"]").join(",")
+				console.log("locationStr",locationStr)
+				item.value = locationStr;
+/* 				this.formDatas.map(m=>{
+					if(m.name == item.name){
+						m
+					}
+				}) */
 			},
 			/**
 			 * 初始化数据
 			 */
 			initData(){
 				this.formDatas = Object.values(pastureForm);
-				hanleValue([],this.formDatas);
+				hanleValue(pastureData,this.formDatas);
 			}
 			
 		},
@@ -120,7 +143,14 @@
 			console.log("本页的this",this);
 			this.initAop();        //初始化aop
 			this.initData();        //初始化数据
-
+/* 			uni.$on("updateRange",function(e,item){
+				console.log("回来了？",e)
+				console.log("回来了？",item)
+				let locationStr = e.map((el) => "["+el.latitude+","+el.longitude+"]").join(",")
+				console.log("locationStr",locationStr)
+				this.item = 
+			})
+ */
 		},
 
 	}

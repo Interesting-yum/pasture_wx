@@ -1,8 +1,8 @@
 (global["webpackJsonp"] = global["webpackJsonp"] || []).push([["common/main"],[
 /* 0 */
-/*!**********************************************************************!*\
-  !*** C:/Users/ASUS/Documents/HBuilderProjects/ThorUI组件库后台模板/main.js ***!
-  \**********************************************************************/
+/*!****************************************************!*\
+  !*** E:/Documents/HBuilderProjects/牧场管理系统/main.js ***!
+  \****************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -14,19 +14,20 @@ var _App = _interopRequireDefault(__webpack_require__(/*! ./App */ 5));
 var _store = _interopRequireDefault(__webpack_require__(/*! @/store */ 15));
 
 
-var _assetsConfig = _interopRequireDefault(__webpack_require__(/*! @/config/assets.config.js */ 19));
-var _indexConfig = _interopRequireDefault(__webpack_require__(/*! @/config/index.config.js */ 20));
+var _assetsConfig = _interopRequireDefault(__webpack_require__(/*! @/config/assets.config.js */ 20));
+var _indexConfig = _interopRequireDefault(__webpack_require__(/*! @/config/index.config.js */ 21));
 var _routesConfig = _interopRequireDefault(__webpack_require__(/*! @/config/routes.config.js */ 16));
-var _formRuleConfig = _interopRequireDefault(__webpack_require__(/*! @/config/formRule.config.js */ 21));
-var _constDataConfig = _interopRequireDefault(__webpack_require__(/*! @/config/constData.config.js */ 23));
-var _websocketConfig = _interopRequireDefault(__webpack_require__(/*! @/config/websocket.config.js */ 24));
+var _formRuleConfig = _interopRequireDefault(__webpack_require__(/*! @/config/formRule.config.js */ 22));
+var _constDataConfig = _interopRequireDefault(__webpack_require__(/*! @/config/constData.config.js */ 24));
+var _websocketConfig = _interopRequireDefault(__webpack_require__(/*! @/config/websocket.config.js */ 25));
 
 
-var _request = __webpack_require__(/*! @/utils/request */ 25);
-var _graceChecker = _interopRequireDefault(__webpack_require__(/*! @/utils/graceChecker */ 29));
-var _helper = _interopRequireDefault(__webpack_require__(/*! @/utils/helper */ 28));
+
+var _request = __webpack_require__(/*! @/utils/request */ 26);
+var _graceChecker = _interopRequireDefault(__webpack_require__(/*! @/utils/graceChecker */ 30));
+var _helper = _interopRequireDefault(__webpack_require__(/*! @/utils/helper */ 29));
 var _router = _interopRequireDefault(__webpack_require__(/*! @/utils/router */ 17));
-var _payment = _interopRequireDefault(__webpack_require__(/*! @/utils/payment */ 30));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function ownKeys(object, enumerableOnly) {var keys = Object.keys(object);if (Object.getOwnPropertySymbols) {var symbols = Object.getOwnPropertySymbols(object);if (enumerableOnly) symbols = symbols.filter(function (sym) {return Object.getOwnPropertyDescriptor(object, sym).enumerable;});keys.push.apply(keys, symbols);}return keys;}function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};if (i % 2) {ownKeys(Object(source), true).forEach(function (key) {_defineProperty(target, key, source[key]);});} else if (Object.getOwnPropertyDescriptors) {Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));} else {ownKeys(Object(source)).forEach(function (key) {Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));});}}return target;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}var rfImage = function rfImage() {__webpack_require__.e(/*! require.ensure | components/rf-image/rf-image */ "components/rf-image/rf-image").then((function () {return resolve(__webpack_require__(/*! @/components/rf-image/rf-image */ 145));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var rfEmpty = function rfEmpty() {__webpack_require__.e(/*! require.ensure | components/rf-empty/index */ "components/rf-empty/index").then((function () {return resolve(__webpack_require__(/*! @/components/rf-empty */ 152));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var rfLoading = function rfLoading() {__webpack_require__.e(/*! require.ensure | components/rf-loading/rf-loading */ "components/rf-loading/rf-loading").then((function () {return resolve(__webpack_require__(/*! @/components/rf-loading/rf-loading */ 159));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var rfLoadProgress = function rfLoadProgress() {__webpack_require__.e(/*! require.ensure | components/rf-load-progress/rf-load-progress */ "components/rf-load-progress/rf-load-progress").then((function () {return resolve(__webpack_require__(/*! @/components/rf-load-progress/rf-load-progress */ 164));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};
+var _payment = _interopRequireDefault(__webpack_require__(/*! @/utils/payment */ 31));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function ownKeys(object, enumerableOnly) {var keys = Object.keys(object);if (Object.getOwnPropertySymbols) {var symbols = Object.getOwnPropertySymbols(object);if (enumerableOnly) symbols = symbols.filter(function (sym) {return Object.getOwnPropertyDescriptor(object, sym).enumerable;});keys.push.apply(keys, symbols);}return keys;}function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};if (i % 2) {ownKeys(Object(source), true).forEach(function (key) {_defineProperty(target, key, source[key]);});} else if (Object.getOwnPropertyDescriptors) {Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));} else {ownKeys(Object(source)).forEach(function (key) {Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));});}}return target;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}var rfImage = function rfImage() {__webpack_require__.e(/*! require.ensure | components/rf-image/rf-image */ "components/rf-image/rf-image").then((function () {return resolve(__webpack_require__(/*! @/components/rf-image/rf-image */ 190));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var rfEmpty = function rfEmpty() {__webpack_require__.e(/*! require.ensure | components/rf-empty/index */ "components/rf-empty/index").then((function () {return resolve(__webpack_require__(/*! @/components/rf-empty */ 197));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var rfLoading = function rfLoading() {__webpack_require__.e(/*! require.ensure | components/rf-loading/rf-loading */ "components/rf-loading/rf-loading").then((function () {return resolve(__webpack_require__(/*! @/components/rf-loading/rf-loading */ 204));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var rfLoadProgress = function rfLoadProgress() {__webpack_require__.e(/*! require.ensure | components/rf-load-progress/rf-load-progress */ "components/rf-load-progress/rf-load-progress").then((function () {return resolve(__webpack_require__(/*! @/components/rf-load-progress/rf-load-progress */ 209));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};
 
 
 
@@ -42,8 +43,27 @@ uni.getNetworkType({
 
 
 uni.onNetworkStatusChange(function (res) {
-  _store.default.dispatch('networkStateChange', res.networkType);
+  _store.default.dispatch('setLocation', res.networkType);
 });
+
+_store.default.commit('setUserId', { id: 1 });
+
+//通过授权获取当前位置
+
+uni.authorize({
+  scope: 'scope.userLocation',
+  success: function success() {
+    uni.getLocation().then(function (e) {
+      console.log("e", e);
+      var location = {
+        latitude: e[1].latitude,
+        longitude: e[1].longitude };
+
+      _store.default.dispatch('locationChange', location);
+    });
+  } });
+
+
 
 //挂载全局自定义方法
 _vue.default.prototype.$mStore = _store.default;
@@ -109,8 +129,10 @@ _router.default.beforeEach(function (navType, to) {
 });
 
 //启动切面配置文件
-__webpack_require__(/*! @/config/aopConfig.js */ 33);
+__webpack_require__(/*! @/config/aopConfig.js */ 34);
 _App.default.mpType = 'app';
+
+
 
 var app = new _vue.default(_objectSpread({},
 _App.default, {
@@ -125,9 +147,9 @@ createApp(app).$mount();
 /* 3 */,
 /* 4 */,
 /* 5 */
-/*!**********************************************************************!*\
-  !*** C:/Users/ASUS/Documents/HBuilderProjects/ThorUI组件库后台模板/App.vue ***!
-  \**********************************************************************/
+/*!****************************************************!*\
+  !*** E:/Documents/HBuilderProjects/牧场管理系统/App.vue ***!
+  \****************************************************/
 /*! no static exports found */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -164,9 +186,9 @@ component.options.__file = "App.vue"
 
 /***/ }),
 /* 6 */
-/*!***********************************************************************************************!*\
-  !*** C:/Users/ASUS/Documents/HBuilderProjects/ThorUI组件库后台模板/App.vue?vue&type=script&lang=js& ***!
-  \***********************************************************************************************/
+/*!*****************************************************************************!*\
+  !*** E:/Documents/HBuilderProjects/牧场管理系统/App.vue?vue&type=script&lang=js& ***!
+  \*****************************************************************************/
 /*! no static exports found */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -179,9 +201,9 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 /* 7 */
-/*!******************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/babel-loader/lib!./node_modules/@dcloudio/vue-cli-plugin-uni/packages/webpack-preprocess-loader??ref--12-1!./node_modules/@dcloudio/webpack-uni-mp-loader/lib/script.js!./node_modules/@dcloudio/vue-cli-plugin-uni/packages/vue-loader/lib??vue-loader-options!./node_modules/@dcloudio/webpack-uni-mp-loader/lib/style.js!C:/Users/ASUS/Documents/HBuilderProjects/ThorUI组件库后台模板/App.vue?vue&type=script&lang=js& ***!
-  \******************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/*!************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib!./node_modules/@dcloudio/vue-cli-plugin-uni/packages/webpack-preprocess-loader??ref--12-1!./node_modules/@dcloudio/webpack-uni-mp-loader/lib/script.js!./node_modules/@dcloudio/vue-cli-plugin-uni/packages/vue-loader/lib??vue-loader-options!./node_modules/@dcloudio/webpack-uni-mp-loader/lib/style.js!E:/Documents/HBuilderProjects/牧场管理系统/App.vue?vue&type=script&lang=js& ***!
+  \************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -248,9 +270,9 @@ var _vuex = _interopRequireDefault(__webpack_require__(/*! vuex */ 11));function
 /* 10 */,
 /* 11 */,
 /* 12 */
-/*!********************************************************************************************************!*\
-  !*** C:/Users/ASUS/Documents/HBuilderProjects/ThorUI组件库后台模板/App.vue?vue&type=style&index=0&lang=scss& ***!
-  \********************************************************************************************************/
+/*!**************************************************************************************!*\
+  !*** E:/Documents/HBuilderProjects/牧场管理系统/App.vue?vue&type=style&index=0&lang=scss& ***!
+  \**************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -263,9 +285,9 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 /* 13 */
-/*!**********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/mini-css-extract-plugin/dist/loader.js??ref--8-oneOf-1-0!./node_modules/css-loader/dist/cjs.js??ref--8-oneOf-1-1!./node_modules/@dcloudio/vue-cli-plugin-uni/packages/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/@dcloudio/vue-cli-plugin-uni/packages/webpack-preprocess-loader??ref--8-oneOf-1-2!./node_modules/postcss-loader/src??ref--8-oneOf-1-3!./node_modules/sass-loader/dist/cjs.js??ref--8-oneOf-1-4!./node_modules/@dcloudio/vue-cli-plugin-uni/packages/webpack-preprocess-loader??ref--8-oneOf-1-5!./node_modules/@dcloudio/vue-cli-plugin-uni/packages/vue-loader/lib??vue-loader-options!./node_modules/@dcloudio/webpack-uni-mp-loader/lib/style.js!C:/Users/ASUS/Documents/HBuilderProjects/ThorUI组件库后台模板/App.vue?vue&type=style&index=0&lang=scss& ***!
-  \**********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/*!****************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/mini-css-extract-plugin/dist/loader.js??ref--8-oneOf-1-0!./node_modules/css-loader/dist/cjs.js??ref--8-oneOf-1-1!./node_modules/@dcloudio/vue-cli-plugin-uni/packages/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/@dcloudio/vue-cli-plugin-uni/packages/webpack-preprocess-loader??ref--8-oneOf-1-2!./node_modules/postcss-loader/src??ref--8-oneOf-1-3!./node_modules/sass-loader/dist/cjs.js??ref--8-oneOf-1-4!./node_modules/@dcloudio/vue-cli-plugin-uni/packages/webpack-preprocess-loader??ref--8-oneOf-1-5!./node_modules/@dcloudio/vue-cli-plugin-uni/packages/vue-loader/lib??vue-loader-options!./node_modules/@dcloudio/webpack-uni-mp-loader/lib/style.js!E:/Documents/HBuilderProjects/牧场管理系统/App.vue?vue&type=style&index=0&lang=scss& ***!
+  \****************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 

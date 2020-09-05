@@ -1,7 +1,14 @@
 import Assets from '../../config/assets.config.js'
 export default{
+	option:{
+		mode:""
+	},
+	windowHeight:"100%",
 	model:"info",
-	editModel:"add",
+	isMapInput:false,
+	MapInputList:[],
+	mapInputValue:"",
+	editModel:" ",
 	isLoading:false,
 	showImg: true,
 	popupType:"bottom",
@@ -18,97 +25,25 @@ export default{
 		color: 'olive',
 		title: "距离本手机"
 	}],
-	mapContext:null,
-	windowHeight:0,
-	windowWidth:0,
-	noSelectIcon:Assets.locationImg,
-	muchang:Assets.muchang,
-	array: ['中国-台湾-香港', '美国-旧金山-铁山大桥', '巴西-跑马场', '日本-红灯区'],
-	index: 0,
-	enableSatellite:true,
-	controlList:[],	
+	mapContext:null,				  //地图的原生对象
+
+	noSelectIcon:Assets.locationImg,  //没有选中的地图图标样式(修改模式)
+	muchang:Assets.muchang,           //右上角的picker组件的图标内容
+	array: [],						  //右上角的picker组件的数据内容
+	index: 0,						  //右上角的picker组件的选中下标
+	enableSatellite:true,			  //卫星地图是否开启
+	controlList:[],					  //左上角控件的集合
 	markers: [],                      //点标记
-	recordMarkers:[{
-							id: 112,
-							type:"record",
-							latitude: 39.77265852521458,
-							longitude: 116.37371063232422,
-							title: '摄像头',
-							zIndex: '1',
-							iconPath: Assets.recordImg,
-							rotate: 0,
-							width: 20,
-							height: 20,
-							anchor: {
-								x: 0.5,
-								y: 1
-							},
-							callout: {
-								content: '摄像头',
-								color: '#586e84',
-								fontSize: 10,
-								borderRadius: 4,
-								borderWidth: 1,
-								borderColor: '#00BFFF',
-								bgColor: '#1dececc4',
-								padding: '0.5',
-								display: 'ALWAYS'
-							}
-						},
-						{
-												id: 113,
-												type:"record",
-												latitude: 39.73729032077588,
-												longitude: 116.34933471679688,
-												title: '摄像头',
-												zIndex: '1',
-												iconPath: Assets.recordImg,
-												rotate: 0,
-												width: 20,
-												height: 20,
-												anchor: {
-													x: 0.5,
-													y: 1
-												},
-												callout: {
-													content: '摄像头2',
-													color: '#586e84',
-													fontSize: 10,
-													borderRadius: 4,
-													borderWidth: 1,
-													borderColor: '#00BFFF',
-													bgColor: '#1dececc4',
-													padding: '0.5',
-													display: 'ALWAYS'
-												}
-											}],                 //视频的点标记
+	recordMarkers:[],                 //视频的点标记
 	cacheMarkers:[],                  //点标记的缓存
-	//多边形的数据
-	polygons:[{
-	   points: [{
-				latitude: 39.781892,
-				longitude: 116.293413
-			},
-			{
-				latitude: 39.787600,
-				longitude: 116.391842
-			},
-			{
-				latitude: 39.733187,
-				longitude: 116.417932
-			},
-			{
-				latitude: 39.704653,
-				longitude: 116.338255
-			}
-		],
+	polygons:[{				          //多边形的数据
+	   points: [],
 		fillColor: '#26a4e06e',
 		strokeWidth: 3,
 		strokeColor: '#26a4e0',
 		zIndex: 11
-	}],
-	//点标记的模板
-	markerDemo:{
+	}],                   
+	markerDemo:{					  //点标记的模板
 						id: null,
 						latitude: null,
 						longitude: null,
@@ -121,9 +56,8 @@ export default{
 							x: 0.5,
 							y: 0.5
 						}
-				},
-	//信息的控件data数据
-	controlListInfo:[{
+				},	
+	controlListInfo:[{                 //初始化的控件data数据
 			 id:1,
 		     img:Assets.weixin,
 			 tap(e){
@@ -133,9 +67,10 @@ export default{
 		 },
 		 {
 		 	 id:2,
-		      img:Assets.messageImg,
+		     img:Assets.messageImg,
+			 badge:15,
 		 	 tap(e){
-		 		e.$mHelper.toast("点击了信息模块")
+				e.$mRouter.push({route: `/pages/index/info/info`})
 		 	 }
 		  },
 		{

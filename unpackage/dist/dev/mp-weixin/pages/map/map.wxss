@@ -171,7 +171,7 @@ swiper-item {
   background-color: #fff;
 }
 .map {
-  height: 600px;
+  height: 100%;
   width: 100%;
   display: -webkit-box;
   display: -webkit-flex;
@@ -196,8 +196,9 @@ swiper-item {
   background-color: rgba(205, 208, 205, 0.92);
   -webkit-box-orient: horizontal;
   -webkit-box-direction: normal;
-  -webkit-flex-flow: row nowrap;
-          flex-flow: row nowrap;
+  -webkit-flex-flow: row wrap;
+          flex-flow: row wrap;
+  max-width: 60%;
 }
 .map .mapControls-right-view .uniIcons {
   -webkit-box-flex: 1;
@@ -217,6 +218,19 @@ swiper-item {
 .map .mapControls-right-view picker view {
   background-color: transparent;
   overflow: hidden;
+}
+.map .mapControls-right-view input {
+  padding: 5px;
+  height: 30px;
+  font-size: 25rpx;
+}
+.map .mapControls-right-view .cu-list {
+  width: 100%;
+}
+.map .mapControls-right-view .cu-list .cuMapItem {
+  padding: 5px;
+  overflow: hidden;
+  white-space: normap;
 }
 .map .mapControls-view {
   position: absolute;
@@ -250,6 +264,7 @@ swiper-item {
   width: 100%;
   z-index: 97;
   bottom: 5%;
+  right: 0;
   display: -webkit-box;
   display: -webkit-flex;
   display: flex;
@@ -315,5 +330,59 @@ swiper-item {
 }
 .bottom-button button:first-child {
   background-color: #8dc63f;
+}
+
+
+view,
+swiper-item,
+scroll-view {
+  display:-webkit-box;
+  display:-webkit-flex;
+  display:flex;
+  -webkit-box-orient:vertical;
+  -webkit-box-direction:normal;
+  -webkit-flex-direction:column;
+          flex-direction:column;
+  -webkit-flex-shrink: 0;
+          flex-shrink: 0;
+  -webkit-box-flex: 0;
+  -webkit-flex-grow: 0;
+          flex-grow: 0;
+  -webkit-flex-basis: auto;
+          flex-basis: auto;
+  -webkit-box-align: stretch;
+  -webkit-align-items: stretch;
+          align-items: stretch;
+  -webkit-align-content: flex-start;
+          align-content: flex-start;
+}
+view,
+image,
+input,
+scroll-view,
+swiper,
+swiper-item,
+text,
+textarea,
+video {
+  position: relative;
+  border: 0px solid #000000;
+  box-sizing: border-box;
+}
+swiper-item {
+  position: absolute;
+}
+
+@charset "UTF-8";
+/* 页面左右间距 */
+/* 文字尺寸 */
+/*文字颜色*/
+/* 边框颜色 */
+/* 图片加载中颜色 */
+/* 行为相关颜色 */
+/* 主题的图标颜色 */
+.mapPage {
+  width: 100%;
+  height: 100%;
 }
 

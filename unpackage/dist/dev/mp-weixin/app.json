@@ -2,6 +2,7 @@
   "pages": [
     "pages/index/index",
     "pages/map/map",
+    "pages/map/mapPage",
     "pages/list/list",
     "pages/user/user",
     "pages/index/monitor/monitor",
@@ -11,6 +12,10 @@
     "pages/index/pasture/pasture",
     "pages/index/pasture/pastureMain",
     "pages/index/pasture/pastureForm",
+    "pages/index/info/info",
+    "pages/index/info/infoAll",
+    "pages/index/info/infoWarn",
+    "pages/index/info/infoRepair",
     "pages/user/user_userInfo/userInfo"
   ],
   "subPackages": [],
@@ -63,9 +68,5 @@
     "rf-loading": "/components/rf-loading/rf-loading",
     "rf-load-progress": "/components/rf-load-progress/rf-load-progress"
   },
-<<<<<<< HEAD
-  "sitemapLocation": "sitemap42.json"
-=======
-  "sitemapLocation": "sitemap61.json"
->>>>>>> 0ebf11d1357c8177501705dac093e2e47c4a61f9
+  "sitemapLocation": "sitemap98.json"
 }

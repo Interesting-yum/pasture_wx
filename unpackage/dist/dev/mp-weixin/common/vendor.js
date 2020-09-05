@@ -1,6 +1,6 @@
-(global["webpackJsonp"] = global["webpackJsonp"] || []).push([["common/vendor"],[
-/* 0 */,
-/* 1 */
+(global["webpackJsonp"] = global["webpackJsonp"] || []).push([["common/vendor"],{
+
+/***/ 1:
 /*!************************************************************!*\
   !*** ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js ***!
   \************************************************************/
@@ -1598,7 +1598,2270 @@ var uni$1 = uni;var _default =
 uni$1;exports.default = _default;
 
 /***/ }),
-/* 2 */
+
+/***/ 10:
+/*!*****************************************************!*\
+  !*** ./node_modules/regenerator-runtime/runtime.js ***!
+  \*****************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+/**
+ * Copyright (c) 2014-present, Facebook, Inc.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+!(function(global) {
+  "use strict";
+
+  var Op = Object.prototype;
+  var hasOwn = Op.hasOwnProperty;
+  var undefined; // More compressible than void 0.
+  var $Symbol = typeof Symbol === "function" ? Symbol : {};
+  var iteratorSymbol = $Symbol.iterator || "@@iterator";
+  var asyncIteratorSymbol = $Symbol.asyncIterator || "@@asyncIterator";
+  var toStringTagSymbol = $Symbol.toStringTag || "@@toStringTag";
+
+  var inModule = typeof module === "object";
+  var runtime = global.regeneratorRuntime;
+  if (runtime) {
+    if (inModule) {
+      // If regeneratorRuntime is defined globally and we're in a module,
+      // make the exports object identical to regeneratorRuntime.
+      module.exports = runtime;
+    }
+    // Don't bother evaluating the rest of this file if the runtime was
+    // already defined globally.
+    return;
+  }
+
+  // Define the runtime globally (as expected by generated code) as either
+  // module.exports (if we're in a module) or a new, empty object.
+  runtime = global.regeneratorRuntime = inModule ? module.exports : {};
+
+  function wrap(innerFn, outerFn, self, tryLocsList) {
+    // If outerFn provided and outerFn.prototype is a Generator, then outerFn.prototype instanceof Generator.
+    var protoGenerator = outerFn && outerFn.prototype instanceof Generator ? outerFn : Generator;
+    var generator = Object.create(protoGenerator.prototype);
+    var context = new Context(tryLocsList || []);
+
+    // The ._invoke method unifies the implementations of the .next,
+    // .throw, and .return methods.
+    generator._invoke = makeInvokeMethod(innerFn, self, context);
+
+    return generator;
+  }
+  runtime.wrap = wrap;
+
+  // Try/catch helper to minimize deoptimizations. Returns a completion
+  // record like context.tryEntries[i].completion. This interface could
+  // have been (and was previously) designed to take a closure to be
+  // invoked without arguments, but in all the cases we care about we
+  // already have an existing method we want to call, so there's no need
+  // to create a new function object. We can even get away with assuming
+  // the method takes exactly one argument, since that happens to be true
+  // in every case, so we don't have to touch the arguments object. The
+  // only additional allocation required is the completion record, which
+  // has a stable shape and so hopefully should be cheap to allocate.
+  function tryCatch(fn, obj, arg) {
+    try {
+      return { type: "normal", arg: fn.call(obj, arg) };
+    } catch (err) {
+      return { type: "throw", arg: err };
+    }
+  }
+
+  var GenStateSuspendedStart = "suspendedStart";
+  var GenStateSuspendedYield = "suspendedYield";
+  var GenStateExecuting = "executing";
+  var GenStateCompleted = "completed";
+
+  // Returning this object from the innerFn has the same effect as
+  // breaking out of the dispatch switch statement.
+  var ContinueSentinel = {};
+
+  // Dummy constructor functions that we use as the .constructor and
+  // .constructor.prototype properties for functions that return Generator
+  // objects. For full spec compliance, you may wish to configure your
+  // minifier not to mangle the names of these two functions.
+  function Generator() {}
+  function GeneratorFunction() {}
+  function GeneratorFunctionPrototype() {}
+
+  // This is a polyfill for %IteratorPrototype% for environments that
+  // don't natively support it.
+  var IteratorPrototype = {};
+  IteratorPrototype[iteratorSymbol] = function () {
+    return this;
+  };
+
+  var getProto = Object.getPrototypeOf;
+  var NativeIteratorPrototype = getProto && getProto(getProto(values([])));
+  if (NativeIteratorPrototype &&
+      NativeIteratorPrototype !== Op &&
+      hasOwn.call(NativeIteratorPrototype, iteratorSymbol)) {
+    // This environment has a native %IteratorPrototype%; use it instead
+    // of the polyfill.
+    IteratorPrototype = NativeIteratorPrototype;
+  }
+
+  var Gp = GeneratorFunctionPrototype.prototype =
+    Generator.prototype = Object.create(IteratorPrototype);
+  GeneratorFunction.prototype = Gp.constructor = GeneratorFunctionPrototype;
+  GeneratorFunctionPrototype.constructor = GeneratorFunction;
+  GeneratorFunctionPrototype[toStringTagSymbol] =
+    GeneratorFunction.displayName = "GeneratorFunction";
+
+  // Helper for defining the .next, .throw, and .return methods of the
+  // Iterator interface in terms of a single ._invoke method.
+  function defineIteratorMethods(prototype) {
+    ["next", "throw", "return"].forEach(function(method) {
+      prototype[method] = function(arg) {
+        return this._invoke(method, arg);
+      };
+    });
+  }
+
+  runtime.isGeneratorFunction = function(genFun) {
+    var ctor = typeof genFun === "function" && genFun.constructor;
+    return ctor
+      ? ctor === GeneratorFunction ||
+        // For the native GeneratorFunction constructor, the best we can
+        // do is to check its .name property.
+        (ctor.displayName || ctor.name) === "GeneratorFunction"
+      : false;
+  };
+
+  runtime.mark = function(genFun) {
+    if (Object.setPrototypeOf) {
+      Object.setPrototypeOf(genFun, GeneratorFunctionPrototype);
+    } else {
+      genFun.__proto__ = GeneratorFunctionPrototype;
+      if (!(toStringTagSymbol in genFun)) {
+        genFun[toStringTagSymbol] = "GeneratorFunction";
+      }
+    }
+    genFun.prototype = Object.create(Gp);
+    return genFun;
+  };
+
+  // Within the body of any async function, `await x` is transformed to
+  // `yield regeneratorRuntime.awrap(x)`, so that the runtime can test
+  // `hasOwn.call(value, "__await")` to determine if the yielded value is
+  // meant to be awaited.
+  runtime.awrap = function(arg) {
+    return { __await: arg };
+  };
+
+  function AsyncIterator(generator) {
+    function invoke(method, arg, resolve, reject) {
+      var record = tryCatch(generator[method], generator, arg);
+      if (record.type === "throw") {
+        reject(record.arg);
+      } else {
+        var result = record.arg;
+        var value = result.value;
+        if (value &&
+            typeof value === "object" &&
+            hasOwn.call(value, "__await")) {
+          return Promise.resolve(value.__await).then(function(value) {
+            invoke("next", value, resolve, reject);
+          }, function(err) {
+            invoke("throw", err, resolve, reject);
+          });
+        }
+
+        return Promise.resolve(value).then(function(unwrapped) {
+          // When a yielded Promise is resolved, its final value becomes
+          // the .value of the Promise<{value,done}> result for the
+          // current iteration.
+          result.value = unwrapped;
+          resolve(result);
+        }, function(error) {
+          // If a rejected Promise was yielded, throw the rejection back
+          // into the async generator function so it can be handled there.
+          return invoke("throw", error, resolve, reject);
+        });
+      }
+    }
+
+    var previousPromise;
+
+    function enqueue(method, arg) {
+      function callInvokeWithMethodAndArg() {
+        return new Promise(function(resolve, reject) {
+          invoke(method, arg, resolve, reject);
+        });
+      }
+
+      return previousPromise =
+        // If enqueue has been called before, then we want to wait until
+        // all previous Promises have been resolved before calling invoke,
+        // so that results are always delivered in the correct order. If
+        // enqueue has not been called before, then it is important to
+        // call invoke immediately, without waiting on a callback to fire,
+        // so that the async generator function has the opportunity to do
+        // any necessary setup in a predictable way. This predictability
+        // is why the Promise constructor synchronously invokes its
+        // executor callback, and why async functions synchronously
+        // execute code before the first await. Since we implement simple
+        // async functions in terms of async generators, it is especially
+        // important to get this right, even though it requires care.
+        previousPromise ? previousPromise.then(
+          callInvokeWithMethodAndArg,
+          // Avoid propagating failures to Promises returned by later
+          // invocations of the iterator.
+          callInvokeWithMethodAndArg
+        ) : callInvokeWithMethodAndArg();
+    }
+
+    // Define the unified helper method that is used to implement .next,
+    // .throw, and .return (see defineIteratorMethods).
+    this._invoke = enqueue;
+  }
+
+  defineIteratorMethods(AsyncIterator.prototype);
+  AsyncIterator.prototype[asyncIteratorSymbol] = function () {
+    return this;
+  };
+  runtime.AsyncIterator = AsyncIterator;
+
+  // Note that simple async functions are implemented on top of
+  // AsyncIterator objects; they just return a Promise for the value of
+  // the final result produced by the iterator.
+  runtime.async = function(innerFn, outerFn, self, tryLocsList) {
+    var iter = new AsyncIterator(
+      wrap(innerFn, outerFn, self, tryLocsList)
+    );
+
+    return runtime.isGeneratorFunction(outerFn)
+      ? iter // If outerFn is a generator, return the full iterator.
+      : iter.next().then(function(result) {
+          return result.done ? result.value : iter.next();
+        });
+  };
+
+  function makeInvokeMethod(innerFn, self, context) {
+    var state = GenStateSuspendedStart;
+
+    return function invoke(method, arg) {
+      if (state === GenStateExecuting) {
+        throw new Error("Generator is already running");
+      }
+
+      if (state === GenStateCompleted) {
+        if (method === "throw") {
+          throw arg;
+        }
+
+        // Be forgiving, per 25.3.3.3.3 of the spec:
+        // https://people.mozilla.org/~jorendorff/es6-draft.html#sec-generatorresume
+        return doneResult();
+      }
+
+      context.method = method;
+      context.arg = arg;
+
+      while (true) {
+        var delegate = context.delegate;
+        if (delegate) {
+          var delegateResult = maybeInvokeDelegate(delegate, context);
+          if (delegateResult) {
+            if (delegateResult === ContinueSentinel) continue;
+            return delegateResult;
+          }
+        }
+
+        if (context.method === "next") {
+          // Setting context._sent for legacy support of Babel's
+          // function.sent implementation.
+          context.sent = context._sent = context.arg;
+
+        } else if (context.method === "throw") {
+          if (state === GenStateSuspendedStart) {
+            state = GenStateCompleted;
+            throw context.arg;
+          }
+
+          context.dispatchException(context.arg);
+
+        } else if (context.method === "return") {
+          context.abrupt("return", context.arg);
+        }
+
+        state = GenStateExecuting;
+
+        var record = tryCatch(innerFn, self, context);
+        if (record.type === "normal") {
+          // If an exception is thrown from innerFn, we leave state ===
+          // GenStateExecuting and loop back for another invocation.
+          state = context.done
+            ? GenStateCompleted
+            : GenStateSuspendedYield;
+
+          if (record.arg === ContinueSentinel) {
+            continue;
+          }
+
+          return {
+            value: record.arg,
+            done: context.done
+          };
+
+        } else if (record.type === "throw") {
+          state = GenStateCompleted;
+          // Dispatch the exception by looping back around to the
+          // context.dispatchException(context.arg) call above.
+          context.method = "throw";
+          context.arg = record.arg;
+        }
+      }
+    };
+  }
+
+  // Call delegate.iterator[context.method](context.arg) and handle the
+  // result, either by returning a { value, done } result from the
+  // delegate iterator, or by modifying context.method and context.arg,
+  // setting context.delegate to null, and returning the ContinueSentinel.
+  function maybeInvokeDelegate(delegate, context) {
+    var method = delegate.iterator[context.method];
+    if (method === undefined) {
+      // A .throw or .return when the delegate iterator has no .throw
+      // method always terminates the yield* loop.
+      context.delegate = null;
+
+      if (context.method === "throw") {
+        if (delegate.iterator.return) {
+          // If the delegate iterator has a return method, give it a
+          // chance to clean up.
+          context.method = "return";
+          context.arg = undefined;
+          maybeInvokeDelegate(delegate, context);
+
+          if (context.method === "throw") {
+            // If maybeInvokeDelegate(context) changed context.method from
+            // "return" to "throw", let that override the TypeError below.
+            return ContinueSentinel;
+          }
+        }
+
+        context.method = "throw";
+        context.arg = new TypeError(
+          "The iterator does not provide a 'throw' method");
+      }
+
+      return ContinueSentinel;
+    }
+
+    var record = tryCatch(method, delegate.iterator, context.arg);
+
+    if (record.type === "throw") {
+      context.method = "throw";
+      context.arg = record.arg;
+      context.delegate = null;
+      return ContinueSentinel;
+    }
+
+    var info = record.arg;
+
+    if (! info) {
+      context.method = "throw";
+      context.arg = new TypeError("iterator result is not an object");
+      context.delegate = null;
+      return ContinueSentinel;
+    }
+
+    if (info.done) {
+      // Assign the result of the finished delegate to the temporary
+      // variable specified by delegate.resultName (see delegateYield).
+      context[delegate.resultName] = info.value;
+
+      // Resume execution at the desired location (see delegateYield).
+      context.next = delegate.nextLoc;
+
+      // If context.method was "throw" but the delegate handled the
+      // exception, let the outer generator proceed normally. If
+      // context.method was "next", forget context.arg since it has been
+      // "consumed" by the delegate iterator. If context.method was
+      // "return", allow the original .return call to continue in the
+      // outer generator.
+      if (context.method !== "return") {
+        context.method = "next";
+        context.arg = undefined;
+      }
+
+    } else {
+      // Re-yield the result returned by the delegate method.
+      return info;
+    }
+
+    // The delegate iterator is finished, so forget it and continue with
+    // the outer generator.
+    context.delegate = null;
+    return ContinueSentinel;
+  }
+
+  // Define Generator.prototype.{next,throw,return} in terms of the
+  // unified ._invoke helper method.
+  defineIteratorMethods(Gp);
+
+  Gp[toStringTagSymbol] = "Generator";
+
+  // A Generator should always return itself as the iterator object when the
+  // @@iterator function is called on it. Some browsers' implementations of the
+  // iterator prototype chain incorrectly implement this, causing the Generator
+  // object to not be returned from this call. This ensures that doesn't happen.
+  // See https://github.com/facebook/regenerator/issues/274 for more details.
+  Gp[iteratorSymbol] = function() {
+    return this;
+  };
+
+  Gp.toString = function() {
+    return "[object Generator]";
+  };
+
+  function pushTryEntry(locs) {
+    var entry = { tryLoc: locs[0] };
+
+    if (1 in locs) {
+      entry.catchLoc = locs[1];
+    }
+
+    if (2 in locs) {
+      entry.finallyLoc = locs[2];
+      entry.afterLoc = locs[3];
+    }
+
+    this.tryEntries.push(entry);
+  }
+
+  function resetTryEntry(entry) {
+    var record = entry.completion || {};
+    record.type = "normal";
+    delete record.arg;
+    entry.completion = record;
+  }
+
+  function Context(tryLocsList) {
+    // The root entry object (effectively a try statement without a catch
+    // or a finally block) gives us a place to store values thrown from
+    // locations where there is no enclosing try statement.
+    this.tryEntries = [{ tryLoc: "root" }];
+    tryLocsList.forEach(pushTryEntry, this);
+    this.reset(true);
+  }
+
+  runtime.keys = function(object) {
+    var keys = [];
+    for (var key in object) {
+      keys.push(key);
+    }
+    keys.reverse();
+
+    // Rather than returning an object with a next method, we keep
+    // things simple and return the next function itself.
+    return function next() {
+      while (keys.length) {
+        var key = keys.pop();
+        if (key in object) {
+          next.value = key;
+          next.done = false;
+          return next;
+        }
+      }
+
+      // To avoid creating an additional object, we just hang the .value
+      // and .done properties off the next function object itself. This
+      // also ensures that the minifier will not anonymize the function.
+      next.done = true;
+      return next;
+    };
+  };
+
+  function values(iterable) {
+    if (iterable) {
+      var iteratorMethod = iterable[iteratorSymbol];
+      if (iteratorMethod) {
+        return iteratorMethod.call(iterable);
+      }
+
+      if (typeof iterable.next === "function") {
+        return iterable;
+      }
+
+      if (!isNaN(iterable.length)) {
+        var i = -1, next = function next() {
+          while (++i < iterable.length) {
+            if (hasOwn.call(iterable, i)) {
+              next.value = iterable[i];
+              next.done = false;
+              return next;
+            }
+          }
+
+          next.value = undefined;
+          next.done = true;
+
+          return next;
+        };
+
+        return next.next = next;
+      }
+    }
+
+    // Return an iterator with no values.
+    return { next: doneResult };
+  }
+  runtime.values = values;
+
+  function doneResult() {
+    return { value: undefined, done: true };
+  }
+
+  Context.prototype = {
+    constructor: Context,
+
+    reset: function(skipTempReset) {
+      this.prev = 0;
+      this.next = 0;
+      // Resetting context._sent for legacy support of Babel's
+      // function.sent implementation.
+      this.sent = this._sent = undefined;
+      this.done = false;
+      this.delegate = null;
+
+      this.method = "next";
+      this.arg = undefined;
+
+      this.tryEntries.forEach(resetTryEntry);
+
+      if (!skipTempReset) {
+        for (var name in this) {
+          // Not sure about the optimal order of these conditions:
+          if (name.charAt(0) === "t" &&
+              hasOwn.call(this, name) &&
+              !isNaN(+name.slice(1))) {
+            this[name] = undefined;
+          }
+        }
+      }
+    },
+
+    stop: function() {
+      this.done = true;
+
+      var rootEntry = this.tryEntries[0];
+      var rootRecord = rootEntry.completion;
+      if (rootRecord.type === "throw") {
+        throw rootRecord.arg;
+      }
+
+      return this.rval;
+    },
+
+    dispatchException: function(exception) {
+      if (this.done) {
+        throw exception;
+      }
+
+      var context = this;
+      function handle(loc, caught) {
+        record.type = "throw";
+        record.arg = exception;
+        context.next = loc;
+
+        if (caught) {
+          // If the dispatched exception was caught by a catch block,
+          // then let that catch block handle the exception normally.
+          context.method = "next";
+          context.arg = undefined;
+        }
+
+        return !! caught;
+      }
+
+      for (var i = this.tryEntries.length - 1; i >= 0; --i) {
+        var entry = this.tryEntries[i];
+        var record = entry.completion;
+
+        if (entry.tryLoc === "root") {
+          // Exception thrown outside of any try block that could handle
+          // it, so set the completion value of the entire function to
+          // throw the exception.
+          return handle("end");
+        }
+
+        if (entry.tryLoc <= this.prev) {
+          var hasCatch = hasOwn.call(entry, "catchLoc");
+          var hasFinally = hasOwn.call(entry, "finallyLoc");
+
+          if (hasCatch && hasFinally) {
+            if (this.prev < entry.catchLoc) {
+              return handle(entry.catchLoc, true);
+            } else if (this.prev < entry.finallyLoc) {
+              return handle(entry.finallyLoc);
+            }
+
+          } else if (hasCatch) {
+            if (this.prev < entry.catchLoc) {
+              return handle(entry.catchLoc, true);
+            }
+
+          } else if (hasFinally) {
+            if (this.prev < entry.finallyLoc) {
+              return handle(entry.finallyLoc);
+            }
+
+          } else {
+            throw new Error("try statement without catch or finally");
+          }
+        }
+      }
+    },
+
+    abrupt: function(type, arg) {
+      for (var i = this.tryEntries.length - 1; i >= 0; --i) {
+        var entry = this.tryEntries[i];
+        if (entry.tryLoc <= this.prev &&
+            hasOwn.call(entry, "finallyLoc") &&
+            this.prev < entry.finallyLoc) {
+          var finallyEntry = entry;
+          break;
+        }
+      }
+
+      if (finallyEntry &&
+          (type === "break" ||
+           type === "continue") &&
+          finallyEntry.tryLoc <= arg &&
+          arg <= finallyEntry.finallyLoc) {
+        // Ignore the finally entry if control is not jumping to a
+        // location outside the try/catch block.
+        finallyEntry = null;
+      }
+
+      var record = finallyEntry ? finallyEntry.completion : {};
+      record.type = type;
+      record.arg = arg;
+
+      if (finallyEntry) {
+        this.method = "next";
+        this.next = finallyEntry.finallyLoc;
+        return ContinueSentinel;
+      }
+
+      return this.complete(record);
+    },
+
+    complete: function(record, afterLoc) {
+      if (record.type === "throw") {
+        throw record.arg;
+      }
+
+      if (record.type === "break" ||
+          record.type === "continue") {
+        this.next = record.arg;
+      } else if (record.type === "return") {
+        this.rval = this.arg = record.arg;
+        this.method = "return";
+        this.next = "end";
+      } else if (record.type === "normal" && afterLoc) {
+        this.next = afterLoc;
+      }
+
+      return ContinueSentinel;
+    },
+
+    finish: function(finallyLoc) {
+      for (var i = this.tryEntries.length - 1; i >= 0; --i) {
+        var entry = this.tryEntries[i];
+        if (entry.finallyLoc === finallyLoc) {
+          this.complete(entry.completion, entry.afterLoc);
+          resetTryEntry(entry);
+          return ContinueSentinel;
+        }
+      }
+    },
+
+    "catch": function(tryLoc) {
+      for (var i = this.tryEntries.length - 1; i >= 0; --i) {
+        var entry = this.tryEntries[i];
+        if (entry.tryLoc === tryLoc) {
+          var record = entry.completion;
+          if (record.type === "throw") {
+            var thrown = record.arg;
+            resetTryEntry(entry);
+          }
+          return thrown;
+        }
+      }
+
+      // The context.catch method must only be called with a location
+      // argument that corresponds to a known catch block.
+      throw new Error("illegal catch attempt");
+    },
+
+    delegateYield: function(iterable, resultName, nextLoc) {
+      this.delegate = {
+        iterator: values(iterable),
+        resultName: resultName,
+        nextLoc: nextLoc
+      };
+
+      if (this.method === "next") {
+        // Deliberately forget the last sent value so that we don't
+        // accidentally pass it on to the delegate.
+        this.arg = undefined;
+      }
+
+      return ContinueSentinel;
+    }
+  };
+})(
+  // In sloppy mode, unbound `this` refers to the global object, fallback to
+  // Function constructor if we're in global strict mode. That is sadly a form
+  // of indirect eval which violates Content Security Policy.
+  (function() {
+    return this || (typeof self === "object" && self);
+  })() || Function("return this")()
+);
+
+
+/***/ }),
+
+/***/ 11:
+/*!********************************************!*\
+  !*** ./node_modules/vuex/dist/vuex.esm.js ***!
+  \********************************************/
+/*! exports provided: Store, install, mapState, mapMutations, mapGetters, mapActions, createNamespacedHelpers, default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Store", function() { return Store; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "install", function() { return install; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "mapState", function() { return mapState; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "mapMutations", function() { return mapMutations; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "mapGetters", function() { return mapGetters; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "mapActions", function() { return mapActions; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createNamespacedHelpers", function() { return createNamespacedHelpers; });
+/**
+ * vuex v3.0.1
+ * (c) 2017 Evan You
+ * @license MIT
+ */
+var applyMixin = function (Vue) {
+  var version = Number(Vue.version.split('.')[0]);
+
+  if (version >= 2) {
+    Vue.mixin({ beforeCreate: vuexInit });
+  } else {
+    // override init and inject vuex init procedure
+    // for 1.x backwards compatibility.
+    var _init = Vue.prototype._init;
+    Vue.prototype._init = function (options) {
+      if ( options === void 0 ) options = {};
+
+      options.init = options.init
+        ? [vuexInit].concat(options.init)
+        : vuexInit;
+      _init.call(this, options);
+    };
+  }
+
+  /**
+   * Vuex init hook, injected into each instances init hooks list.
+   */
+
+  function vuexInit () {
+    var options = this.$options;
+    // store injection
+    if (options.store) {
+      this.$store = typeof options.store === 'function'
+        ? options.store()
+        : options.store;
+    } else if (options.parent && options.parent.$store) {
+      this.$store = options.parent.$store;
+    }
+  }
+};
+
+var devtoolHook =
+  typeof window !== 'undefined' &&
+  window.__VUE_DEVTOOLS_GLOBAL_HOOK__;
+
+function devtoolPlugin (store) {
+  if (!devtoolHook) { return }
+
+  store._devtoolHook = devtoolHook;
+
+  devtoolHook.emit('vuex:init', store);
+
+  devtoolHook.on('vuex:travel-to-state', function (targetState) {
+    store.replaceState(targetState);
+  });
+
+  store.subscribe(function (mutation, state) {
+    devtoolHook.emit('vuex:mutation', mutation, state);
+  });
+}
+
+/**
+ * Get the first item that pass the test
+ * by second argument function
+ *
+ * @param {Array} list
+ * @param {Function} f
+ * @return {*}
+ */
+/**
+ * Deep copy the given object considering circular structure.
+ * This function caches all nested objects and its copies.
+ * If it detects circular structure, use cached copy to avoid infinite loop.
+ *
+ * @param {*} obj
+ * @param {Array<Object>} cache
+ * @return {*}
+ */
+
+
+/**
+ * forEach for object
+ */
+function forEachValue (obj, fn) {
+  Object.keys(obj).forEach(function (key) { return fn(obj[key], key); });
+}
+
+function isObject (obj) {
+  return obj !== null && typeof obj === 'object'
+}
+
+function isPromise (val) {
+  return val && typeof val.then === 'function'
+}
+
+function assert (condition, msg) {
+  if (!condition) { throw new Error(("[vuex] " + msg)) }
+}
+
+var Module = function Module (rawModule, runtime) {
+  this.runtime = runtime;
+  this._children = Object.create(null);
+  this._rawModule = rawModule;
+  var rawState = rawModule.state;
+  this.state = (typeof rawState === 'function' ? rawState() : rawState) || {};
+};
+
+var prototypeAccessors$1 = { namespaced: { configurable: true } };
+
+prototypeAccessors$1.namespaced.get = function () {
+  return !!this._rawModule.namespaced
+};
+
+Module.prototype.addChild = function addChild (key, module) {
+  this._children[key] = module;
+};
+
+Module.prototype.removeChild = function removeChild (key) {
+  delete this._children[key];
+};
+
+Module.prototype.getChild = function getChild (key) {
+  return this._children[key]
+};
+
+Module.prototype.update = function update (rawModule) {
+  this._rawModule.namespaced = rawModule.namespaced;
+  if (rawModule.actions) {
+    this._rawModule.actions = rawModule.actions;
+  }
+  if (rawModule.mutations) {
+    this._rawModule.mutations = rawModule.mutations;
+  }
+  if (rawModule.getters) {
+    this._rawModule.getters = rawModule.getters;
+  }
+};
+
+Module.prototype.forEachChild = function forEachChild (fn) {
+  forEachValue(this._children, fn);
+};
+
+Module.prototype.forEachGetter = function forEachGetter (fn) {
+  if (this._rawModule.getters) {
+    forEachValue(this._rawModule.getters, fn);
+  }
+};
+
+Module.prototype.forEachAction = function forEachAction (fn) {
+  if (this._rawModule.actions) {
+    forEachValue(this._rawModule.actions, fn);
+  }
+};
+
+Module.prototype.forEachMutation = function forEachMutation (fn) {
+  if (this._rawModule.mutations) {
+    forEachValue(this._rawModule.mutations, fn);
+  }
+};
+
+Object.defineProperties( Module.prototype, prototypeAccessors$1 );
+
+var ModuleCollection = function ModuleCollection (rawRootModule) {
+  // register root module (Vuex.Store options)
+  this.register([], rawRootModule, false);
+};
+
+ModuleCollection.prototype.get = function get (path) {
+  return path.reduce(function (module, key) {
+    return module.getChild(key)
+  }, this.root)
+};
+
+ModuleCollection.prototype.getNamespace = function getNamespace (path) {
+  var module = this.root;
+  return path.reduce(function (namespace, key) {
+    module = module.getChild(key);
+    return namespace + (module.namespaced ? key + '/' : '')
+  }, '')
+};
+
+ModuleCollection.prototype.update = function update$1 (rawRootModule) {
+  update([], this.root, rawRootModule);
+};
+
+ModuleCollection.prototype.register = function register (path, rawModule, runtime) {
+    var this$1 = this;
+    if ( runtime === void 0 ) runtime = true;
+
+  if (true) {
+    assertRawModule(path, rawModule);
+  }
+
+  var newModule = new Module(rawModule, runtime);
+  if (path.length === 0) {
+    this.root = newModule;
+  } else {
+    var parent = this.get(path.slice(0, -1));
+    parent.addChild(path[path.length - 1], newModule);
+  }
+
+  // register nested modules
+  if (rawModule.modules) {
+    forEachValue(rawModule.modules, function (rawChildModule, key) {
+      this$1.register(path.concat(key), rawChildModule, runtime);
+    });
+  }
+};
+
+ModuleCollection.prototype.unregister = function unregister (path) {
+  var parent = this.get(path.slice(0, -1));
+  var key = path[path.length - 1];
+  if (!parent.getChild(key).runtime) { return }
+
+  parent.removeChild(key);
+};
+
+function update (path, targetModule, newModule) {
+  if (true) {
+    assertRawModule(path, newModule);
+  }
+
+  // update target module
+  targetModule.update(newModule);
+
+  // update nested modules
+  if (newModule.modules) {
+    for (var key in newModule.modules) {
+      if (!targetModule.getChild(key)) {
+        if (true) {
+          console.warn(
+            "[vuex] trying to add a new module '" + key + "' on hot reloading, " +
+            'manual reload is needed'
+          );
+        }
+        return
+      }
+      update(
+        path.concat(key),
+        targetModule.getChild(key),
+        newModule.modules[key]
+      );
+    }
+  }
+}
+
+var functionAssert = {
+  assert: function (value) { return typeof value === 'function'; },
+  expected: 'function'
+};
+
+var objectAssert = {
+  assert: function (value) { return typeof value === 'function' ||
+    (typeof value === 'object' && typeof value.handler === 'function'); },
+  expected: 'function or object with "handler" function'
+};
+
+var assertTypes = {
+  getters: functionAssert,
+  mutations: functionAssert,
+  actions: objectAssert
+};
+
+function assertRawModule (path, rawModule) {
+  Object.keys(assertTypes).forEach(function (key) {
+    if (!rawModule[key]) { return }
+
+    var assertOptions = assertTypes[key];
+
+    forEachValue(rawModule[key], function (value, type) {
+      assert(
+        assertOptions.assert(value),
+        makeAssertionMessage(path, key, type, value, assertOptions.expected)
+      );
+    });
+  });
+}
+
+function makeAssertionMessage (path, key, type, value, expected) {
+  var buf = key + " should be " + expected + " but \"" + key + "." + type + "\"";
+  if (path.length > 0) {
+    buf += " in module \"" + (path.join('.')) + "\"";
+  }
+  buf += " is " + (JSON.stringify(value)) + ".";
+  return buf
+}
+
+var Vue; // bind on install
+
+var Store = function Store (options) {
+  var this$1 = this;
+  if ( options === void 0 ) options = {};
+
+  // Auto install if it is not done yet and `window` has `Vue`.
+  // To allow users to avoid auto-installation in some cases,
+  // this code should be placed here. See #731
+  if (!Vue && typeof window !== 'undefined' && window.Vue) {
+    install(window.Vue);
+  }
+
+  if (true) {
+    assert(Vue, "must call Vue.use(Vuex) before creating a store instance.");
+    assert(typeof Promise !== 'undefined', "vuex requires a Promise polyfill in this browser.");
+    assert(this instanceof Store, "Store must be called with the new operator.");
+  }
+
+  var plugins = options.plugins; if ( plugins === void 0 ) plugins = [];
+  var strict = options.strict; if ( strict === void 0 ) strict = false;
+
+  var state = options.state; if ( state === void 0 ) state = {};
+  if (typeof state === 'function') {
+    state = state() || {};
+  }
+
+  // store internal state
+  this._committing = false;
+  this._actions = Object.create(null);
+  this._actionSubscribers = [];
+  this._mutations = Object.create(null);
+  this._wrappedGetters = Object.create(null);
+  this._modules = new ModuleCollection(options);
+  this._modulesNamespaceMap = Object.create(null);
+  this._subscribers = [];
+  this._watcherVM = new Vue();
+
+  // bind commit and dispatch to self
+  var store = this;
+  var ref = this;
+  var dispatch = ref.dispatch;
+  var commit = ref.commit;
+  this.dispatch = function boundDispatch (type, payload) {
+    return dispatch.call(store, type, payload)
+  };
+  this.commit = function boundCommit (type, payload, options) {
+    return commit.call(store, type, payload, options)
+  };
+
+  // strict mode
+  this.strict = strict;
+
+  // init root module.
+  // this also recursively registers all sub-modules
+  // and collects all module getters inside this._wrappedGetters
+  installModule(this, state, [], this._modules.root);
+
+  // initialize the store vm, which is responsible for the reactivity
+  // (also registers _wrappedGetters as computed properties)
+  resetStoreVM(this, state);
+
+  // apply plugins
+  plugins.forEach(function (plugin) { return plugin(this$1); });
+
+  if (Vue.config.devtools) {
+    devtoolPlugin(this);
+  }
+};
+
+var prototypeAccessors = { state: { configurable: true } };
+
+prototypeAccessors.state.get = function () {
+  return this._vm._data.$$state
+};
+
+prototypeAccessors.state.set = function (v) {
+  if (true) {
+    assert(false, "Use store.replaceState() to explicit replace store state.");
+  }
+};
+
+Store.prototype.commit = function commit (_type, _payload, _options) {
+    var this$1 = this;
+
+  // check object-style commit
+  var ref = unifyObjectStyle(_type, _payload, _options);
+    var type = ref.type;
+    var payload = ref.payload;
+    var options = ref.options;
+
+  var mutation = { type: type, payload: payload };
+  var entry = this._mutations[type];
+  if (!entry) {
+    if (true) {
+      console.error(("[vuex] unknown mutation type: " + type));
+    }
+    return
+  }
+  this._withCommit(function () {
+    entry.forEach(function commitIterator (handler) {
+      handler(payload);
+    });
+  });
+  this._subscribers.forEach(function (sub) { return sub(mutation, this$1.state); });
+
+  if (
+     true &&
+    options && options.silent
+  ) {
+    console.warn(
+      "[vuex] mutation type: " + type + ". Silent option has been removed. " +
+      'Use the filter functionality in the vue-devtools'
+    );
+  }
+};
+
+Store.prototype.dispatch = function dispatch (_type, _payload) {
+    var this$1 = this;
+
+  // check object-style dispatch
+  var ref = unifyObjectStyle(_type, _payload);
+    var type = ref.type;
+    var payload = ref.payload;
+
+  var action = { type: type, payload: payload };
+  var entry = this._actions[type];
+  if (!entry) {
+    if (true) {
+      console.error(("[vuex] unknown action type: " + type));
+    }
+    return
+  }
+
+  this._actionSubscribers.forEach(function (sub) { return sub(action, this$1.state); });
+
+  return entry.length > 1
+    ? Promise.all(entry.map(function (handler) { return handler(payload); }))
+    : entry[0](payload)
+};
+
+Store.prototype.subscribe = function subscribe (fn) {
+  return genericSubscribe(fn, this._subscribers)
+};
+
+Store.prototype.subscribeAction = function subscribeAction (fn) {
+  return genericSubscribe(fn, this._actionSubscribers)
+};
+
+Store.prototype.watch = function watch (getter, cb, options) {
+    var this$1 = this;
+
+  if (true) {
+    assert(typeof getter === 'function', "store.watch only accepts a function.");
+  }
+  return this._watcherVM.$watch(function () { return getter(this$1.state, this$1.getters); }, cb, options)
+};
+
+Store.prototype.replaceState = function replaceState (state) {
+    var this$1 = this;
+
+  this._withCommit(function () {
+    this$1._vm._data.$$state = state;
+  });
+};
+
+Store.prototype.registerModule = function registerModule (path, rawModule, options) {
+    if ( options === void 0 ) options = {};
+
+  if (typeof path === 'string') { path = [path]; }
+
+  if (true) {
+    assert(Array.isArray(path), "module path must be a string or an Array.");
+    assert(path.length > 0, 'cannot register the root module by using registerModule.');
+  }
+
+  this._modules.register(path, rawModule);
+  installModule(this, this.state, path, this._modules.get(path), options.preserveState);
+  // reset store to update getters...
+  resetStoreVM(this, this.state);
+};
+
+Store.prototype.unregisterModule = function unregisterModule (path) {
+    var this$1 = this;
+
+  if (typeof path === 'string') { path = [path]; }
+
+  if (true) {
+    assert(Array.isArray(path), "module path must be a string or an Array.");
+  }
+
+  this._modules.unregister(path);
+  this._withCommit(function () {
+    var parentState = getNestedState(this$1.state, path.slice(0, -1));
+    Vue.delete(parentState, path[path.length - 1]);
+  });
+  resetStore(this);
+};
+
+Store.prototype.hotUpdate = function hotUpdate (newOptions) {
+  this._modules.update(newOptions);
+  resetStore(this, true);
+};
+
+Store.prototype._withCommit = function _withCommit (fn) {
+  var committing = this._committing;
+  this._committing = true;
+  fn();
+  this._committing = committing;
+};
+
+Object.defineProperties( Store.prototype, prototypeAccessors );
+
+function genericSubscribe (fn, subs) {
+  if (subs.indexOf(fn) < 0) {
+    subs.push(fn);
+  }
+  return function () {
+    var i = subs.indexOf(fn);
+    if (i > -1) {
+      subs.splice(i, 1);
+    }
+  }
+}
+
+function resetStore (store, hot) {
+  store._actions = Object.create(null);
+  store._mutations = Object.create(null);
+  store._wrappedGetters = Object.create(null);
+  store._modulesNamespaceMap = Object.create(null);
+  var state = store.state;
+  // init all modules
+  installModule(store, state, [], store._modules.root, true);
+  // reset vm
+  resetStoreVM(store, state, hot);
+}
+
+function resetStoreVM (store, state, hot) {
+  var oldVm = store._vm;
+
+  // bind store public getters
+  store.getters = {};
+  var wrappedGetters = store._wrappedGetters;
+  var computed = {};
+  forEachValue(wrappedGetters, function (fn, key) {
+    // use computed to leverage its lazy-caching mechanism
+    computed[key] = function () { return fn(store); };
+    Object.defineProperty(store.getters, key, {
+      get: function () { return store._vm[key]; },
+      enumerable: true // for local getters
+    });
+  });
+
+  // use a Vue instance to store the state tree
+  // suppress warnings just in case the user has added
+  // some funky global mixins
+  var silent = Vue.config.silent;
+  Vue.config.silent = true;
+  store._vm = new Vue({
+    data: {
+      $$state: state
+    },
+    computed: computed
+  });
+  Vue.config.silent = silent;
+
+  // enable strict mode for new vm
+  if (store.strict) {
+    enableStrictMode(store);
+  }
+
+  if (oldVm) {
+    if (hot) {
+      // dispatch changes in all subscribed watchers
+      // to force getter re-evaluation for hot reloading.
+      store._withCommit(function () {
+        oldVm._data.$$state = null;
+      });
+    }
+    Vue.nextTick(function () { return oldVm.$destroy(); });
+  }
+}
+
+function installModule (store, rootState, path, module, hot) {
+  var isRoot = !path.length;
+  var namespace = store._modules.getNamespace(path);
+
+  // register in namespace map
+  if (module.namespaced) {
+    store._modulesNamespaceMap[namespace] = module;
+  }
+
+  // set state
+  if (!isRoot && !hot) {
+    var parentState = getNestedState(rootState, path.slice(0, -1));
+    var moduleName = path[path.length - 1];
+    store._withCommit(function () {
+      Vue.set(parentState, moduleName, module.state);
+    });
+  }
+
+  var local = module.context = makeLocalContext(store, namespace, path);
+
+  module.forEachMutation(function (mutation, key) {
+    var namespacedType = namespace + key;
+    registerMutation(store, namespacedType, mutation, local);
+  });
+
+  module.forEachAction(function (action, key) {
+    var type = action.root ? key : namespace + key;
+    var handler = action.handler || action;
+    registerAction(store, type, handler, local);
+  });
+
+  module.forEachGetter(function (getter, key) {
+    var namespacedType = namespace + key;
+    registerGetter(store, namespacedType, getter, local);
+  });
+
+  module.forEachChild(function (child, key) {
+    installModule(store, rootState, path.concat(key), child, hot);
+  });
+}
+
+/**
+ * make localized dispatch, commit, getters and state
+ * if there is no namespace, just use root ones
+ */
+function makeLocalContext (store, namespace, path) {
+  var noNamespace = namespace === '';
+
+  var local = {
+    dispatch: noNamespace ? store.dispatch : function (_type, _payload, _options) {
+      var args = unifyObjectStyle(_type, _payload, _options);
+      var payload = args.payload;
+      var options = args.options;
+      var type = args.type;
+
+      if (!options || !options.root) {
+        type = namespace + type;
+        if ( true && !store._actions[type]) {
+          console.error(("[vuex] unknown local action type: " + (args.type) + ", global type: " + type));
+          return
+        }
+      }
+
+      return store.dispatch(type, payload)
+    },
+
+    commit: noNamespace ? store.commit : function (_type, _payload, _options) {
+      var args = unifyObjectStyle(_type, _payload, _options);
+      var payload = args.payload;
+      var options = args.options;
+      var type = args.type;
+
+      if (!options || !options.root) {
+        type = namespace + type;
+        if ( true && !store._mutations[type]) {
+          console.error(("[vuex] unknown local mutation type: " + (args.type) + ", global type: " + type));
+          return
+        }
+      }
+
+      store.commit(type, payload, options);
+    }
+  };
+
+  // getters and state object must be gotten lazily
+  // because they will be changed by vm update
+  Object.defineProperties(local, {
+    getters: {
+      get: noNamespace
+        ? function () { return store.getters; }
+        : function () { return makeLocalGetters(store, namespace); }
+    },
+    state: {
+      get: function () { return getNestedState(store.state, path); }
+    }
+  });
+
+  return local
+}
+
+function makeLocalGetters (store, namespace) {
+  var gettersProxy = {};
+
+  var splitPos = namespace.length;
+  Object.keys(store.getters).forEach(function (type) {
+    // skip if the target getter is not match this namespace
+    if (type.slice(0, splitPos) !== namespace) { return }
+
+    // extract local getter type
+    var localType = type.slice(splitPos);
+
+    // Add a port to the getters proxy.
+    // Define as getter property because
+    // we do not want to evaluate the getters in this time.
+    Object.defineProperty(gettersProxy, localType, {
+      get: function () { return store.getters[type]; },
+      enumerable: true
+    });
+  });
+
+  return gettersProxy
+}
+
+function registerMutation (store, type, handler, local) {
+  var entry = store._mutations[type] || (store._mutations[type] = []);
+  entry.push(function wrappedMutationHandler (payload) {
+    handler.call(store, local.state, payload);
+  });
+}
+
+function registerAction (store, type, handler, local) {
+  var entry = store._actions[type] || (store._actions[type] = []);
+  entry.push(function wrappedActionHandler (payload, cb) {
+    var res = handler.call(store, {
+      dispatch: local.dispatch,
+      commit: local.commit,
+      getters: local.getters,
+      state: local.state,
+      rootGetters: store.getters,
+      rootState: store.state
+    }, payload, cb);
+    if (!isPromise(res)) {
+      res = Promise.resolve(res);
+    }
+    if (store._devtoolHook) {
+      return res.catch(function (err) {
+        store._devtoolHook.emit('vuex:error', err);
+        throw err
+      })
+    } else {
+      return res
+    }
+  });
+}
+
+function registerGetter (store, type, rawGetter, local) {
+  if (store._wrappedGetters[type]) {
+    if (true) {
+      console.error(("[vuex] duplicate getter key: " + type));
+    }
+    return
+  }
+  store._wrappedGetters[type] = function wrappedGetter (store) {
+    return rawGetter(
+      local.state, // local state
+      local.getters, // local getters
+      store.state, // root state
+      store.getters // root getters
+    )
+  };
+}
+
+function enableStrictMode (store) {
+  store._vm.$watch(function () { return this._data.$$state }, function () {
+    if (true) {
+      assert(store._committing, "Do not mutate vuex store state outside mutation handlers.");
+    }
+  }, { deep: true, sync: true });
+}
+
+function getNestedState (state, path) {
+  return path.length
+    ? path.reduce(function (state, key) { return state[key]; }, state)
+    : state
+}
+
+function unifyObjectStyle (type, payload, options) {
+  if (isObject(type) && type.type) {
+    options = payload;
+    payload = type;
+    type = type.type;
+  }
+
+  if (true) {
+    assert(typeof type === 'string', ("Expects string as the type, but found " + (typeof type) + "."));
+  }
+
+  return { type: type, payload: payload, options: options }
+}
+
+function install (_Vue) {
+  if (Vue && _Vue === Vue) {
+    if (true) {
+      console.error(
+        '[vuex] already installed. Vue.use(Vuex) should be called only once.'
+      );
+    }
+    return
+  }
+  Vue = _Vue;
+  applyMixin(Vue);
+}
+
+var mapState = normalizeNamespace(function (namespace, states) {
+  var res = {};
+  normalizeMap(states).forEach(function (ref) {
+    var key = ref.key;
+    var val = ref.val;
+
+    res[key] = function mappedState () {
+      var state = this.$store.state;
+      var getters = this.$store.getters;
+      if (namespace) {
+        var module = getModuleByNamespace(this.$store, 'mapState', namespace);
+        if (!module) {
+          return
+        }
+        state = module.context.state;
+        getters = module.context.getters;
+      }
+      return typeof val === 'function'
+        ? val.call(this, state, getters)
+        : state[val]
+    };
+    // mark vuex getter for devtools
+    res[key].vuex = true;
+  });
+  return res
+});
+
+var mapMutations = normalizeNamespace(function (namespace, mutations) {
+  var res = {};
+  normalizeMap(mutations).forEach(function (ref) {
+    var key = ref.key;
+    var val = ref.val;
+
+    res[key] = function mappedMutation () {
+      var args = [], len = arguments.length;
+      while ( len-- ) args[ len ] = arguments[ len ];
+
+      var commit = this.$store.commit;
+      if (namespace) {
+        var module = getModuleByNamespace(this.$store, 'mapMutations', namespace);
+        if (!module) {
+          return
+        }
+        commit = module.context.commit;
+      }
+      return typeof val === 'function'
+        ? val.apply(this, [commit].concat(args))
+        : commit.apply(this.$store, [val].concat(args))
+    };
+  });
+  return res
+});
+
+var mapGetters = normalizeNamespace(function (namespace, getters) {
+  var res = {};
+  normalizeMap(getters).forEach(function (ref) {
+    var key = ref.key;
+    var val = ref.val;
+
+    val = namespace + val;
+    res[key] = function mappedGetter () {
+      if (namespace && !getModuleByNamespace(this.$store, 'mapGetters', namespace)) {
+        return
+      }
+      if ( true && !(val in this.$store.getters)) {
+        console.error(("[vuex] unknown getter: " + val));
+        return
+      }
+      return this.$store.getters[val]
+    };
+    // mark vuex getter for devtools
+    res[key].vuex = true;
+  });
+  return res
+});
+
+var mapActions = normalizeNamespace(function (namespace, actions) {
+  var res = {};
+  normalizeMap(actions).forEach(function (ref) {
+    var key = ref.key;
+    var val = ref.val;
+
+    res[key] = function mappedAction () {
+      var args = [], len = arguments.length;
+      while ( len-- ) args[ len ] = arguments[ len ];
+
+      var dispatch = this.$store.dispatch;
+      if (namespace) {
+        var module = getModuleByNamespace(this.$store, 'mapActions', namespace);
+        if (!module) {
+          return
+        }
+        dispatch = module.context.dispatch;
+      }
+      return typeof val === 'function'
+        ? val.apply(this, [dispatch].concat(args))
+        : dispatch.apply(this.$store, [val].concat(args))
+    };
+  });
+  return res
+});
+
+var createNamespacedHelpers = function (namespace) { return ({
+  mapState: mapState.bind(null, namespace),
+  mapGetters: mapGetters.bind(null, namespace),
+  mapMutations: mapMutations.bind(null, namespace),
+  mapActions: mapActions.bind(null, namespace)
+}); };
+
+function normalizeMap (map) {
+  return Array.isArray(map)
+    ? map.map(function (key) { return ({ key: key, val: key }); })
+    : Object.keys(map).map(function (key) { return ({ key: key, val: map[key] }); })
+}
+
+function normalizeNamespace (fn) {
+  return function (namespace, map) {
+    if (typeof namespace !== 'string') {
+      map = namespace;
+      namespace = '';
+    } else if (namespace.charAt(namespace.length - 1) !== '/') {
+      namespace += '/';
+    }
+    return fn(namespace, map)
+  }
+}
+
+function getModuleByNamespace (store, helper, namespace) {
+  var module = store._modulesNamespaceMap[namespace];
+  if ( true && !module) {
+    console.error(("[vuex] module namespace not found in " + helper + "(): " + namespace));
+  }
+  return module
+}
+
+var index_esm = {
+  Store: Store,
+  install: install,
+  version: '3.0.1',
+  mapState: mapState,
+  mapMutations: mapMutations,
+  mapGetters: mapGetters,
+  mapActions: mapActions,
+  createNamespacedHelpers: createNamespacedHelpers
+};
+
+
+/* harmony default export */ __webpack_exports__["default"] = (index_esm);
+
+
+/***/ }),
+
+/***/ 110:
+/*!***********************************************************!*\
+  !*** E:/Documents/HBuilderProjects/牧场管理系统/utils/utils.js ***!
+  \***********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+/**
+ * 时间格式的转化
+ * @param {Object} time
+ */
+function formatTime(time) {
+  if (typeof time !== 'number' || time < 0) {
+    return time;
+  }
+
+  var hour = parseInt(time / 3600);
+  time = time % 3600;
+  var minute = parseInt(time / 60);
+  time = time % 60;
+  var second = time;
+
+  return [hour, minute, second].map(function (n) {
+    n = n.toString();
+    return n[1] ? n : '0' + n;
+  }).join(':');
+}
+
+/**
+   * aop方法的自定义注入
+   */
+function aop(arr) {var isAllow = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : function () {return false;};var beforeFn = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : function () {};var afterFn = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : function () {};
+  if ((arr instanceof Object || arr instanceof Array) &&
+  beforeFn instanceof Function && afterFn instanceof Function) {
+    for (var i in arr) {
+      if (isAllow.apply(this, [arr, i].concat(Array.prototype.slice.call(arguments)))) {
+        arr[i] = arr[i].before(beforeFn).after(afterFn);
+      }
+    }
+    console.log("aop自定义方法注入初始化完毕");
+  } else {
+    console.log("参数不对");
+  }
+
+}
+
+/**
+   * 表单自动填充数据
+   * @param {Object} data
+   * @param {Object} arr
+   */
+function hanleValue(data, arr) {
+  for (var i in data) {
+    var target = arr.find(function (f) {return f.name == i;});
+    if (target) {
+      if (data[i].includes(",")) {
+        target.value = data[i].split(",");
+      } else {
+        target.value = data[i];
+      }
+
+    }
+  }
+}
+
+/**
+   * 路径格式的转化为对象
+   * @param {Object} longitude
+   * @param {Object} latitude
+   */
+function formatLocation(longitude, latitude) {
+  if (typeof longitude === 'string' && typeof latitude === 'string') {
+    longitude = parseFloat(longitude);
+    latitude = parseFloat(latitude);
+  }
+
+  longitude = longitude.toFixed(2);
+  latitude = latitude.toFixed(2);
+
+  return {
+    longitude: longitude.toString().split('.'),
+    latitude: latitude.toString().split('.') };
+
+}
+
+/**
+   * 日期转化工具
+   */
+var dateUtils = {
+  UNITS: {
+    '年': 31557600000,
+    '月': 2629800000,
+    '天': 86400000,
+    '小时': 3600000,
+    '分钟': 60000,
+    '秒': 1000 },
+
+  humanize: function humanize(milliseconds) {
+    var humanize = '';
+    for (var key in this.UNITS) {
+      if (milliseconds >= this.UNITS[key]) {
+        humanize = Math.floor(milliseconds / this.UNITS[key]) + key + '前';
+        break;
+      }
+    }
+    return humanize || '刚刚';
+  },
+  format: function format(dateStr) {
+    var date = this.parse(dateStr);
+    var diff = Date.now() - date.getTime();
+    if (diff < this.UNITS['天']) {
+      return this.humanize(diff);
+    }
+    var _format = function _format(number) {
+      return number < 10 ? '0' + number : number;
+    };
+    return date.getFullYear() + '/' + _format(date.getMonth() + 1) + '/' + _format(date.getDate()) + '-' +
+    _format(date.getHours()) + ':' + _format(date.getMinutes());
+  },
+  parse: function parse(str) {//将"yyyy-mm-dd HH:MM:ss"格式的字符串，转化为一个Date对象
+    var a = str.split(/[^0-9]/);
+    return new Date(a[0], a[1] - 1, a[2], a[3], a[4], a[5]);
+  } };
+
+
+module.exports = {
+  formatTime: formatTime,
+  formatLocation: formatLocation,
+  dateUtils: dateUtils,
+  aop: aop,
+  hanleValue: hanleValue };
+
+/***/ }),
+
+/***/ 14:
+/*!**********************************************************************************************************!*\
+  !*** ./node_modules/@dcloudio/vue-cli-plugin-uni/packages/vue-loader/lib/runtime/componentNormalizer.js ***!
+  \**********************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return normalizeComponent; });
+/* globals __VUE_SSR_CONTEXT__ */
+
+// IMPORTANT: Do NOT use ES2015 features in this file (except for modules).
+// This module is a runtime utility for cleaner component module output and will
+// be included in the final webpack user bundle.
+
+function normalizeComponent (
+  scriptExports,
+  render,
+  staticRenderFns,
+  functionalTemplate,
+  injectStyles,
+  scopeId,
+  moduleIdentifier, /* server only */
+  shadowMode, /* vue-cli only */
+  components, // fixed by xxxxxx auto components
+  renderjs // fixed by xxxxxx renderjs
+) {
+  // Vue.extend constructor export interop
+  var options = typeof scriptExports === 'function'
+    ? scriptExports.options
+    : scriptExports
+
+  // fixed by xxxxxx auto components
+  if (components) {
+    if (!options.components) {
+      options.components = {}
+    }
+    var hasOwn = Object.prototype.hasOwnProperty
+    for (var name in components) {
+      if (hasOwn.call(components, name) && !hasOwn.call(options.components, name)) {
+        options.components[name] = components[name]
+      }
+    }
+  }
+  // fixed by xxxxxx renderjs
+  if (renderjs) {
+    (renderjs.beforeCreate || (renderjs.beforeCreate = [])).unshift(function() {
+      this[renderjs.__module] = this
+    });
+    (options.mixins || (options.mixins = [])).push(renderjs)
+  }
+
+  // render functions
+  if (render) {
+    options.render = render
+    options.staticRenderFns = staticRenderFns
+    options._compiled = true
+  }
+
+  // functional template
+  if (functionalTemplate) {
+    options.functional = true
+  }
+
+  // scopedId
+  if (scopeId) {
+    options._scopeId = 'data-v-' + scopeId
+  }
+
+  var hook
+  if (moduleIdentifier) { // server build
+    hook = function (context) {
+      // 2.3 injection
+      context =
+        context || // cached call
+        (this.$vnode && this.$vnode.ssrContext) || // stateful
+        (this.parent && this.parent.$vnode && this.parent.$vnode.ssrContext) // functional
+      // 2.2 with runInNewContext: true
+      if (!context && typeof __VUE_SSR_CONTEXT__ !== 'undefined') {
+        context = __VUE_SSR_CONTEXT__
+      }
+      // inject component styles
+      if (injectStyles) {
+        injectStyles.call(this, context)
+      }
+      // register component module identifier for async chunk inferrence
+      if (context && context._registeredComponents) {
+        context._registeredComponents.add(moduleIdentifier)
+      }
+    }
+    // used by ssr in case component is cached and beforeCreate
+    // never gets called
+    options._ssrRegister = hook
+  } else if (injectStyles) {
+    hook = shadowMode
+      ? function () { injectStyles.call(this, this.$root.$options.shadowRoot) }
+      : injectStyles
+  }
+
+  if (hook) {
+    if (options.functional) {
+      // for template-only hot-reload because in that case the render fn doesn't
+      // go through the normalizer
+      options._injectStyles = hook
+      // register for functioal component in vue file
+      var originalRender = options.render
+      options.render = function renderWithStyleInjection (h, context) {
+        hook.call(context)
+        return originalRender(h, context)
+      }
+    } else {
+      // inject component registration as beforeCreate hook
+      var existing = options.beforeCreate
+      options.beforeCreate = existing
+        ? [].concat(existing, hook)
+        : [hook]
+    }
+  }
+
+  return {
+    exports: scriptExports,
+    options: options
+  }
+}
+
+
+/***/ }),
+
+/***/ 149:
+/*!***********************************************************!*\
+  !*** E:/Documents/HBuilderProjects/牧场管理系统/api/pasture.js ***!
+  \***********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });exports.getPastureListByUserId = exports.updatePasture = exports.addPasture = void 0; /**
+                                                                                                                                                                  * 牧场相关资料的API
+                                                                                                                                                                  */
+var pasturePort = ":8762";
+/*添加牧场*/
+var addPasture = pasturePort + '/pasture/addPasture';
+/*添加牧场*/exports.addPasture = addPasture;
+var updatePasture = pasturePort + '/pasture/updatePasture';
+/*通过ID获取牧场*/exports.updatePasture = updatePasture;
+var getPastureListByUserId = pasturePort + '/pasture/getPastureListByUserId';exports.getPastureListByUserId = getPastureListByUserId;
+
+/***/ }),
+
+/***/ 15:
+/*!***********************************************************!*\
+  !*** E:/Documents/HBuilderProjects/牧场管理系统/store/index.js ***!
+  \***********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _vue = _interopRequireDefault(__webpack_require__(/*! vue */ 2));
+var _vuex = _interopRequireDefault(__webpack_require__(/*! vuex */ 11));
+
+var _routes = _interopRequireDefault(__webpack_require__(/*! @/config/routes.config */ 16));
+var _router = _interopRequireDefault(__webpack_require__(/*! @/utils/router */ 17));
+var _systemStore = _interopRequireDefault(__webpack_require__(/*! ./systemStore */ 18));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
+console.log("systemStore", _systemStore.default);
+_vue.default.use(_vuex.default);
+
+var ACCESSTOKEN = uni.getStorageSync('accessToken') || '';
+var REFERRER = uni.getStorageSync('referrer') || '';
+var USER = uni.getStorageSync('user') || {};
+var REFRESHTOKEN = uni.getStorageSync('refreshToken') || '';
+
+var store = new _vuex.default.Store({
+  modules: {
+    systemStore: _systemStore.default },
+
+  state: {
+    //用户token
+    accessToken: ACCESSTOKEN,
+    //用户信息
+    userInfo: USER.member,
+    //推荐人
+    referrer: REFERRER,
+    //小程序openid
+    openId: '',
+    //网络状态，用于下载提醒
+    networkState: 'unknown',
+    refreshToken: REFRESHTOKEN },
+
+
+  getters: {
+    // 获取网络状态
+    networkStatus: function networkStatus(state) {
+      return state.networkState;
+    },
+    // 判断用户是否登录
+    hasLogin: function hasLogin(state) {
+      if (state.accessToken) {
+        return true;
+      } else {
+        return false;
+      }
+    } },
+
+  mutations: {
+    setUserId: function setUserId(state, provider) {
+      state.userInfo = provider;
+    },
+    login: function login(state, provider) {
+      state.accessToken = provider.access_token;
+      state.refreshToken = provider.refresh_token;
+      state.userInfo = provider.member;
+      state.user = provider;
+      uni.setStorageSync('user', provider);
+      uni.setStorageSync('accessToken', provider.access_token);
+      uni.setStorageSync('refreshToken', provider.refresh_token);
+      uni.setStorageSync('userInfo', provider.member);
+    },
+    logout: function logout(state) {
+      state.accessToken = '';
+      state.refreshToken = '';
+      state.userInfo = {};
+      uni.removeStorageSync('accessToken');
+      uni.removeStorageSync('refreshToken');
+      uni.removeStorageSync('userInfo');
+    },
+    setReferrer: function setReferrer(state, referrer) {
+      state.referrer = referrer;
+      uni.setStorageSync('referrer', referrer);
+    },
+    setOpenId: function setOpenId(state, openId) {
+      state.openId = openId;
+      uni.setStorageSync('openId', openId);
+    },
+    setNetworkState: function setNetworkState(state, provider) {
+      state.networkState = provider;
+    } },
+
+
+  actions: {
+    networkStateChange: function networkStateChange(_ref, info) {var commit = _ref.commit;
+      commit('setNetworkState', info);
+    },
+    reLogin: function reLogin(_ref2, info) {var commit = _ref2.commit;
+      commit('logout', '');
+      _router.default.redirectTo({
+        route: _routes.default.login });
+
+    },
+    logout: function logout(_ref3, info) {var commit = _ref3.commit;
+      commit('logout');
+    } } });
+
+
+
+console.log("store", store);var _default =
+store;exports.default = _default;
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
+
+/***/ }),
+
+/***/ 16:
+/*!********************************************************************!*\
+  !*** E:/Documents/HBuilderProjects/牧场管理系统/config/routes.config.js ***!
+  \********************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0; /*
+                                                                                                      * 路由表对象：
+                                                                                                      * 该文件挂载在Vue原型中 $mRoutesConfig
+                                                                                                      * 作用：调用$mRouter对象的方法 传入以下对应的路由对象，详细见common目录下的router.js
+                                                                                                      * 示例：this.$mRouter.push({route:this.$mRoutesConfig.main,query:{a:1}})
+                                                                                                      * 注意：所有在pages目录下新建的页面都必须在"路由表"中进行声明，并且在框架的pages.json注册。
+                                                                                                      *
+                                                                                                      * 配置参数项说明：
+                                                                                                      * name:可选配置 （路由名称）
+                                                                                                      * path:必填配置 （路由地址）
+                                                                                                      * requiresAuth:可选配置 （是否权限路由）
+                                                                                                      */var _default =
+
+{
+  // 权限路由 在main.js可实现路由拦截 所以路由都需要注册 待完善
+  info: {
+    name: '信息中心',
+    path: '/pages/index/info/info' },
+
+  promoCode: {
+    name: '创建订单',
+    path: '/pages/order/create/order',
+    requiresAuth: true },
+
+
+  // 非权限路由
+  main: {
+    name: '首页',
+    path: '/pages/index/index' },
+
+  category: {
+    name: '分类',
+    path: '/pages/category/category' },
+
+  cart: {
+    name: '购物车',
+    path: '/pages/cart/cart' },
+
+  login: {
+    name: '登录',
+    path: '/pages/public/login' },
+
+  index: {
+    name: '注册',
+    path: '/pages/public/register' },
+
+  loginType: {
+    name: '登录类型',
+    path: '/pages/public/logintype' } };exports.default = _default;
+
+/***/ }),
+
+/***/ 17:
+/*!************************************************************!*\
+  !*** E:/Documents/HBuilderProjects/牧场管理系统/utils/router.js ***!
+  \************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;function _classCallCheck(instance, Constructor) {if (!(instance instanceof Constructor)) {throw new TypeError("Cannot call a class as a function");}}function _defineProperties(target, props) {for (var i = 0; i < props.length; i++) {var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);}}function _createClass(Constructor, protoProps, staticProps) {if (protoProps) _defineProperties(Constructor.prototype, protoProps);if (staticProps) _defineProperties(Constructor, staticProps);return Constructor;} /*
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   * 路由对象
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   * 中心思想：需要路由鉴权,由于uni-app没有vue中的全局钩子函数，所以封装了Router对象。
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   * 说明：应用中的路由跳转尽量使用该Router的方法，并配合config中的路由表对象进行跳转。
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   *
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   * 示例：this.$mRouter.push({route:this.$mRoutesConfig.main,query:{a:1}})
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   *
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   */var
+Router = /*#__PURE__*/function () {
+  function Router(arg) {_classCallCheck(this, Router);
+    this.callBack = function () {};
+  }_createClass(Router, [{ key: "beforeEach", value: function beforeEach(
+
+    callBack) {
+      if (callBack instanceof Function) this.callBack = callBack;
+    } }, { key: "push", value: function push(
+
+    to) {
+      this.callBack('navigateTo', to);
+    } }, { key: "redirectTo", value: function redirectTo(
+
+    to) {
+      this.callBack('redirectTo', to);
+    } }, { key: "reLaunch", value: function reLaunch(
+
+    to) {
+      this.callBack('reLaunch', to);
+    } }, { key: "switchTab", value: function switchTab(
+
+    to) {
+      this.callBack('switchTab', to);
+    } }, { key: "back", value: function back(
+
+    delta) {
+      uni.navigateBack({
+        delta: delta });
+
+    } }]);return Router;}();var _default =
+
+
+new Router();exports.default = _default;
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
+
+/***/ }),
+
+/***/ 18:
+/*!*****************************************************************!*\
+  !*** E:/Documents/HBuilderProjects/牧场管理系统/store/systemStore.js ***!
+  \*****************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _vue = _interopRequireDefault(__webpack_require__(/*! vue */ 2));
+var _vuex = _interopRequireDefault(__webpack_require__(/*! vuex */ 11));
+
+var _routes = _interopRequireDefault(__webpack_require__(/*! @/config/routes.config */ 16));
+var _router = _interopRequireDefault(__webpack_require__(/*! @/utils/router */ 17));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
+//获取QQ地图的对象
+var QQMapWX = __webpack_require__(/*! @/common/qqmap-wx-jssdk.min.js */ 19); // 引入SDK核心类
+var qqmapsdk = new QQMapWX({ // 实例化API核心类
+  key: 'YPEBZ-2ASWP-FSYDN-V6OJB-OQXR7-7CFQQ' });
+
+//获取系统信息
+var systemInfo = uni.getStorageSync('systemInfo') || '';var _default =
+
+
+{
+  state: {
+    //系统相关信息
+    systemInfo: systemInfo,
+    qqmapsdk: qqmapsdk,
+    location: location },
+
+  getters: {
+    getSystemInfo: function getSystemInfo(state, provider) {
+      return state.systemInfo[provider];
+    },
+    getQqmapsdk: function getQqmapsdk() {
+      return state.qqmapsdk;
+    },
+    getLocation: function getLocation() {
+      return state.location;
+    } },
+
+  mutations: { //相当于methods,定义一些方法(同步)。方法里有个默认参数--state
+    setSystemInfo: function setSystemInfo(state, provider) {
+      state.systemInfo = provider;
+    },
+    setQqmapsdk: function setQqmapsdk(state, provider) {
+      state.qqmapsdk = provider;
+    },
+    setLocation: function setLocation(state, provider) {
+      state.location = provider;
+    } },
+
+  actions: { //异步操作（也可以定义同步方法）。提交mutation，而不是直接变更状态。
+    locationChange: function locationChange(_ref, location) {var commit = _ref.commit;
+      console.log("locationChange", "?");
+      commit('setLocation', location);
+    } } };exports.default = _default;
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
+
+/***/ }),
+
+/***/ 19:
+/*!*************************************************************************!*\
+  !*** E:/Documents/HBuilderProjects/牧场管理系统/common/qqmap-wx-jssdk.min.js ***!
+  \*************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+function _classCallCheck(instance, Constructor) {if (!(instance instanceof Constructor)) {throw new TypeError("Cannot call a class as a function");}}function _defineProperties(target, props) {for (var i = 0; i < props.length; i++) {var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);}}function _createClass(Constructor, protoProps, staticProps) {if (protoProps) _defineProperties(Constructor.prototype, protoProps);if (staticProps) _defineProperties(Constructor, staticProps);return Constructor;}var ERROR_CONF = { KEY_ERR: 311, KEY_ERR_MSG: 'key格式错误', PARAM_ERR: 310, PARAM_ERR_MSG: '请求参数信息有误', SYSTEM_ERR: 600, SYSTEM_ERR_MSG: '系统错误', WX_ERR_CODE: 1000, WX_OK_CODE: 200 };var BASE_URL = 'https://apis.map.qq.com/ws/';var URL_SEARCH = BASE_URL + 'place/v1/search';var URL_SUGGESTION = BASE_URL + 'place/v1/suggestion';var URL_GET_GEOCODER = BASE_URL + 'geocoder/v1/';var URL_CITY_LIST = BASE_URL + 'district/v1/list';var URL_AREA_LIST = BASE_URL + 'district/v1/getchildren';var URL_DISTANCE = BASE_URL + 'distance/v1/';var URL_DIRECTION = BASE_URL + 'direction/v1/';var MODE = { driving: 'driving', transit: 'transit' };var EARTH_RADIUS = 6378136.49;var Utils = { safeAdd: function safeAdd(x, y) {var lsw = (x & 0xffff) + (y & 0xffff);var msw = (x >> 16) + (y >> 16) + (lsw >> 16);return msw << 16 | lsw & 0xffff;}, bitRotateLeft: function bitRotateLeft(num, cnt) {return num << cnt | num >>> 32 - cnt;}, md5cmn: function md5cmn(q, a, b, x, s, t) {return this.safeAdd(this.bitRotateLeft(this.safeAdd(this.safeAdd(a, q), this.safeAdd(x, t)), s), b);}, md5ff: function md5ff(a, b, c, d, x, s, t) {return this.md5cmn(b & c | ~b & d, a, b, x, s, t);}, md5gg: function md5gg(a, b, c, d, x, s, t) {return this.md5cmn(b & d | c & ~d, a, b, x, s, t);}, md5hh: function md5hh(a, b, c, d, x, s, t) {return this.md5cmn(b ^ c ^ d, a, b, x, s, t);}, md5ii: function md5ii(a, b, c, d, x, s, t) {return this.md5cmn(c ^ (b | ~d), a, b, x, s, t);}, binlMD5: function binlMD5(x, len) {x[len >> 5] |= 0x80 << len % 32;x[(len + 64 >>> 9 << 4) + 14] = len;var i;var olda;var oldb;var oldc;var oldd;var a = 1732584193;var b = -271733879;var c = -1732584194;var d = 271733878;for (i = 0; i < x.length; i += 16) {olda = a;oldb = b;oldc = c;oldd = d;a = this.md5ff(a, b, c, d, x[i], 7, -680876936);d = this.md5ff(d, a, b, c, x[i + 1], 12, -389564586);c = this.md5ff(c, d, a, b, x[i + 2], 17, 606105819);b = this.md5ff(b, c, d, a, x[i + 3], 22, -1044525330);a = this.md5ff(a, b, c, d, x[i + 4], 7, -176418897);d = this.md5ff(d, a, b, c, x[i + 5], 12, 1200080426);c = this.md5ff(c, d, a, b, x[i + 6], 17, -1473231341);b = this.md5ff(b, c, d, a, x[i + 7], 22, -45705983);a = this.md5ff(a, b, c, d, x[i + 8], 7, 1770035416);d = this.md5ff(d, a, b, c, x[i + 9], 12, -1958414417);c = this.md5ff(c, d, a, b, x[i + 10], 17, -42063);b = this.md5ff(b, c, d, a, x[i + 11], 22, -1990404162);a = this.md5ff(a, b, c, d, x[i + 12], 7, 1804603682);d = this.md5ff(d, a, b, c, x[i + 13], 12, -40341101);c = this.md5ff(c, d, a, b, x[i + 14], 17, -1502002290);b = this.md5ff(b, c, d, a, x[i + 15], 22, 1236535329);a = this.md5gg(a, b, c, d, x[i + 1], 5, -165796510);d = this.md5gg(d, a, b, c, x[i + 6], 9, -1069501632);c = this.md5gg(c, d, a, b, x[i + 11], 14, 643717713);b = this.md5gg(b, c, d, a, x[i], 20, -373897302);a = this.md5gg(a, b, c, d, x[i + 5], 5, -701558691);d = this.md5gg(d, a, b, c, x[i + 10], 9, 38016083);c = this.md5gg(c, d, a, b, x[i + 15], 14, -660478335);b = this.md5gg(b, c, d, a, x[i + 4], 20, -405537848);a = this.md5gg(a, b, c, d, x[i + 9], 5, 568446438);d = this.md5gg(d, a, b, c, x[i + 14], 9, -1019803690);c = this.md5gg(c, d, a, b, x[i + 3], 14, -187363961);b = this.md5gg(b, c, d, a, x[i + 8], 20, 1163531501);a = this.md5gg(a, b, c, d, x[i + 13], 5, -1444681467);d = this.md5gg(d, a, b, c, x[i + 2], 9, -51403784);c = this.md5gg(c, d, a, b, x[i + 7], 14, 1735328473);b = this.md5gg(b, c, d, a, x[i + 12], 20, -1926607734);a = this.md5hh(a, b, c, d, x[i + 5], 4, -378558);d = this.md5hh(d, a, b, c, x[i + 8], 11, -2022574463);c = this.md5hh(c, d, a, b, x[i + 11], 16, 1839030562);b = this.md5hh(b, c, d, a, x[i + 14], 23, -35309556);a = this.md5hh(a, b, c, d, x[i + 1], 4, -1530992060);d = this.md5hh(d, a, b, c, x[i + 4], 11, 1272893353);c = this.md5hh(c, d, a, b, x[i + 7], 16, -155497632);b = this.md5hh(b, c, d, a, x[i + 10], 23, -1094730640);a = this.md5hh(a, b, c, d, x[i + 13], 4, 681279174);d = this.md5hh(d, a, b, c, x[i], 11, -358537222);c = this.md5hh(c, d, a, b, x[i + 3], 16, -722521979);b = this.md5hh(b, c, d, a, x[i + 6], 23, 76029189);a = this.md5hh(a, b, c, d, x[i + 9], 4, -640364487);d = this.md5hh(d, a, b, c, x[i + 12], 11, -421815835);c = this.md5hh(c, d, a, b, x[i + 15], 16, 530742520);b = this.md5hh(b, c, d, a, x[i + 2], 23, -995338651);a = this.md5ii(a, b, c, d, x[i], 6, -198630844);d = this.md5ii(d, a, b, c, x[i + 7], 10, 1126891415);c = this.md5ii(c, d, a, b, x[i + 14], 15, -1416354905);b = this.md5ii(b, c, d, a, x[i + 5], 21, -57434055);a = this.md5ii(a, b, c, d, x[i + 12], 6, 1700485571);d = this.md5ii(d, a, b, c, x[i + 3], 10, -1894986606);c = this.md5ii(c, d, a, b, x[i + 10], 15, -1051523);b = this.md5ii(b, c, d, a, x[i + 1], 21, -2054922799);a = this.md5ii(a, b, c, d, x[i + 8], 6, 1873313359);d = this.md5ii(d, a, b, c, x[i + 15], 10, -30611744);c = this.md5ii(c, d, a, b, x[i + 6], 15, -1560198380);b = this.md5ii(b, c, d, a, x[i + 13], 21, 1309151649);a = this.md5ii(a, b, c, d, x[i + 4], 6, -145523070);d = this.md5ii(d, a, b, c, x[i + 11], 10, -1120210379);c = this.md5ii(c, d, a, b, x[i + 2], 15, 718787259);b = this.md5ii(b, c, d, a, x[i + 9], 21, -343485551);a = this.safeAdd(a, olda);b = this.safeAdd(b, oldb);c = this.safeAdd(c, oldc);d = this.safeAdd(d, oldd);}return [a, b, c, d];}, binl2rstr: function binl2rstr(input) {var i;var output = '';var length32 = input.length * 32;for (i = 0; i < length32; i += 8) {output += String.fromCharCode(input[i >> 5] >>> i % 32 & 0xff);}return output;}, rstr2binl: function rstr2binl(input) {var i;var output = [];output[(input.length >> 2) - 1] = undefined;for (i = 0; i < output.length; i += 1) {output[i] = 0;}var length8 = input.length * 8;for (i = 0; i < length8; i += 8) {output[i >> 5] |= (input.charCodeAt(i / 8) & 0xff) << i % 32;}return output;}, rstrMD5: function rstrMD5(s) {return this.binl2rstr(this.binlMD5(this.rstr2binl(s), s.length * 8));}, rstrHMACMD5: function rstrHMACMD5(key, data) {var i;var bkey = this.rstr2binl(key);var ipad = [];var opad = [];var hash;ipad[15] = opad[15] = undefined;if (bkey.length > 16) {bkey = this.binlMD5(bkey, key.length * 8);}for (i = 0; i < 16; i += 1) {ipad[i] = bkey[i] ^ 0x36363636;opad[i] = bkey[i] ^ 0x5c5c5c5c;}hash = this.binlMD5(ipad.concat(this.rstr2binl(data)), 512 + data.length * 8);return this.binl2rstr(this.binlMD5(opad.concat(hash), 512 + 128));}, rstr2hex: function rstr2hex(input) {var hexTab = '0123456789abcdef';var output = '';var x;var i;for (i = 0; i < input.length; i += 1) {x = input.charCodeAt(i);output += hexTab.charAt(x >>> 4 & 0x0f) + hexTab.charAt(x & 0x0f);}return output;}, str2rstrUTF8: function str2rstrUTF8(input) {return unescape(encodeURIComponent(input));}, rawMD5: function rawMD5(s) {return this.rstrMD5(this.str2rstrUTF8(s));}, hexMD5: function hexMD5(s) {return this.rstr2hex(this.rawMD5(s));}, rawHMACMD5: function rawHMACMD5(k, d) {return this.rstrHMACMD5(this.str2rstrUTF8(k), str2rstrUTF8(d));}, hexHMACMD5: function hexHMACMD5(k, d) {return this.rstr2hex(this.rawHMACMD5(k, d));}, md5: function md5(string, key, raw) {if (!key) {if (!raw) {return this.hexMD5(string);}return this.rawMD5(string);}if (!raw) {return this.hexHMACMD5(key, string);}return this.rawHMACMD5(key, string);}, getSig: function getSig(requestParam, sk, feature, mode) {var sig = null;var requestArr = [];Object.keys(requestParam).sort().forEach(function (key) {requestArr.push(key + '=' + requestParam[key]);});if (feature == 'search') {sig = '/ws/place/v1/search?' + requestArr.join('&') + sk;}if (feature == 'suggest') {sig = '/ws/place/v1/suggestion?' + requestArr.join('&') + sk;}if (feature == 'reverseGeocoder') {sig = '/ws/geocoder/v1/?' + requestArr.join('&') + sk;}if (feature == 'geocoder') {sig = '/ws/geocoder/v1/?' + requestArr.join('&') + sk;}if (feature == 'getCityList') {sig = '/ws/district/v1/list?' + requestArr.join('&') + sk;}if (feature == 'getDistrictByCityId') {sig = '/ws/district/v1/getchildren?' + requestArr.join('&') + sk;}if (feature == 'calculateDistance') {sig = '/ws/distance/v1/?' + requestArr.join('&') + sk;}if (feature == 'direction') {sig = '/ws/direction/v1/' + mode + '?' + requestArr.join('&') + sk;}sig = this.md5(sig);return sig;}, location2query: function location2query(data) {if (typeof data == 'string') {return data;}var query = '';for (var i = 0; i < data.length; i++) {var d = data[i];if (!!query) {query += ';';}if (d.location) {query = query + d.location.lat + ',' + d.location.lng;}if (d.latitude && d.longitude) {query = query + d.latitude + ',' + d.longitude;}}return query;}, rad: function rad(d) {return d * Math.PI / 180.0;}, getEndLocation: function getEndLocation(location) {var to = location.split(';');var endLocation = [];for (var i = 0; i < to.length; i++) {endLocation.push({ lat: parseFloat(to[i].split(',')[0]), lng: parseFloat(to[i].split(',')[1]) });}return endLocation;}, getDistance: function getDistance(latFrom, lngFrom, latTo, lngTo) {var radLatFrom = this.rad(latFrom);var radLatTo = this.rad(latTo);var a = radLatFrom - radLatTo;var b = this.rad(lngFrom) - this.rad(lngTo);var distance = 2 * Math.asin(Math.sqrt(Math.pow(Math.sin(a / 2), 2) + Math.cos(radLatFrom) * Math.cos(radLatTo) * Math.pow(Math.sin(b / 2), 2)));distance = distance * EARTH_RADIUS;distance = Math.round(distance * 10000) / 10000;return parseFloat(distance.toFixed(0));}, getWXLocation: function getWXLocation(success, fail, complete) {wx.getLocation({ type: 'gcj02', success: success, fail: fail, complete: complete });}, getLocationParam: function getLocationParam(location) {if (typeof location == 'string') {var locationArr = location.split(',');if (locationArr.length === 2) {location = { latitude: location.split(',')[0], longitude: location.split(',')[1] };} else {location = {};}}return location;}, polyfillParam: function polyfillParam(param) {param.success = param.success || function () {};param.fail = param.fail || function () {};param.complete = param.complete || function () {};}, checkParamKeyEmpty: function checkParamKeyEmpty(param, key) {if (!param[key]) {var errconf = this.buildErrorConfig(ERROR_CONF.PARAM_ERR, ERROR_CONF.PARAM_ERR_MSG + key + '参数格式有误');param.fail(errconf);param.complete(errconf);return true;}return false;}, checkKeyword: function checkKeyword(param) {return !this.checkParamKeyEmpty(param, 'keyword');}, checkLocation: function checkLocation(param) {var location = this.getLocationParam(param.location);if (!location || !location.latitude || !location.longitude) {var errconf = this.buildErrorConfig(ERROR_CONF.PARAM_ERR, ERROR_CONF.PARAM_ERR_MSG + ' location参数格式有误');param.fail(errconf);param.complete(errconf);return false;}return true;}, buildErrorConfig: function buildErrorConfig(errCode, errMsg) {return { status: errCode, message: errMsg };}, handleData: function handleData(param, data, feature) {if (feature == 'search') {var searchResult = data.data;var searchSimplify = [];for (var i = 0; i < searchResult.length; i++) {searchSimplify.push({ id: searchResult[i].id || null, title: searchResult[i].title || null, latitude: searchResult[i].location && searchResult[i].location.lat || null, longitude: searchResult[i].location && searchResult[i].location.lng || null, address: searchResult[i].address || null, category: searchResult[i].category || null, tel: searchResult[i].tel || null, adcode: searchResult[i].ad_info && searchResult[i].ad_info.adcode || null, city: searchResult[i].ad_info && searchResult[i].ad_info.city || null, district: searchResult[i].ad_info && searchResult[i].ad_info.district || null, province: searchResult[i].ad_info && searchResult[i].ad_info.province || null });}param.success(data, { searchResult: searchResult, searchSimplify: searchSimplify });} else if (feature == 'suggest') {var suggestResult = data.data;var suggestSimplify = [];for (var i = 0; i < suggestResult.length; i++) {suggestSimplify.push({ adcode: suggestResult[i].adcode || null, address: suggestResult[i].address || null, category: suggestResult[i].category || null, city: suggestResult[i].city || null, district: suggestResult[i].district || null, id: suggestResult[i].id || null, latitude: suggestResult[i].location && suggestResult[i].location.lat || null, longitude: suggestResult[i].location && suggestResult[i].location.lng || null, province: suggestResult[i].province || null, title: suggestResult[i].title || null, type: suggestResult[i].type || null });}param.success(data, { suggestResult: suggestResult, suggestSimplify: suggestSimplify });} else if (feature == 'reverseGeocoder') {var reverseGeocoderResult = data.result;var reverseGeocoderSimplify = { address: reverseGeocoderResult.address || null, latitude: reverseGeocoderResult.location && reverseGeocoderResult.location.lat || null, longitude: reverseGeocoderResult.location && reverseGeocoderResult.location.lng || null, adcode: reverseGeocoderResult.ad_info && reverseGeocoderResult.ad_info.adcode || null, city: reverseGeocoderResult.address_component && reverseGeocoderResult.address_component.city || null, district: reverseGeocoderResult.address_component && reverseGeocoderResult.address_component.district || null, nation: reverseGeocoderResult.address_component && reverseGeocoderResult.address_component.nation || null, province: reverseGeocoderResult.address_component && reverseGeocoderResult.address_component.province || null, street: reverseGeocoderResult.address_component && reverseGeocoderResult.address_component.street || null, street_number: reverseGeocoderResult.address_component && reverseGeocoderResult.address_component.street_number || null, recommend: reverseGeocoderResult.formatted_addresses && reverseGeocoderResult.formatted_addresses.recommend || null, rough: reverseGeocoderResult.formatted_addresses && reverseGeocoderResult.formatted_addresses.rough || null };if (reverseGeocoderResult.pois) {var pois = reverseGeocoderResult.pois;var poisSimplify = [];for (var i = 0; i < pois.length; i++) {poisSimplify.push({ id: pois[i].id || null, title: pois[i].title || null, latitude: pois[i].location && pois[i].location.lat || null, longitude: pois[i].location && pois[i].location.lng || null, address: pois[i].address || null, category: pois[i].category || null, adcode: pois[i].ad_info && pois[i].ad_info.adcode || null, city: pois[i].ad_info && pois[i].ad_info.city || null, district: pois[i].ad_info && pois[i].ad_info.district || null, province: pois[i].ad_info && pois[i].ad_info.province || null });}param.success(data, { reverseGeocoderResult: reverseGeocoderResult, reverseGeocoderSimplify: reverseGeocoderSimplify, pois: pois, poisSimplify: poisSimplify });} else {param.success(data, { reverseGeocoderResult: reverseGeocoderResult, reverseGeocoderSimplify: reverseGeocoderSimplify });}} else if (feature == 'geocoder') {var geocoderResult = data.result;var geocoderSimplify = { title: geocoderResult.title || null, latitude: geocoderResult.location && geocoderResult.location.lat || null, longitude: geocoderResult.location && geocoderResult.location.lng || null, adcode: geocoderResult.ad_info && geocoderResult.ad_info.adcode || null, province: geocoderResult.address_components && geocoderResult.address_components.province || null, city: geocoderResult.address_components && geocoderResult.address_components.city || null, district: geocoderResult.address_components && geocoderResult.address_components.district || null, street: geocoderResult.address_components && geocoderResult.address_components.street || null, street_number: geocoderResult.address_components && geocoderResult.address_components.street_number || null, level: geocoderResult.level || null };param.success(data, { geocoderResult: geocoderResult, geocoderSimplify: geocoderSimplify });} else if (feature == 'getCityList') {var provinceResult = data.result[0];var cityResult = data.result[1];var districtResult = data.result[2];param.success(data, { provinceResult: provinceResult, cityResult: cityResult, districtResult: districtResult });} else if (feature == 'getDistrictByCityId') {var districtByCity = data.result[0];param.success(data, districtByCity);} else if (feature == 'calculateDistance') {var calculateDistanceResult = data.result.elements;var distance = [];for (var i = 0; i < calculateDistanceResult.length; i++) {distance.push(calculateDistanceResult[i].distance);}param.success(data, { calculateDistanceResult: calculateDistanceResult, distance: distance });} else if (feature == 'direction') {var direction = data.result.routes;param.success(data, direction);} else {param.success(data);}}, buildWxRequestConfig: function buildWxRequestConfig(param, options, feature) {var that = this;options.header = { "content-type": "application/json" };options.method = 'GET';options.success = function (res) {var data = res.data;if (data.status === 0) {that.handleData(param, data, feature);} else {param.fail(data);}};options.fail = function (res) {res.statusCode = ERROR_CONF.WX_ERR_CODE;param.fail(that.buildErrorConfig(ERROR_CONF.WX_ERR_CODE, res.errMsg));};options.complete = function (res) {var statusCode = +res.statusCode;switch (statusCode) {case ERROR_CONF.WX_ERR_CODE:{param.complete(that.buildErrorConfig(ERROR_CONF.WX_ERR_CODE, res.errMsg));break;}case ERROR_CONF.WX_OK_CODE:{var data = res.data;if (data.status === 0) {param.complete(data);} else {param.complete(that.buildErrorConfig(data.status, data.message));}break;}default:{param.complete(that.buildErrorConfig(ERROR_CONF.SYSTEM_ERR, ERROR_CONF.SYSTEM_ERR_MSG));}}};return options;}, locationProcess: function locationProcess(param, locationsuccess, locationfail, locationcomplete) {var that = this;locationfail = locationfail || function (res) {res.statusCode = ERROR_CONF.WX_ERR_CODE;param.fail(that.buildErrorConfig(ERROR_CONF.WX_ERR_CODE, res.errMsg));};locationcomplete = locationcomplete || function (res) {if (res.statusCode == ERROR_CONF.WX_ERR_CODE) {param.complete(that.buildErrorConfig(ERROR_CONF.WX_ERR_CODE, res.errMsg));}};if (!param.location) {that.getWXLocation(locationsuccess, locationfail, locationcomplete);} else if (that.checkLocation(param)) {var location = Utils.getLocationParam(param.location);locationsuccess(location);}} };var QQMapWX = /*#__PURE__*/function () {"use strict";function QQMapWX(options) {_classCallCheck(this, QQMapWX);if (!options.key) {throw Error('key值不能为空');}this.key = options.key;}_createClass(QQMapWX, [{ key: "search", value: function search(options) {var that = this;options = options || {};Utils.polyfillParam(options);if (!Utils.checkKeyword(options)) {return;}var requestParam = { keyword: options.keyword, orderby: options.orderby || '_distance', page_size: options.page_size || 10, page_index: options.page_index || 1, output: 'json', key: that.key };if (options.address_format) {requestParam.address_format = options.address_format;}if (options.filter) {requestParam.filter = options.filter;}var distance = options.distance || "1000";var auto_extend = options.auto_extend || 1;var region = null;var rectangle = null;if (options.region) {region = options.region;}if (options.rectangle) {rectangle = options.rectangle;}var locationsuccess = function locationsuccess(result) {if (region && !rectangle) {requestParam.boundary = "region(" + region + "," + auto_extend + "," + result.latitude + "," + result.longitude + ")";if (options.sig) {requestParam.sig = Utils.getSig(requestParam, options.sig, 'search');}} else if (rectangle && !region) {requestParam.boundary = "rectangle(" + rectangle + ")";if (options.sig) {requestParam.sig = Utils.getSig(requestParam, options.sig, 'search');}} else {requestParam.boundary = "nearby(" + result.latitude + "," + result.longitude + "," + distance + "," + auto_extend + ")";if (options.sig) {requestParam.sig = Utils.getSig(requestParam, options.sig, 'search');}}wx.request(Utils.buildWxRequestConfig(options, { url: URL_SEARCH, data: requestParam }, 'search'));};Utils.locationProcess(options, locationsuccess);} }, { key: "getSuggestion", value: function getSuggestion(options) {var that = this;options = options || {};Utils.polyfillParam(options);if (!Utils.checkKeyword(options)) {return;}var requestParam = { keyword: options.keyword, region: options.region || '全国', region_fix: options.region_fix || 0, policy: options.policy || 0, page_size: options.page_size || 10, page_index: options.page_index || 1, get_subpois: options.get_subpois || 0, output: 'json', key: that.key };if (options.address_format) {requestParam.address_format = options.address_format;}if (options.filter) {requestParam.filter = options.filter;}if (options.location) {var locationsuccess = function locationsuccess(result) {requestParam.location = result.latitude + ',' + result.longitude;if (options.sig) {requestParam.sig = Utils.getSig(requestParam, options.sig, 'suggest');}wx.request(Utils.buildWxRequestConfig(options, { url: URL_SUGGESTION, data: requestParam }, "suggest"));};Utils.locationProcess(options, locationsuccess);} else {if (options.sig) {requestParam.sig = Utils.getSig(requestParam, options.sig, 'suggest');}wx.request(Utils.buildWxRequestConfig(options, { url: URL_SUGGESTION, data: requestParam }, "suggest"));}} }, { key: "reverseGeocoder", value: function reverseGeocoder(options) {var that = this;options = options || {};Utils.polyfillParam(options);var requestParam = { coord_type: options.coord_type || 5, get_poi: options.get_poi || 0, output: 'json', key: that.key };if (options.poi_options) {requestParam.poi_options = options.poi_options;}var locationsuccess = function locationsuccess(result) {requestParam.location = result.latitude + ',' + result.longitude;if (options.sig) {requestParam.sig = Utils.getSig(requestParam, options.sig, 'reverseGeocoder');}wx.request(Utils.buildWxRequestConfig(options, { url: URL_GET_GEOCODER, data: requestParam }, 'reverseGeocoder'));};Utils.locationProcess(options, locationsuccess);} }, { key: "geocoder", value: function geocoder(options) {var that = this;options = options || {};Utils.polyfillParam(options);if (Utils.checkParamKeyEmpty(options, 'address')) {return;}var requestParam = { address: options.address, output: 'json', key: that.key };if (options.region) {requestParam.region = options.region;}if (options.sig) {requestParam.sig = Utils.getSig(requestParam, options.sig, 'geocoder');}wx.request(Utils.buildWxRequestConfig(options, { url: URL_GET_GEOCODER, data: requestParam }, 'geocoder'));} }, { key: "getCityList", value: function getCityList(options) {var that = this;options = options || {};Utils.polyfillParam(options);var requestParam = { output: 'json', key: that.key };if (options.sig) {requestParam.sig = Utils.getSig(requestParam, options.sig, 'getCityList');}wx.request(Utils.buildWxRequestConfig(options, { url: URL_CITY_LIST, data: requestParam }, 'getCityList'));} }, { key: "getDistrictByCityId", value: function getDistrictByCityId(options) {var that = this;options = options || {};Utils.polyfillParam(options);if (Utils.checkParamKeyEmpty(options, 'id')) {return;}var requestParam = { id: options.id || '', output: 'json', key: that.key };if (options.sig) {requestParam.sig = Utils.getSig(requestParam, options.sig, 'getDistrictByCityId');}wx.request(Utils.buildWxRequestConfig(options, { url: URL_AREA_LIST, data: requestParam }, 'getDistrictByCityId'));} }, { key: "calculateDistance", value: function calculateDistance(options) {var that = this;options = options || {};Utils.polyfillParam(options);if (Utils.checkParamKeyEmpty(options, 'to')) {return;}var requestParam = { mode: options.mode || 'walking', to: Utils.location2query(options.to), output: 'json', key: that.key };if (options.from) {options.location = options.from;}if (requestParam.mode == 'straight') {var locationsuccess = function locationsuccess(result) {var locationTo = Utils.getEndLocation(requestParam.to);var data = { message: "query ok", result: { elements: [] }, status: 0 };for (var i = 0; i < locationTo.length; i++) {data.result.elements.push({ distance: Utils.getDistance(result.latitude, result.longitude, locationTo[i].lat, locationTo[i].lng), duration: 0, from: { lat: result.latitude, lng: result.longitude }, to: { lat: locationTo[i].lat, lng: locationTo[i].lng } });}var calculateResult = data.result.elements;var distanceResult = [];for (var i = 0; i < calculateResult.length; i++) {distanceResult.push(calculateResult[i].distance);}return options.success(data, { calculateResult: calculateResult, distanceResult: distanceResult });};Utils.locationProcess(options, locationsuccess);} else {var locationsuccess = function locationsuccess(result) {requestParam.from = result.latitude + ',' + result.longitude;if (options.sig) {requestParam.sig = Utils.getSig(requestParam, options.sig, 'calculateDistance');}wx.request(Utils.buildWxRequestConfig(options, { url: URL_DISTANCE, data: requestParam }, 'calculateDistance'));};Utils.locationProcess(options, locationsuccess);}} }, { key: "direction", value: function direction(options) {var that = this;options = options || {};Utils.polyfillParam(options);if (Utils.checkParamKeyEmpty(options, 'to')) {return;}var requestParam = { output: 'json', key: that.key };if (typeof options.to == 'string') {requestParam.to = options.to;} else {requestParam.to = options.to.latitude + ',' + options.to.longitude;}var SET_URL_DIRECTION = null;options.mode = options.mode || MODE.driving;SET_URL_DIRECTION = URL_DIRECTION + options.mode;if (options.from) {options.location = options.from;}if (options.mode == MODE.driving) {if (options.from_poi) {requestParam.from_poi = options.from_poi;}if (options.heading) {requestParam.heading = options.heading;}if (options.speed) {requestParam.speed = options.speed;}if (options.accuracy) {requestParam.accuracy = options.accuracy;}if (options.road_type) {requestParam.road_type = options.road_type;}if (options.to_poi) {requestParam.to_poi = options.to_poi;}if (options.from_track) {requestParam.from_track = options.from_track;}if (options.waypoints) {requestParam.waypoints = options.waypoints;}if (options.policy) {requestParam.policy = options.policy;}if (options.plate_number) {requestParam.plate_number = options.plate_number;}}if (options.mode == MODE.transit) {if (options.departure_time) {requestParam.departure_time = options.departure_time;}if (options.policy) {requestParam.policy = options.policy;}}var locationsuccess = function locationsuccess(result) {requestParam.from = result.latitude + ',' + result.longitude;if (options.sig) {requestParam.sig = Utils.getSig(requestParam, options.sig, 'direction', options.mode);}wx.request(Utils.buildWxRequestConfig(options, { url: SET_URL_DIRECTION, data: requestParam }, 'direction'));};Utils.locationProcess(options, locationsuccess);} }]);return QQMapWX;}();;module.exports = QQMapWX;
+
+/***/ }),
+
+/***/ 2:
 /*!******************************************************************************************!*\
   !*** ./node_modules/@dcloudio/vue-cli-plugin-uni/packages/mp-vue/dist/mp.runtime.esm.js ***!
   \******************************************************************************************/
@@ -7641,2176 +9904,16 @@ internalMixin(Vue);
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../../../../../webpack/buildin/global.js */ 3)))
 
 /***/ }),
-/* 3 */
-/*!***********************************!*\
-  !*** (webpack)/buildin/global.js ***!
-  \***********************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
 
-var g;
-
-// This works in non-strict mode
-g = (function() {
-	return this;
-})();
-
-try {
-	// This works if eval is allowed (see CSP)
-	g = g || new Function("return this")();
-} catch (e) {
-	// This works if the window reference is available
-	if (typeof window === "object") g = window;
-}
-
-// g can still be undefined, but nothing to do about it...
-// We return undefined, instead of nothing here, so it's
-// easier to handle this case. if(!global) { ...}
-
-module.exports = g;
-
-
-/***/ }),
-/* 4 */
-/*!*************************************************************************!*\
-  !*** C:/Users/ASUS/Documents/HBuilderProjects/ThorUI组件库后台模板/pages.json ***!
-  \*************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-
-
-/***/ }),
-/* 5 */,
-/* 6 */,
-/* 7 */,
-/* 8 */
-/*!*********************************************************************************************!*\
-  !*** ./node_modules/@vue/babel-preset-app/node_modules/@babel/runtime/regenerator/index.js ***!
-  \*********************************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__(/*! regenerator-runtime */ 9);
-
-/***/ }),
-/* 9 */
-/*!************************************************************!*\
-  !*** ./node_modules/regenerator-runtime/runtime-module.js ***!
-  \************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-/**
- * Copyright (c) 2014-present, Facebook, Inc.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- */
-
-// This method of obtaining a reference to the global object needs to be
-// kept identical to the way it is obtained in runtime.js
-var g = (function() {
-  return this || (typeof self === "object" && self);
-})() || Function("return this")();
-
-// Use `getOwnPropertyNames` because not all browsers support calling
-// `hasOwnProperty` on the global `self` object in a worker. See #183.
-var hadRuntime = g.regeneratorRuntime &&
-  Object.getOwnPropertyNames(g).indexOf("regeneratorRuntime") >= 0;
-
-// Save the old regeneratorRuntime in case it needs to be restored later.
-var oldRuntime = hadRuntime && g.regeneratorRuntime;
-
-// Force reevalutation of runtime.js.
-g.regeneratorRuntime = undefined;
-
-module.exports = __webpack_require__(/*! ./runtime */ 10);
-
-if (hadRuntime) {
-  // Restore the original runtime.
-  g.regeneratorRuntime = oldRuntime;
-} else {
-  // Remove the global property added by runtime.js.
-  try {
-    delete g.regeneratorRuntime;
-  } catch(e) {
-    g.regeneratorRuntime = undefined;
-  }
-}
-
-
-/***/ }),
-/* 10 */
-/*!*****************************************************!*\
-  !*** ./node_modules/regenerator-runtime/runtime.js ***!
-  \*****************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-/**
- * Copyright (c) 2014-present, Facebook, Inc.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- */
-
-!(function(global) {
-  "use strict";
-
-  var Op = Object.prototype;
-  var hasOwn = Op.hasOwnProperty;
-  var undefined; // More compressible than void 0.
-  var $Symbol = typeof Symbol === "function" ? Symbol : {};
-  var iteratorSymbol = $Symbol.iterator || "@@iterator";
-  var asyncIteratorSymbol = $Symbol.asyncIterator || "@@asyncIterator";
-  var toStringTagSymbol = $Symbol.toStringTag || "@@toStringTag";
-
-  var inModule = typeof module === "object";
-  var runtime = global.regeneratorRuntime;
-  if (runtime) {
-    if (inModule) {
-      // If regeneratorRuntime is defined globally and we're in a module,
-      // make the exports object identical to regeneratorRuntime.
-      module.exports = runtime;
-    }
-    // Don't bother evaluating the rest of this file if the runtime was
-    // already defined globally.
-    return;
-  }
-
-  // Define the runtime globally (as expected by generated code) as either
-  // module.exports (if we're in a module) or a new, empty object.
-  runtime = global.regeneratorRuntime = inModule ? module.exports : {};
-
-  function wrap(innerFn, outerFn, self, tryLocsList) {
-    // If outerFn provided and outerFn.prototype is a Generator, then outerFn.prototype instanceof Generator.
-    var protoGenerator = outerFn && outerFn.prototype instanceof Generator ? outerFn : Generator;
-    var generator = Object.create(protoGenerator.prototype);
-    var context = new Context(tryLocsList || []);
-
-    // The ._invoke method unifies the implementations of the .next,
-    // .throw, and .return methods.
-    generator._invoke = makeInvokeMethod(innerFn, self, context);
-
-    return generator;
-  }
-  runtime.wrap = wrap;
-
-  // Try/catch helper to minimize deoptimizations. Returns a completion
-  // record like context.tryEntries[i].completion. This interface could
-  // have been (and was previously) designed to take a closure to be
-  // invoked without arguments, but in all the cases we care about we
-  // already have an existing method we want to call, so there's no need
-  // to create a new function object. We can even get away with assuming
-  // the method takes exactly one argument, since that happens to be true
-  // in every case, so we don't have to touch the arguments object. The
-  // only additional allocation required is the completion record, which
-  // has a stable shape and so hopefully should be cheap to allocate.
-  function tryCatch(fn, obj, arg) {
-    try {
-      return { type: "normal", arg: fn.call(obj, arg) };
-    } catch (err) {
-      return { type: "throw", arg: err };
-    }
-  }
-
-  var GenStateSuspendedStart = "suspendedStart";
-  var GenStateSuspendedYield = "suspendedYield";
-  var GenStateExecuting = "executing";
-  var GenStateCompleted = "completed";
-
-  // Returning this object from the innerFn has the same effect as
-  // breaking out of the dispatch switch statement.
-  var ContinueSentinel = {};
-
-  // Dummy constructor functions that we use as the .constructor and
-  // .constructor.prototype properties for functions that return Generator
-  // objects. For full spec compliance, you may wish to configure your
-  // minifier not to mangle the names of these two functions.
-  function Generator() {}
-  function GeneratorFunction() {}
-  function GeneratorFunctionPrototype() {}
-
-  // This is a polyfill for %IteratorPrototype% for environments that
-  // don't natively support it.
-  var IteratorPrototype = {};
-  IteratorPrototype[iteratorSymbol] = function () {
-    return this;
-  };
-
-  var getProto = Object.getPrototypeOf;
-  var NativeIteratorPrototype = getProto && getProto(getProto(values([])));
-  if (NativeIteratorPrototype &&
-      NativeIteratorPrototype !== Op &&
-      hasOwn.call(NativeIteratorPrototype, iteratorSymbol)) {
-    // This environment has a native %IteratorPrototype%; use it instead
-    // of the polyfill.
-    IteratorPrototype = NativeIteratorPrototype;
-  }
-
-  var Gp = GeneratorFunctionPrototype.prototype =
-    Generator.prototype = Object.create(IteratorPrototype);
-  GeneratorFunction.prototype = Gp.constructor = GeneratorFunctionPrototype;
-  GeneratorFunctionPrototype.constructor = GeneratorFunction;
-  GeneratorFunctionPrototype[toStringTagSymbol] =
-    GeneratorFunction.displayName = "GeneratorFunction";
-
-  // Helper for defining the .next, .throw, and .return methods of the
-  // Iterator interface in terms of a single ._invoke method.
-  function defineIteratorMethods(prototype) {
-    ["next", "throw", "return"].forEach(function(method) {
-      prototype[method] = function(arg) {
-        return this._invoke(method, arg);
-      };
-    });
-  }
-
-  runtime.isGeneratorFunction = function(genFun) {
-    var ctor = typeof genFun === "function" && genFun.constructor;
-    return ctor
-      ? ctor === GeneratorFunction ||
-        // For the native GeneratorFunction constructor, the best we can
-        // do is to check its .name property.
-        (ctor.displayName || ctor.name) === "GeneratorFunction"
-      : false;
-  };
-
-  runtime.mark = function(genFun) {
-    if (Object.setPrototypeOf) {
-      Object.setPrototypeOf(genFun, GeneratorFunctionPrototype);
-    } else {
-      genFun.__proto__ = GeneratorFunctionPrototype;
-      if (!(toStringTagSymbol in genFun)) {
-        genFun[toStringTagSymbol] = "GeneratorFunction";
-      }
-    }
-    genFun.prototype = Object.create(Gp);
-    return genFun;
-  };
-
-  // Within the body of any async function, `await x` is transformed to
-  // `yield regeneratorRuntime.awrap(x)`, so that the runtime can test
-  // `hasOwn.call(value, "__await")` to determine if the yielded value is
-  // meant to be awaited.
-  runtime.awrap = function(arg) {
-    return { __await: arg };
-  };
-
-  function AsyncIterator(generator) {
-    function invoke(method, arg, resolve, reject) {
-      var record = tryCatch(generator[method], generator, arg);
-      if (record.type === "throw") {
-        reject(record.arg);
-      } else {
-        var result = record.arg;
-        var value = result.value;
-        if (value &&
-            typeof value === "object" &&
-            hasOwn.call(value, "__await")) {
-          return Promise.resolve(value.__await).then(function(value) {
-            invoke("next", value, resolve, reject);
-          }, function(err) {
-            invoke("throw", err, resolve, reject);
-          });
-        }
-
-        return Promise.resolve(value).then(function(unwrapped) {
-          // When a yielded Promise is resolved, its final value becomes
-          // the .value of the Promise<{value,done}> result for the
-          // current iteration.
-          result.value = unwrapped;
-          resolve(result);
-        }, function(error) {
-          // If a rejected Promise was yielded, throw the rejection back
-          // into the async generator function so it can be handled there.
-          return invoke("throw", error, resolve, reject);
-        });
-      }
-    }
-
-    var previousPromise;
-
-    function enqueue(method, arg) {
-      function callInvokeWithMethodAndArg() {
-        return new Promise(function(resolve, reject) {
-          invoke(method, arg, resolve, reject);
-        });
-      }
-
-      return previousPromise =
-        // If enqueue has been called before, then we want to wait until
-        // all previous Promises have been resolved before calling invoke,
-        // so that results are always delivered in the correct order. If
-        // enqueue has not been called before, then it is important to
-        // call invoke immediately, without waiting on a callback to fire,
-        // so that the async generator function has the opportunity to do
-        // any necessary setup in a predictable way. This predictability
-        // is why the Promise constructor synchronously invokes its
-        // executor callback, and why async functions synchronously
-        // execute code before the first await. Since we implement simple
-        // async functions in terms of async generators, it is especially
-        // important to get this right, even though it requires care.
-        previousPromise ? previousPromise.then(
-          callInvokeWithMethodAndArg,
-          // Avoid propagating failures to Promises returned by later
-          // invocations of the iterator.
-          callInvokeWithMethodAndArg
-        ) : callInvokeWithMethodAndArg();
-    }
-
-    // Define the unified helper method that is used to implement .next,
-    // .throw, and .return (see defineIteratorMethods).
-    this._invoke = enqueue;
-  }
-
-  defineIteratorMethods(AsyncIterator.prototype);
-  AsyncIterator.prototype[asyncIteratorSymbol] = function () {
-    return this;
-  };
-  runtime.AsyncIterator = AsyncIterator;
-
-  // Note that simple async functions are implemented on top of
-  // AsyncIterator objects; they just return a Promise for the value of
-  // the final result produced by the iterator.
-  runtime.async = function(innerFn, outerFn, self, tryLocsList) {
-    var iter = new AsyncIterator(
-      wrap(innerFn, outerFn, self, tryLocsList)
-    );
-
-    return runtime.isGeneratorFunction(outerFn)
-      ? iter // If outerFn is a generator, return the full iterator.
-      : iter.next().then(function(result) {
-          return result.done ? result.value : iter.next();
-        });
-  };
-
-  function makeInvokeMethod(innerFn, self, context) {
-    var state = GenStateSuspendedStart;
-
-    return function invoke(method, arg) {
-      if (state === GenStateExecuting) {
-        throw new Error("Generator is already running");
-      }
-
-      if (state === GenStateCompleted) {
-        if (method === "throw") {
-          throw arg;
-        }
-
-        // Be forgiving, per 25.3.3.3.3 of the spec:
-        // https://people.mozilla.org/~jorendorff/es6-draft.html#sec-generatorresume
-        return doneResult();
-      }
-
-      context.method = method;
-      context.arg = arg;
-
-      while (true) {
-        var delegate = context.delegate;
-        if (delegate) {
-          var delegateResult = maybeInvokeDelegate(delegate, context);
-          if (delegateResult) {
-            if (delegateResult === ContinueSentinel) continue;
-            return delegateResult;
-          }
-        }
-
-        if (context.method === "next") {
-          // Setting context._sent for legacy support of Babel's
-          // function.sent implementation.
-          context.sent = context._sent = context.arg;
-
-        } else if (context.method === "throw") {
-          if (state === GenStateSuspendedStart) {
-            state = GenStateCompleted;
-            throw context.arg;
-          }
-
-          context.dispatchException(context.arg);
-
-        } else if (context.method === "return") {
-          context.abrupt("return", context.arg);
-        }
-
-        state = GenStateExecuting;
-
-        var record = tryCatch(innerFn, self, context);
-        if (record.type === "normal") {
-          // If an exception is thrown from innerFn, we leave state ===
-          // GenStateExecuting and loop back for another invocation.
-          state = context.done
-            ? GenStateCompleted
-            : GenStateSuspendedYield;
-
-          if (record.arg === ContinueSentinel) {
-            continue;
-          }
-
-          return {
-            value: record.arg,
-            done: context.done
-          };
-
-        } else if (record.type === "throw") {
-          state = GenStateCompleted;
-          // Dispatch the exception by looping back around to the
-          // context.dispatchException(context.arg) call above.
-          context.method = "throw";
-          context.arg = record.arg;
-        }
-      }
-    };
-  }
-
-  // Call delegate.iterator[context.method](context.arg) and handle the
-  // result, either by returning a { value, done } result from the
-  // delegate iterator, or by modifying context.method and context.arg,
-  // setting context.delegate to null, and returning the ContinueSentinel.
-  function maybeInvokeDelegate(delegate, context) {
-    var method = delegate.iterator[context.method];
-    if (method === undefined) {
-      // A .throw or .return when the delegate iterator has no .throw
-      // method always terminates the yield* loop.
-      context.delegate = null;
-
-      if (context.method === "throw") {
-        if (delegate.iterator.return) {
-          // If the delegate iterator has a return method, give it a
-          // chance to clean up.
-          context.method = "return";
-          context.arg = undefined;
-          maybeInvokeDelegate(delegate, context);
-
-          if (context.method === "throw") {
-            // If maybeInvokeDelegate(context) changed context.method from
-            // "return" to "throw", let that override the TypeError below.
-            return ContinueSentinel;
-          }
-        }
-
-        context.method = "throw";
-        context.arg = new TypeError(
-          "The iterator does not provide a 'throw' method");
-      }
-
-      return ContinueSentinel;
-    }
-
-    var record = tryCatch(method, delegate.iterator, context.arg);
-
-    if (record.type === "throw") {
-      context.method = "throw";
-      context.arg = record.arg;
-      context.delegate = null;
-      return ContinueSentinel;
-    }
-
-    var info = record.arg;
-
-    if (! info) {
-      context.method = "throw";
-      context.arg = new TypeError("iterator result is not an object");
-      context.delegate = null;
-      return ContinueSentinel;
-    }
-
-    if (info.done) {
-      // Assign the result of the finished delegate to the temporary
-      // variable specified by delegate.resultName (see delegateYield).
-      context[delegate.resultName] = info.value;
-
-      // Resume execution at the desired location (see delegateYield).
-      context.next = delegate.nextLoc;
-
-      // If context.method was "throw" but the delegate handled the
-      // exception, let the outer generator proceed normally. If
-      // context.method was "next", forget context.arg since it has been
-      // "consumed" by the delegate iterator. If context.method was
-      // "return", allow the original .return call to continue in the
-      // outer generator.
-      if (context.method !== "return") {
-        context.method = "next";
-        context.arg = undefined;
-      }
-
-    } else {
-      // Re-yield the result returned by the delegate method.
-      return info;
-    }
-
-    // The delegate iterator is finished, so forget it and continue with
-    // the outer generator.
-    context.delegate = null;
-    return ContinueSentinel;
-  }
-
-  // Define Generator.prototype.{next,throw,return} in terms of the
-  // unified ._invoke helper method.
-  defineIteratorMethods(Gp);
-
-  Gp[toStringTagSymbol] = "Generator";
-
-  // A Generator should always return itself as the iterator object when the
-  // @@iterator function is called on it. Some browsers' implementations of the
-  // iterator prototype chain incorrectly implement this, causing the Generator
-  // object to not be returned from this call. This ensures that doesn't happen.
-  // See https://github.com/facebook/regenerator/issues/274 for more details.
-  Gp[iteratorSymbol] = function() {
-    return this;
-  };
-
-  Gp.toString = function() {
-    return "[object Generator]";
-  };
-
-  function pushTryEntry(locs) {
-    var entry = { tryLoc: locs[0] };
-
-    if (1 in locs) {
-      entry.catchLoc = locs[1];
-    }
-
-    if (2 in locs) {
-      entry.finallyLoc = locs[2];
-      entry.afterLoc = locs[3];
-    }
-
-    this.tryEntries.push(entry);
-  }
-
-  function resetTryEntry(entry) {
-    var record = entry.completion || {};
-    record.type = "normal";
-    delete record.arg;
-    entry.completion = record;
-  }
-
-  function Context(tryLocsList) {
-    // The root entry object (effectively a try statement without a catch
-    // or a finally block) gives us a place to store values thrown from
-    // locations where there is no enclosing try statement.
-    this.tryEntries = [{ tryLoc: "root" }];
-    tryLocsList.forEach(pushTryEntry, this);
-    this.reset(true);
-  }
-
-  runtime.keys = function(object) {
-    var keys = [];
-    for (var key in object) {
-      keys.push(key);
-    }
-    keys.reverse();
-
-    // Rather than returning an object with a next method, we keep
-    // things simple and return the next function itself.
-    return function next() {
-      while (keys.length) {
-        var key = keys.pop();
-        if (key in object) {
-          next.value = key;
-          next.done = false;
-          return next;
-        }
-      }
-
-      // To avoid creating an additional object, we just hang the .value
-      // and .done properties off the next function object itself. This
-      // also ensures that the minifier will not anonymize the function.
-      next.done = true;
-      return next;
-    };
-  };
-
-  function values(iterable) {
-    if (iterable) {
-      var iteratorMethod = iterable[iteratorSymbol];
-      if (iteratorMethod) {
-        return iteratorMethod.call(iterable);
-      }
-
-      if (typeof iterable.next === "function") {
-        return iterable;
-      }
-
-      if (!isNaN(iterable.length)) {
-        var i = -1, next = function next() {
-          while (++i < iterable.length) {
-            if (hasOwn.call(iterable, i)) {
-              next.value = iterable[i];
-              next.done = false;
-              return next;
-            }
-          }
-
-          next.value = undefined;
-          next.done = true;
-
-          return next;
-        };
-
-        return next.next = next;
-      }
-    }
-
-    // Return an iterator with no values.
-    return { next: doneResult };
-  }
-  runtime.values = values;
-
-  function doneResult() {
-    return { value: undefined, done: true };
-  }
-
-  Context.prototype = {
-    constructor: Context,
-
-    reset: function(skipTempReset) {
-      this.prev = 0;
-      this.next = 0;
-      // Resetting context._sent for legacy support of Babel's
-      // function.sent implementation.
-      this.sent = this._sent = undefined;
-      this.done = false;
-      this.delegate = null;
-
-      this.method = "next";
-      this.arg = undefined;
-
-      this.tryEntries.forEach(resetTryEntry);
-
-      if (!skipTempReset) {
-        for (var name in this) {
-          // Not sure about the optimal order of these conditions:
-          if (name.charAt(0) === "t" &&
-              hasOwn.call(this, name) &&
-              !isNaN(+name.slice(1))) {
-            this[name] = undefined;
-          }
-        }
-      }
-    },
-
-    stop: function() {
-      this.done = true;
-
-      var rootEntry = this.tryEntries[0];
-      var rootRecord = rootEntry.completion;
-      if (rootRecord.type === "throw") {
-        throw rootRecord.arg;
-      }
-
-      return this.rval;
-    },
-
-    dispatchException: function(exception) {
-      if (this.done) {
-        throw exception;
-      }
-
-      var context = this;
-      function handle(loc, caught) {
-        record.type = "throw";
-        record.arg = exception;
-        context.next = loc;
-
-        if (caught) {
-          // If the dispatched exception was caught by a catch block,
-          // then let that catch block handle the exception normally.
-          context.method = "next";
-          context.arg = undefined;
-        }
-
-        return !! caught;
-      }
-
-      for (var i = this.tryEntries.length - 1; i >= 0; --i) {
-        var entry = this.tryEntries[i];
-        var record = entry.completion;
-
-        if (entry.tryLoc === "root") {
-          // Exception thrown outside of any try block that could handle
-          // it, so set the completion value of the entire function to
-          // throw the exception.
-          return handle("end");
-        }
-
-        if (entry.tryLoc <= this.prev) {
-          var hasCatch = hasOwn.call(entry, "catchLoc");
-          var hasFinally = hasOwn.call(entry, "finallyLoc");
-
-          if (hasCatch && hasFinally) {
-            if (this.prev < entry.catchLoc) {
-              return handle(entry.catchLoc, true);
-            } else if (this.prev < entry.finallyLoc) {
-              return handle(entry.finallyLoc);
-            }
-
-          } else if (hasCatch) {
-            if (this.prev < entry.catchLoc) {
-              return handle(entry.catchLoc, true);
-            }
-
-          } else if (hasFinally) {
-            if (this.prev < entry.finallyLoc) {
-              return handle(entry.finallyLoc);
-            }
-
-          } else {
-            throw new Error("try statement without catch or finally");
-          }
-        }
-      }
-    },
-
-    abrupt: function(type, arg) {
-      for (var i = this.tryEntries.length - 1; i >= 0; --i) {
-        var entry = this.tryEntries[i];
-        if (entry.tryLoc <= this.prev &&
-            hasOwn.call(entry, "finallyLoc") &&
-            this.prev < entry.finallyLoc) {
-          var finallyEntry = entry;
-          break;
-        }
-      }
-
-      if (finallyEntry &&
-          (type === "break" ||
-           type === "continue") &&
-          finallyEntry.tryLoc <= arg &&
-          arg <= finallyEntry.finallyLoc) {
-        // Ignore the finally entry if control is not jumping to a
-        // location outside the try/catch block.
-        finallyEntry = null;
-      }
-
-      var record = finallyEntry ? finallyEntry.completion : {};
-      record.type = type;
-      record.arg = arg;
-
-      if (finallyEntry) {
-        this.method = "next";
-        this.next = finallyEntry.finallyLoc;
-        return ContinueSentinel;
-      }
-
-      return this.complete(record);
-    },
-
-    complete: function(record, afterLoc) {
-      if (record.type === "throw") {
-        throw record.arg;
-      }
-
-      if (record.type === "break" ||
-          record.type === "continue") {
-        this.next = record.arg;
-      } else if (record.type === "return") {
-        this.rval = this.arg = record.arg;
-        this.method = "return";
-        this.next = "end";
-      } else if (record.type === "normal" && afterLoc) {
-        this.next = afterLoc;
-      }
-
-      return ContinueSentinel;
-    },
-
-    finish: function(finallyLoc) {
-      for (var i = this.tryEntries.length - 1; i >= 0; --i) {
-        var entry = this.tryEntries[i];
-        if (entry.finallyLoc === finallyLoc) {
-          this.complete(entry.completion, entry.afterLoc);
-          resetTryEntry(entry);
-          return ContinueSentinel;
-        }
-      }
-    },
-
-    "catch": function(tryLoc) {
-      for (var i = this.tryEntries.length - 1; i >= 0; --i) {
-        var entry = this.tryEntries[i];
-        if (entry.tryLoc === tryLoc) {
-          var record = entry.completion;
-          if (record.type === "throw") {
-            var thrown = record.arg;
-            resetTryEntry(entry);
-          }
-          return thrown;
-        }
-      }
-
-      // The context.catch method must only be called with a location
-      // argument that corresponds to a known catch block.
-      throw new Error("illegal catch attempt");
-    },
-
-    delegateYield: function(iterable, resultName, nextLoc) {
-      this.delegate = {
-        iterator: values(iterable),
-        resultName: resultName,
-        nextLoc: nextLoc
-      };
-
-      if (this.method === "next") {
-        // Deliberately forget the last sent value so that we don't
-        // accidentally pass it on to the delegate.
-        this.arg = undefined;
-      }
-
-      return ContinueSentinel;
-    }
-  };
-})(
-  // In sloppy mode, unbound `this` refers to the global object, fallback to
-  // Function constructor if we're in global strict mode. That is sadly a form
-  // of indirect eval which violates Content Security Policy.
-  (function() {
-    return this || (typeof self === "object" && self);
-  })() || Function("return this")()
-);
-
-
-/***/ }),
-/* 11 */
-/*!********************************************!*\
-  !*** ./node_modules/vuex/dist/vuex.esm.js ***!
-  \********************************************/
-/*! exports provided: Store, install, mapState, mapMutations, mapGetters, mapActions, createNamespacedHelpers, default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Store", function() { return Store; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "install", function() { return install; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "mapState", function() { return mapState; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "mapMutations", function() { return mapMutations; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "mapGetters", function() { return mapGetters; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "mapActions", function() { return mapActions; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createNamespacedHelpers", function() { return createNamespacedHelpers; });
-/**
- * vuex v3.0.1
- * (c) 2017 Evan You
- * @license MIT
- */
-var applyMixin = function (Vue) {
-  var version = Number(Vue.version.split('.')[0]);
-
-  if (version >= 2) {
-    Vue.mixin({ beforeCreate: vuexInit });
-  } else {
-    // override init and inject vuex init procedure
-    // for 1.x backwards compatibility.
-    var _init = Vue.prototype._init;
-    Vue.prototype._init = function (options) {
-      if ( options === void 0 ) options = {};
-
-      options.init = options.init
-        ? [vuexInit].concat(options.init)
-        : vuexInit;
-      _init.call(this, options);
-    };
-  }
-
-  /**
-   * Vuex init hook, injected into each instances init hooks list.
-   */
-
-  function vuexInit () {
-    var options = this.$options;
-    // store injection
-    if (options.store) {
-      this.$store = typeof options.store === 'function'
-        ? options.store()
-        : options.store;
-    } else if (options.parent && options.parent.$store) {
-      this.$store = options.parent.$store;
-    }
-  }
-};
-
-var devtoolHook =
-  typeof window !== 'undefined' &&
-  window.__VUE_DEVTOOLS_GLOBAL_HOOK__;
-
-function devtoolPlugin (store) {
-  if (!devtoolHook) { return }
-
-  store._devtoolHook = devtoolHook;
-
-  devtoolHook.emit('vuex:init', store);
-
-  devtoolHook.on('vuex:travel-to-state', function (targetState) {
-    store.replaceState(targetState);
-  });
-
-  store.subscribe(function (mutation, state) {
-    devtoolHook.emit('vuex:mutation', mutation, state);
-  });
-}
-
-/**
- * Get the first item that pass the test
- * by second argument function
- *
- * @param {Array} list
- * @param {Function} f
- * @return {*}
- */
-/**
- * Deep copy the given object considering circular structure.
- * This function caches all nested objects and its copies.
- * If it detects circular structure, use cached copy to avoid infinite loop.
- *
- * @param {*} obj
- * @param {Array<Object>} cache
- * @return {*}
- */
-
-
-/**
- * forEach for object
- */
-function forEachValue (obj, fn) {
-  Object.keys(obj).forEach(function (key) { return fn(obj[key], key); });
-}
-
-function isObject (obj) {
-  return obj !== null && typeof obj === 'object'
-}
-
-function isPromise (val) {
-  return val && typeof val.then === 'function'
-}
-
-function assert (condition, msg) {
-  if (!condition) { throw new Error(("[vuex] " + msg)) }
-}
-
-var Module = function Module (rawModule, runtime) {
-  this.runtime = runtime;
-  this._children = Object.create(null);
-  this._rawModule = rawModule;
-  var rawState = rawModule.state;
-  this.state = (typeof rawState === 'function' ? rawState() : rawState) || {};
-};
-
-var prototypeAccessors$1 = { namespaced: { configurable: true } };
-
-prototypeAccessors$1.namespaced.get = function () {
-  return !!this._rawModule.namespaced
-};
-
-Module.prototype.addChild = function addChild (key, module) {
-  this._children[key] = module;
-};
-
-Module.prototype.removeChild = function removeChild (key) {
-  delete this._children[key];
-};
-
-Module.prototype.getChild = function getChild (key) {
-  return this._children[key]
-};
-
-Module.prototype.update = function update (rawModule) {
-  this._rawModule.namespaced = rawModule.namespaced;
-  if (rawModule.actions) {
-    this._rawModule.actions = rawModule.actions;
-  }
-  if (rawModule.mutations) {
-    this._rawModule.mutations = rawModule.mutations;
-  }
-  if (rawModule.getters) {
-    this._rawModule.getters = rawModule.getters;
-  }
-};
-
-Module.prototype.forEachChild = function forEachChild (fn) {
-  forEachValue(this._children, fn);
-};
-
-Module.prototype.forEachGetter = function forEachGetter (fn) {
-  if (this._rawModule.getters) {
-    forEachValue(this._rawModule.getters, fn);
-  }
-};
-
-Module.prototype.forEachAction = function forEachAction (fn) {
-  if (this._rawModule.actions) {
-    forEachValue(this._rawModule.actions, fn);
-  }
-};
-
-Module.prototype.forEachMutation = function forEachMutation (fn) {
-  if (this._rawModule.mutations) {
-    forEachValue(this._rawModule.mutations, fn);
-  }
-};
-
-Object.defineProperties( Module.prototype, prototypeAccessors$1 );
-
-var ModuleCollection = function ModuleCollection (rawRootModule) {
-  // register root module (Vuex.Store options)
-  this.register([], rawRootModule, false);
-};
-
-ModuleCollection.prototype.get = function get (path) {
-  return path.reduce(function (module, key) {
-    return module.getChild(key)
-  }, this.root)
-};
-
-ModuleCollection.prototype.getNamespace = function getNamespace (path) {
-  var module = this.root;
-  return path.reduce(function (namespace, key) {
-    module = module.getChild(key);
-    return namespace + (module.namespaced ? key + '/' : '')
-  }, '')
-};
-
-ModuleCollection.prototype.update = function update$1 (rawRootModule) {
-  update([], this.root, rawRootModule);
-};
-
-ModuleCollection.prototype.register = function register (path, rawModule, runtime) {
-    var this$1 = this;
-    if ( runtime === void 0 ) runtime = true;
-
-  if (true) {
-    assertRawModule(path, rawModule);
-  }
-
-  var newModule = new Module(rawModule, runtime);
-  if (path.length === 0) {
-    this.root = newModule;
-  } else {
-    var parent = this.get(path.slice(0, -1));
-    parent.addChild(path[path.length - 1], newModule);
-  }
-
-  // register nested modules
-  if (rawModule.modules) {
-    forEachValue(rawModule.modules, function (rawChildModule, key) {
-      this$1.register(path.concat(key), rawChildModule, runtime);
-    });
-  }
-};
-
-ModuleCollection.prototype.unregister = function unregister (path) {
-  var parent = this.get(path.slice(0, -1));
-  var key = path[path.length - 1];
-  if (!parent.getChild(key).runtime) { return }
-
-  parent.removeChild(key);
-};
-
-function update (path, targetModule, newModule) {
-  if (true) {
-    assertRawModule(path, newModule);
-  }
-
-  // update target module
-  targetModule.update(newModule);
-
-  // update nested modules
-  if (newModule.modules) {
-    for (var key in newModule.modules) {
-      if (!targetModule.getChild(key)) {
-        if (true) {
-          console.warn(
-            "[vuex] trying to add a new module '" + key + "' on hot reloading, " +
-            'manual reload is needed'
-          );
-        }
-        return
-      }
-      update(
-        path.concat(key),
-        targetModule.getChild(key),
-        newModule.modules[key]
-      );
-    }
-  }
-}
-
-var functionAssert = {
-  assert: function (value) { return typeof value === 'function'; },
-  expected: 'function'
-};
-
-var objectAssert = {
-  assert: function (value) { return typeof value === 'function' ||
-    (typeof value === 'object' && typeof value.handler === 'function'); },
-  expected: 'function or object with "handler" function'
-};
-
-var assertTypes = {
-  getters: functionAssert,
-  mutations: functionAssert,
-  actions: objectAssert
-};
-
-function assertRawModule (path, rawModule) {
-  Object.keys(assertTypes).forEach(function (key) {
-    if (!rawModule[key]) { return }
-
-    var assertOptions = assertTypes[key];
-
-    forEachValue(rawModule[key], function (value, type) {
-      assert(
-        assertOptions.assert(value),
-        makeAssertionMessage(path, key, type, value, assertOptions.expected)
-      );
-    });
-  });
-}
-
-function makeAssertionMessage (path, key, type, value, expected) {
-  var buf = key + " should be " + expected + " but \"" + key + "." + type + "\"";
-  if (path.length > 0) {
-    buf += " in module \"" + (path.join('.')) + "\"";
-  }
-  buf += " is " + (JSON.stringify(value)) + ".";
-  return buf
-}
-
-var Vue; // bind on install
-
-var Store = function Store (options) {
-  var this$1 = this;
-  if ( options === void 0 ) options = {};
-
-  // Auto install if it is not done yet and `window` has `Vue`.
-  // To allow users to avoid auto-installation in some cases,
-  // this code should be placed here. See #731
-  if (!Vue && typeof window !== 'undefined' && window.Vue) {
-    install(window.Vue);
-  }
-
-  if (true) {
-    assert(Vue, "must call Vue.use(Vuex) before creating a store instance.");
-    assert(typeof Promise !== 'undefined', "vuex requires a Promise polyfill in this browser.");
-    assert(this instanceof Store, "Store must be called with the new operator.");
-  }
-
-  var plugins = options.plugins; if ( plugins === void 0 ) plugins = [];
-  var strict = options.strict; if ( strict === void 0 ) strict = false;
-
-  var state = options.state; if ( state === void 0 ) state = {};
-  if (typeof state === 'function') {
-    state = state() || {};
-  }
-
-  // store internal state
-  this._committing = false;
-  this._actions = Object.create(null);
-  this._actionSubscribers = [];
-  this._mutations = Object.create(null);
-  this._wrappedGetters = Object.create(null);
-  this._modules = new ModuleCollection(options);
-  this._modulesNamespaceMap = Object.create(null);
-  this._subscribers = [];
-  this._watcherVM = new Vue();
-
-  // bind commit and dispatch to self
-  var store = this;
-  var ref = this;
-  var dispatch = ref.dispatch;
-  var commit = ref.commit;
-  this.dispatch = function boundDispatch (type, payload) {
-    return dispatch.call(store, type, payload)
-  };
-  this.commit = function boundCommit (type, payload, options) {
-    return commit.call(store, type, payload, options)
-  };
-
-  // strict mode
-  this.strict = strict;
-
-  // init root module.
-  // this also recursively registers all sub-modules
-  // and collects all module getters inside this._wrappedGetters
-  installModule(this, state, [], this._modules.root);
-
-  // initialize the store vm, which is responsible for the reactivity
-  // (also registers _wrappedGetters as computed properties)
-  resetStoreVM(this, state);
-
-  // apply plugins
-  plugins.forEach(function (plugin) { return plugin(this$1); });
-
-  if (Vue.config.devtools) {
-    devtoolPlugin(this);
-  }
-};
-
-var prototypeAccessors = { state: { configurable: true } };
-
-prototypeAccessors.state.get = function () {
-  return this._vm._data.$$state
-};
-
-prototypeAccessors.state.set = function (v) {
-  if (true) {
-    assert(false, "Use store.replaceState() to explicit replace store state.");
-  }
-};
-
-Store.prototype.commit = function commit (_type, _payload, _options) {
-    var this$1 = this;
-
-  // check object-style commit
-  var ref = unifyObjectStyle(_type, _payload, _options);
-    var type = ref.type;
-    var payload = ref.payload;
-    var options = ref.options;
-
-  var mutation = { type: type, payload: payload };
-  var entry = this._mutations[type];
-  if (!entry) {
-    if (true) {
-      console.error(("[vuex] unknown mutation type: " + type));
-    }
-    return
-  }
-  this._withCommit(function () {
-    entry.forEach(function commitIterator (handler) {
-      handler(payload);
-    });
-  });
-  this._subscribers.forEach(function (sub) { return sub(mutation, this$1.state); });
-
-  if (
-     true &&
-    options && options.silent
-  ) {
-    console.warn(
-      "[vuex] mutation type: " + type + ". Silent option has been removed. " +
-      'Use the filter functionality in the vue-devtools'
-    );
-  }
-};
-
-Store.prototype.dispatch = function dispatch (_type, _payload) {
-    var this$1 = this;
-
-  // check object-style dispatch
-  var ref = unifyObjectStyle(_type, _payload);
-    var type = ref.type;
-    var payload = ref.payload;
-
-  var action = { type: type, payload: payload };
-  var entry = this._actions[type];
-  if (!entry) {
-    if (true) {
-      console.error(("[vuex] unknown action type: " + type));
-    }
-    return
-  }
-
-  this._actionSubscribers.forEach(function (sub) { return sub(action, this$1.state); });
-
-  return entry.length > 1
-    ? Promise.all(entry.map(function (handler) { return handler(payload); }))
-    : entry[0](payload)
-};
-
-Store.prototype.subscribe = function subscribe (fn) {
-  return genericSubscribe(fn, this._subscribers)
-};
-
-Store.prototype.subscribeAction = function subscribeAction (fn) {
-  return genericSubscribe(fn, this._actionSubscribers)
-};
-
-Store.prototype.watch = function watch (getter, cb, options) {
-    var this$1 = this;
-
-  if (true) {
-    assert(typeof getter === 'function', "store.watch only accepts a function.");
-  }
-  return this._watcherVM.$watch(function () { return getter(this$1.state, this$1.getters); }, cb, options)
-};
-
-Store.prototype.replaceState = function replaceState (state) {
-    var this$1 = this;
-
-  this._withCommit(function () {
-    this$1._vm._data.$$state = state;
-  });
-};
-
-Store.prototype.registerModule = function registerModule (path, rawModule, options) {
-    if ( options === void 0 ) options = {};
-
-  if (typeof path === 'string') { path = [path]; }
-
-  if (true) {
-    assert(Array.isArray(path), "module path must be a string or an Array.");
-    assert(path.length > 0, 'cannot register the root module by using registerModule.');
-  }
-
-  this._modules.register(path, rawModule);
-  installModule(this, this.state, path, this._modules.get(path), options.preserveState);
-  // reset store to update getters...
-  resetStoreVM(this, this.state);
-};
-
-Store.prototype.unregisterModule = function unregisterModule (path) {
-    var this$1 = this;
-
-  if (typeof path === 'string') { path = [path]; }
-
-  if (true) {
-    assert(Array.isArray(path), "module path must be a string or an Array.");
-  }
-
-  this._modules.unregister(path);
-  this._withCommit(function () {
-    var parentState = getNestedState(this$1.state, path.slice(0, -1));
-    Vue.delete(parentState, path[path.length - 1]);
-  });
-  resetStore(this);
-};
-
-Store.prototype.hotUpdate = function hotUpdate (newOptions) {
-  this._modules.update(newOptions);
-  resetStore(this, true);
-};
-
-Store.prototype._withCommit = function _withCommit (fn) {
-  var committing = this._committing;
-  this._committing = true;
-  fn();
-  this._committing = committing;
-};
-
-Object.defineProperties( Store.prototype, prototypeAccessors );
-
-function genericSubscribe (fn, subs) {
-  if (subs.indexOf(fn) < 0) {
-    subs.push(fn);
-  }
-  return function () {
-    var i = subs.indexOf(fn);
-    if (i > -1) {
-      subs.splice(i, 1);
-    }
-  }
-}
-
-function resetStore (store, hot) {
-  store._actions = Object.create(null);
-  store._mutations = Object.create(null);
-  store._wrappedGetters = Object.create(null);
-  store._modulesNamespaceMap = Object.create(null);
-  var state = store.state;
-  // init all modules
-  installModule(store, state, [], store._modules.root, true);
-  // reset vm
-  resetStoreVM(store, state, hot);
-}
-
-function resetStoreVM (store, state, hot) {
-  var oldVm = store._vm;
-
-  // bind store public getters
-  store.getters = {};
-  var wrappedGetters = store._wrappedGetters;
-  var computed = {};
-  forEachValue(wrappedGetters, function (fn, key) {
-    // use computed to leverage its lazy-caching mechanism
-    computed[key] = function () { return fn(store); };
-    Object.defineProperty(store.getters, key, {
-      get: function () { return store._vm[key]; },
-      enumerable: true // for local getters
-    });
-  });
-
-  // use a Vue instance to store the state tree
-  // suppress warnings just in case the user has added
-  // some funky global mixins
-  var silent = Vue.config.silent;
-  Vue.config.silent = true;
-  store._vm = new Vue({
-    data: {
-      $$state: state
-    },
-    computed: computed
-  });
-  Vue.config.silent = silent;
-
-  // enable strict mode for new vm
-  if (store.strict) {
-    enableStrictMode(store);
-  }
-
-  if (oldVm) {
-    if (hot) {
-      // dispatch changes in all subscribed watchers
-      // to force getter re-evaluation for hot reloading.
-      store._withCommit(function () {
-        oldVm._data.$$state = null;
-      });
-    }
-    Vue.nextTick(function () { return oldVm.$destroy(); });
-  }
-}
-
-function installModule (store, rootState, path, module, hot) {
-  var isRoot = !path.length;
-  var namespace = store._modules.getNamespace(path);
-
-  // register in namespace map
-  if (module.namespaced) {
-    store._modulesNamespaceMap[namespace] = module;
-  }
-
-  // set state
-  if (!isRoot && !hot) {
-    var parentState = getNestedState(rootState, path.slice(0, -1));
-    var moduleName = path[path.length - 1];
-    store._withCommit(function () {
-      Vue.set(parentState, moduleName, module.state);
-    });
-  }
-
-  var local = module.context = makeLocalContext(store, namespace, path);
-
-  module.forEachMutation(function (mutation, key) {
-    var namespacedType = namespace + key;
-    registerMutation(store, namespacedType, mutation, local);
-  });
-
-  module.forEachAction(function (action, key) {
-    var type = action.root ? key : namespace + key;
-    var handler = action.handler || action;
-    registerAction(store, type, handler, local);
-  });
-
-  module.forEachGetter(function (getter, key) {
-    var namespacedType = namespace + key;
-    registerGetter(store, namespacedType, getter, local);
-  });
-
-  module.forEachChild(function (child, key) {
-    installModule(store, rootState, path.concat(key), child, hot);
-  });
-}
-
-/**
- * make localized dispatch, commit, getters and state
- * if there is no namespace, just use root ones
- */
-function makeLocalContext (store, namespace, path) {
-  var noNamespace = namespace === '';
-
-  var local = {
-    dispatch: noNamespace ? store.dispatch : function (_type, _payload, _options) {
-      var args = unifyObjectStyle(_type, _payload, _options);
-      var payload = args.payload;
-      var options = args.options;
-      var type = args.type;
-
-      if (!options || !options.root) {
-        type = namespace + type;
-        if ( true && !store._actions[type]) {
-          console.error(("[vuex] unknown local action type: " + (args.type) + ", global type: " + type));
-          return
-        }
-      }
-
-      return store.dispatch(type, payload)
-    },
-
-    commit: noNamespace ? store.commit : function (_type, _payload, _options) {
-      var args = unifyObjectStyle(_type, _payload, _options);
-      var payload = args.payload;
-      var options = args.options;
-      var type = args.type;
-
-      if (!options || !options.root) {
-        type = namespace + type;
-        if ( true && !store._mutations[type]) {
-          console.error(("[vuex] unknown local mutation type: " + (args.type) + ", global type: " + type));
-          return
-        }
-      }
-
-      store.commit(type, payload, options);
-    }
-  };
-
-  // getters and state object must be gotten lazily
-  // because they will be changed by vm update
-  Object.defineProperties(local, {
-    getters: {
-      get: noNamespace
-        ? function () { return store.getters; }
-        : function () { return makeLocalGetters(store, namespace); }
-    },
-    state: {
-      get: function () { return getNestedState(store.state, path); }
-    }
-  });
-
-  return local
-}
-
-function makeLocalGetters (store, namespace) {
-  var gettersProxy = {};
-
-  var splitPos = namespace.length;
-  Object.keys(store.getters).forEach(function (type) {
-    // skip if the target getter is not match this namespace
-    if (type.slice(0, splitPos) !== namespace) { return }
-
-    // extract local getter type
-    var localType = type.slice(splitPos);
-
-    // Add a port to the getters proxy.
-    // Define as getter property because
-    // we do not want to evaluate the getters in this time.
-    Object.defineProperty(gettersProxy, localType, {
-      get: function () { return store.getters[type]; },
-      enumerable: true
-    });
-  });
-
-  return gettersProxy
-}
-
-function registerMutation (store, type, handler, local) {
-  var entry = store._mutations[type] || (store._mutations[type] = []);
-  entry.push(function wrappedMutationHandler (payload) {
-    handler.call(store, local.state, payload);
-  });
-}
-
-function registerAction (store, type, handler, local) {
-  var entry = store._actions[type] || (store._actions[type] = []);
-  entry.push(function wrappedActionHandler (payload, cb) {
-    var res = handler.call(store, {
-      dispatch: local.dispatch,
-      commit: local.commit,
-      getters: local.getters,
-      state: local.state,
-      rootGetters: store.getters,
-      rootState: store.state
-    }, payload, cb);
-    if (!isPromise(res)) {
-      res = Promise.resolve(res);
-    }
-    if (store._devtoolHook) {
-      return res.catch(function (err) {
-        store._devtoolHook.emit('vuex:error', err);
-        throw err
-      })
-    } else {
-      return res
-    }
-  });
-}
-
-function registerGetter (store, type, rawGetter, local) {
-  if (store._wrappedGetters[type]) {
-    if (true) {
-      console.error(("[vuex] duplicate getter key: " + type));
-    }
-    return
-  }
-  store._wrappedGetters[type] = function wrappedGetter (store) {
-    return rawGetter(
-      local.state, // local state
-      local.getters, // local getters
-      store.state, // root state
-      store.getters // root getters
-    )
-  };
-}
-
-function enableStrictMode (store) {
-  store._vm.$watch(function () { return this._data.$$state }, function () {
-    if (true) {
-      assert(store._committing, "Do not mutate vuex store state outside mutation handlers.");
-    }
-  }, { deep: true, sync: true });
-}
-
-function getNestedState (state, path) {
-  return path.length
-    ? path.reduce(function (state, key) { return state[key]; }, state)
-    : state
-}
-
-function unifyObjectStyle (type, payload, options) {
-  if (isObject(type) && type.type) {
-    options = payload;
-    payload = type;
-    type = type.type;
-  }
-
-  if (true) {
-    assert(typeof type === 'string', ("Expects string as the type, but found " + (typeof type) + "."));
-  }
-
-  return { type: type, payload: payload, options: options }
-}
-
-function install (_Vue) {
-  if (Vue && _Vue === Vue) {
-    if (true) {
-      console.error(
-        '[vuex] already installed. Vue.use(Vuex) should be called only once.'
-      );
-    }
-    return
-  }
-  Vue = _Vue;
-  applyMixin(Vue);
-}
-
-var mapState = normalizeNamespace(function (namespace, states) {
-  var res = {};
-  normalizeMap(states).forEach(function (ref) {
-    var key = ref.key;
-    var val = ref.val;
-
-    res[key] = function mappedState () {
-      var state = this.$store.state;
-      var getters = this.$store.getters;
-      if (namespace) {
-        var module = getModuleByNamespace(this.$store, 'mapState', namespace);
-        if (!module) {
-          return
-        }
-        state = module.context.state;
-        getters = module.context.getters;
-      }
-      return typeof val === 'function'
-        ? val.call(this, state, getters)
-        : state[val]
-    };
-    // mark vuex getter for devtools
-    res[key].vuex = true;
-  });
-  return res
-});
-
-var mapMutations = normalizeNamespace(function (namespace, mutations) {
-  var res = {};
-  normalizeMap(mutations).forEach(function (ref) {
-    var key = ref.key;
-    var val = ref.val;
-
-    res[key] = function mappedMutation () {
-      var args = [], len = arguments.length;
-      while ( len-- ) args[ len ] = arguments[ len ];
-
-      var commit = this.$store.commit;
-      if (namespace) {
-        var module = getModuleByNamespace(this.$store, 'mapMutations', namespace);
-        if (!module) {
-          return
-        }
-        commit = module.context.commit;
-      }
-      return typeof val === 'function'
-        ? val.apply(this, [commit].concat(args))
-        : commit.apply(this.$store, [val].concat(args))
-    };
-  });
-  return res
-});
-
-var mapGetters = normalizeNamespace(function (namespace, getters) {
-  var res = {};
-  normalizeMap(getters).forEach(function (ref) {
-    var key = ref.key;
-    var val = ref.val;
-
-    val = namespace + val;
-    res[key] = function mappedGetter () {
-      if (namespace && !getModuleByNamespace(this.$store, 'mapGetters', namespace)) {
-        return
-      }
-      if ( true && !(val in this.$store.getters)) {
-        console.error(("[vuex] unknown getter: " + val));
-        return
-      }
-      return this.$store.getters[val]
-    };
-    // mark vuex getter for devtools
-    res[key].vuex = true;
-  });
-  return res
-});
-
-var mapActions = normalizeNamespace(function (namespace, actions) {
-  var res = {};
-  normalizeMap(actions).forEach(function (ref) {
-    var key = ref.key;
-    var val = ref.val;
-
-    res[key] = function mappedAction () {
-      var args = [], len = arguments.length;
-      while ( len-- ) args[ len ] = arguments[ len ];
-
-      var dispatch = this.$store.dispatch;
-      if (namespace) {
-        var module = getModuleByNamespace(this.$store, 'mapActions', namespace);
-        if (!module) {
-          return
-        }
-        dispatch = module.context.dispatch;
-      }
-      return typeof val === 'function'
-        ? val.apply(this, [dispatch].concat(args))
-        : dispatch.apply(this.$store, [val].concat(args))
-    };
-  });
-  return res
-});
-
-var createNamespacedHelpers = function (namespace) { return ({
-  mapState: mapState.bind(null, namespace),
-  mapGetters: mapGetters.bind(null, namespace),
-  mapMutations: mapMutations.bind(null, namespace),
-  mapActions: mapActions.bind(null, namespace)
-}); };
-
-function normalizeMap (map) {
-  return Array.isArray(map)
-    ? map.map(function (key) { return ({ key: key, val: key }); })
-    : Object.keys(map).map(function (key) { return ({ key: key, val: map[key] }); })
-}
-
-function normalizeNamespace (fn) {
-  return function (namespace, map) {
-    if (typeof namespace !== 'string') {
-      map = namespace;
-      namespace = '';
-    } else if (namespace.charAt(namespace.length - 1) !== '/') {
-      namespace += '/';
-    }
-    return fn(namespace, map)
-  }
-}
-
-function getModuleByNamespace (store, helper, namespace) {
-  var module = store._modulesNamespaceMap[namespace];
-  if ( true && !module) {
-    console.error(("[vuex] module namespace not found in " + helper + "(): " + namespace));
-  }
-  return module
-}
-
-var index_esm = {
-  Store: Store,
-  install: install,
-  version: '3.0.1',
-  mapState: mapState,
-  mapMutations: mapMutations,
-  mapGetters: mapGetters,
-  mapActions: mapActions,
-  createNamespacedHelpers: createNamespacedHelpers
-};
-
-
-/* harmony default export */ __webpack_exports__["default"] = (index_esm);
-
-
-/***/ }),
-/* 12 */,
-/* 13 */,
-/* 14 */
-/*!**********************************************************************************************************!*\
-  !*** ./node_modules/@dcloudio/vue-cli-plugin-uni/packages/vue-loader/lib/runtime/componentNormalizer.js ***!
-  \**********************************************************************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return normalizeComponent; });
-/* globals __VUE_SSR_CONTEXT__ */
-
-// IMPORTANT: Do NOT use ES2015 features in this file (except for modules).
-// This module is a runtime utility for cleaner component module output and will
-// be included in the final webpack user bundle.
-
-function normalizeComponent (
-  scriptExports,
-  render,
-  staticRenderFns,
-  functionalTemplate,
-  injectStyles,
-  scopeId,
-  moduleIdentifier, /* server only */
-  shadowMode, /* vue-cli only */
-  components, // fixed by xxxxxx auto components
-  renderjs // fixed by xxxxxx renderjs
-) {
-  // Vue.extend constructor export interop
-  var options = typeof scriptExports === 'function'
-    ? scriptExports.options
-    : scriptExports
-
-  // fixed by xxxxxx auto components
-  if (components) {
-    if (!options.components) {
-      options.components = {}
-    }
-    var hasOwn = Object.prototype.hasOwnProperty
-    for (var name in components) {
-      if (hasOwn.call(components, name) && !hasOwn.call(options.components, name)) {
-        options.components[name] = components[name]
-      }
-    }
-  }
-  // fixed by xxxxxx renderjs
-  if (renderjs) {
-    (renderjs.beforeCreate || (renderjs.beforeCreate = [])).unshift(function() {
-      this[renderjs.__module] = this
-    });
-    (options.mixins || (options.mixins = [])).push(renderjs)
-  }
-
-  // render functions
-  if (render) {
-    options.render = render
-    options.staticRenderFns = staticRenderFns
-    options._compiled = true
-  }
-
-  // functional template
-  if (functionalTemplate) {
-    options.functional = true
-  }
-
-  // scopedId
-  if (scopeId) {
-    options._scopeId = 'data-v-' + scopeId
-  }
-
-  var hook
-  if (moduleIdentifier) { // server build
-    hook = function (context) {
-      // 2.3 injection
-      context =
-        context || // cached call
-        (this.$vnode && this.$vnode.ssrContext) || // stateful
-        (this.parent && this.parent.$vnode && this.parent.$vnode.ssrContext) // functional
-      // 2.2 with runInNewContext: true
-      if (!context && typeof __VUE_SSR_CONTEXT__ !== 'undefined') {
-        context = __VUE_SSR_CONTEXT__
-      }
-      // inject component styles
-      if (injectStyles) {
-        injectStyles.call(this, context)
-      }
-      // register component module identifier for async chunk inferrence
-      if (context && context._registeredComponents) {
-        context._registeredComponents.add(moduleIdentifier)
-      }
-    }
-    // used by ssr in case component is cached and beforeCreate
-    // never gets called
-    options._ssrRegister = hook
-  } else if (injectStyles) {
-    hook = shadowMode
-      ? function () { injectStyles.call(this, this.$root.$options.shadowRoot) }
-      : injectStyles
-  }
-
-  if (hook) {
-    if (options.functional) {
-      // for template-only hot-reload because in that case the render fn doesn't
-      // go through the normalizer
-      options._injectStyles = hook
-      // register for functioal component in vue file
-      var originalRender = options.render
-      options.render = function renderWithStyleInjection (h, context) {
-        hook.call(context)
-        return originalRender(h, context)
-      }
-    } else {
-      // inject component registration as beforeCreate hook
-      var existing = options.beforeCreate
-      options.beforeCreate = existing
-        ? [].concat(existing, hook)
-        : [hook]
-    }
-  }
-
-  return {
-    exports: scriptExports,
-    options: options
-  }
-}
-
-
-/***/ }),
-/* 15 */
-/*!*****************************************************************************!*\
-  !*** C:/Users/ASUS/Documents/HBuilderProjects/ThorUI组件库后台模板/store/index.js ***!
-  \*****************************************************************************/
+/***/ 20:
+/*!********************************************************************!*\
+  !*** E:/Documents/HBuilderProjects/牧场管理系统/config/assets.config.js ***!
+  \********************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _vue = _interopRequireDefault(__webpack_require__(/*! vue */ 2));
-var _vuex = _interopRequireDefault(__webpack_require__(/*! vuex */ 11));
-
-var _routes = _interopRequireDefault(__webpack_require__(/*! @/config/routes.config */ 16));
-var _router = _interopRequireDefault(__webpack_require__(/*! @/utils/router */ 17));
-var _systemStore = _interopRequireDefault(__webpack_require__(/*! ./systemStore */ 18));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
-console.log("systemStore", _systemStore.default);
-_vue.default.use(_vuex.default);
-
-var ACCESSTOKEN = uni.getStorageSync('accessToken') || '';
-var REFERRER = uni.getStorageSync('referrer') || '';
-var USER = uni.getStorageSync('user') || {};
-var REFRESHTOKEN = uni.getStorageSync('refreshToken') || '';
-
-var store = new _vuex.default.Store({
-  modules: {
-    systemStore: _systemStore.default },
-
-  state: {
-    //用户token
-    accessToken: ACCESSTOKEN,
-    //用户信息
-    userInfo: USER.member,
-    //推荐人
-    referrer: REFERRER,
-    //小程序openid
-    openId: '',
-    //网络状态，用于下载提醒
-    networkState: 'unknown',
-    refreshToken: REFRESHTOKEN },
-
-
-  getters: {
-    // 获取网络状态
-    networkStatus: function networkStatus(state) {
-      return state.networkState;
-    },
-    // 判断用户是否登录
-    hasLogin: function hasLogin(state) {
-      if (state.accessToken) {
-        return true;
-      } else {
-        return false;
-      }
-    } },
-
-  mutations: {
-    login: function login(state, provider) {
-      state.accessToken = provider.access_token;
-      state.refreshToken = provider.refresh_token;
-      state.userInfo = provider.member;
-      state.user = provider;
-      uni.setStorageSync('user', provider);
-      uni.setStorageSync('accessToken', provider.access_token);
-      uni.setStorageSync('refreshToken', provider.refresh_token);
-      uni.setStorageSync('userInfo', provider.member);
-    },
-    logout: function logout(state) {
-      state.accessToken = '';
-      state.refreshToken = '';
-      state.userInfo = {};
-      uni.removeStorageSync('accessToken');
-      uni.removeStorageSync('refreshToken');
-      uni.removeStorageSync('userInfo');
-    },
-    setReferrer: function setReferrer(state, referrer) {
-      state.referrer = referrer;
-      uni.setStorageSync('referrer', referrer);
-    },
-    setOpenId: function setOpenId(state, openId) {
-      state.openId = openId;
-      uni.setStorageSync('openId', openId);
-    },
-    setNetworkState: function setNetworkState(state, provider) {
-      state.networkState = provider;
-    } },
-
-
-  actions: {
-    networkStateChange: function networkStateChange(_ref, info) {var commit = _ref.commit;
-      commit('setNetworkState', info);
-    },
-    reLogin: function reLogin(_ref2, info) {var commit = _ref2.commit;
-      commit('logout', '');
-      _router.default.redirectTo({
-        route: _routes.default.login });
-
-    },
-    logout: function logout(_ref3, info) {var commit = _ref3.commit;
-      commit('logout');
-    } } });
-
-
-
-console.log("store", store);var _default =
-store;exports.default = _default;
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
-
-/***/ }),
-/* 16 */
-/*!**************************************************************************************!*\
-  !*** C:/Users/ASUS/Documents/HBuilderProjects/ThorUI组件库后台模板/config/routes.config.js ***!
-  \**************************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0; /*
-                                                                                                      * 路由表对象：
-                                                                                                      * 该文件挂载在Vue原型中 $mRoutesConfig
-                                                                                                      * 作用：调用$mRouter对象的方法 传入以下对应的路由对象，详细见common目录下的router.js
-                                                                                                      * 示例：this.$mRouter.push({route:this.$mRoutesConfig.main,query:{a:1}})
-                                                                                                      * 注意：所有在pages目录下新建的页面都必须在"路由表"中进行声明，并且在框架的pages.json注册。
-                                                                                                      *
-                                                                                                      * 配置参数项说明：
-                                                                                                      * name:可选配置 （路由名称）
-                                                                                                      * path:必填配置 （路由地址）
-                                                                                                      * requiresAuth:可选配置 （是否权限路由）
-                                                                                                      */var _default =
-
-{
-  // 权限路由 在main.js可实现路由拦截 所以路由都需要注册 待完善
-  promoCode: {
-    name: '创建订单',
-    path: '/pages/order/create/order',
-    requiresAuth: true },
-
-
-  // 非权限路由
-  main: {
-    name: '首页',
-    path: '/pages/index/index' },
-
-  category: {
-    name: '分类',
-    path: '/pages/category/category' },
-
-  cart: {
-    name: '购物车',
-    path: '/pages/cart/cart' },
-
-  login: {
-    name: '登录',
-    path: '/pages/public/login' },
-
-  index: {
-    name: '注册',
-    path: '/pages/public/register' },
-
-  loginType: {
-    name: '登录类型',
-    path: '/pages/public/logintype' } };exports.default = _default;
-
-/***/ }),
-/* 17 */
-/*!******************************************************************************!*\
-  !*** C:/Users/ASUS/Documents/HBuilderProjects/ThorUI组件库后台模板/utils/router.js ***!
-  \******************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;function _classCallCheck(instance, Constructor) {if (!(instance instanceof Constructor)) {throw new TypeError("Cannot call a class as a function");}}function _defineProperties(target, props) {for (var i = 0; i < props.length; i++) {var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);}}function _createClass(Constructor, protoProps, staticProps) {if (protoProps) _defineProperties(Constructor.prototype, protoProps);if (staticProps) _defineProperties(Constructor, staticProps);return Constructor;} /*
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   * 路由对象
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   * 中心思想：需要路由鉴权,由于uni-app没有vue中的全局钩子函数，所以封装了Router对象。
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   * 说明：应用中的路由跳转尽量使用该Router的方法，并配合config中的路由表对象进行跳转。
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   *
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   * 示例：this.$mRouter.push({route:this.$mRoutesConfig.main,query:{a:1}})
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   *
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   */var
-Router = /*#__PURE__*/function () {
-  function Router(arg) {_classCallCheck(this, Router);
-    this.callBack = function () {};
-  }_createClass(Router, [{ key: "beforeEach", value: function beforeEach(
-
-    callBack) {
-      if (callBack instanceof Function) this.callBack = callBack;
-    } }, { key: "push", value: function push(
-
-    to) {
-      this.callBack('navigateTo', to);
-    } }, { key: "redirectTo", value: function redirectTo(
-
-    to) {
-      this.callBack('redirectTo', to);
-    } }, { key: "reLaunch", value: function reLaunch(
-
-    to) {
-      this.callBack('reLaunch', to);
-    } }, { key: "switchTab", value: function switchTab(
-
-    to) {
-      this.callBack('switchTab', to);
-    } }, { key: "back", value: function back(
-
-    delta) {
-      uni.navigateBack({
-        delta: delta });
-
-    } }]);return Router;}();var _default =
-
-
-new Router();exports.default = _default;
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
-
-/***/ }),
-/* 18 */
-/*!***********************************************************************************!*\
-  !*** C:/Users/ASUS/Documents/HBuilderProjects/ThorUI组件库后台模板/store/systemStore.js ***!
-  \***********************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _vue = _interopRequireDefault(__webpack_require__(/*! vue */ 2));
-var _vuex = _interopRequireDefault(__webpack_require__(/*! vuex */ 11));
-
-var _routes = _interopRequireDefault(__webpack_require__(/*! @/config/routes.config */ 16));
-var _router = _interopRequireDefault(__webpack_require__(/*! @/utils/router */ 17));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
-
-var systemInfo = uni.getStorageSync('systemInfo') || '';var _default =
-
-{
-  state: {
-    //系统相关信息
-    systemInfo: systemInfo },
-
-  getters: {
-    getSystemInfo: function getSystemInfo(state, provider) {
-      return state.systemInfo[provider];
-    } },
-
-  mutations: { //相当于methods,定义一些方法(同步)。方法里有个默认参数--state
-    setSystemInfo: function setSystemInfo(state, provider) {
-      state.systemInfo = provider;
-    } },
-
-  actions: {//异步操作（也可以定义同步方法）。提交mutation，而不是直接变更状态。
-  } };exports.default = _default;
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
-
-/***/ }),
-/* 19 */
-/*!**************************************************************************************!*\
-  !*** C:/Users/ASUS/Documents/HBuilderProjects/ThorUI组件库后台模板/config/assets.config.js ***!
-  \**************************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _indexConfig = _interopRequireDefault(__webpack_require__(/*! ./index.config.js */ 20));var _monitorImg$monitorRi;function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}
+Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _indexConfig = _interopRequireDefault(__webpack_require__(/*! ./index.config.js */ 21));var _monitorImg$monitorRi;function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}
 var PATH = _indexConfig.default.assetsPath;
 /*
                                              * 图片静态资源表，所有图片资源路径在这统一管理，不应该写死在页面中，该数据挂载到Vue原型中。
@@ -9881,7 +9984,7 @@ var PATH = _indexConfig.default.assetsPath;
   circleImg: PATH + "/map/圆点.png",
   circleGreen: PATH + "/map/circleGreen.png",
   recordImg: PATH + "/map/recordImg.png",
-  messageImg: PATH + "/map/info.png",
+  messageImg: PATH + "/map/信息.png",
 
   //地图模块 =>base64 的 图 片
   weixin: "data:image/png;base64,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",
@@ -9895,19 +9998,29 @@ var PATH = _indexConfig.default.assetsPath;
 
 
 
-"https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1598099691740&di=cf21b35e7e83eb33ee721994c433b222&imgtype=0&src=http%3A%2F%2Fn.sinaimg.cn%2Fsinacn%2Fw640h457%2F20180125%2F8052-fyqwiqk5870272.jpg"), _defineProperty(_monitorImg$monitorRi, "lun1",
+"https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1598099691740&di=cf21b35e7e83eb33ee721994c433b222&imgtype=0&src=http%3A%2F%2Fn.sinaimg.cn%2Fsinacn%2Fw640h457%2F20180125%2F8052-fyqwiqk5870272.jpg"), _defineProperty(_monitorImg$monitorRi, "recordHead",
 
+"https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1598786963103&di=8e825a2e930045b5a10db4711b800e0f&imgtype=0&src=http%3A%2F%2F07img.mopimg.cn%2Fmobile%2F20171002%2Ff5749c84bbd1250309c920a5cde0bba4.png"), _defineProperty(_monitorImg$monitorRi, "lun1",
 
 "https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=3857917291,1566540578&fm=26&gp=0.jpg"), _defineProperty(_monitorImg$monitorRi, "lun2",
 "https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=1072899347,3009270015&fm=26&gp=0.jpg"), _defineProperty(_monitorImg$monitorRi, "lun3",
 "https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=2767695830,491356518&fm=26&gp=0.jpg"), _defineProperty(_monitorImg$monitorRi, "lun4",
-"https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=1576110167,1955716119&fm=26&gp=0.jpg"), _monitorImg$monitorRi);exports.default = _default;
+"https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=1576110167,1955716119&fm=26&gp=0.jpg"), _defineProperty(_monitorImg$monitorRi, "baojing",
+
+
+PATH + "/index/警告.png"), _defineProperty(_monitorImg$monitorRi, "baoxiu",
+PATH + "/index/报修.png"), _defineProperty(_monitorImg$monitorRi, "jiankang",
+PATH + "/index/健康管理.png"), _defineProperty(_monitorImg$monitorRi, "zhiling",
+PATH + "/index/指令配置.png"), _defineProperty(_monitorImg$monitorRi, "caozuo",
+PATH + "/index/操作日志.png"), _defineProperty(_monitorImg$monitorRi, "renyuan",
+PATH + "/index/用户.png"), _monitorImg$monitorRi);exports.default = _default;
 
 /***/ }),
-/* 20 */
-/*!*************************************************************************************!*\
-  !*** C:/Users/ASUS/Documents/HBuilderProjects/ThorUI组件库后台模板/config/index.config.js ***!
-  \*************************************************************************************/
+
+/***/ 21:
+/*!*******************************************************************!*\
+  !*** E:/Documents/HBuilderProjects/牧场管理系统/config/index.config.js ***!
+  \*******************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -9916,7 +10029,7 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
   //开发环境配置
   development: {
     assetsPath: '/static', // 静态资源路径
-    baseUrl: 'http://demo.rageframe.com/api', // 后台接口请求地址
+    baseUrl: 'http://localhost', // 后台接口请求地址
     hostUrl: 'http://localhost:8080', // H5地址(前端运行地址)
     websocketUrl: '', // websocket服务端地址
     weixinAppId: '' // 微信公众号appid
@@ -9934,10 +10047,11 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
 CONFIG["development"];exports.default = _default;
 
 /***/ }),
-/* 21 */
-/*!****************************************************************************************!*\
-  !*** C:/Users/ASUS/Documents/HBuilderProjects/ThorUI组件库后台模板/config/formRule.config.js ***!
-  \****************************************************************************************/
+
+/***/ 22:
+/*!**********************************************************************!*\
+  !*** E:/Documents/HBuilderProjects/牧场管理系统/config/formRule.config.js ***!
+  \**********************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -9948,13 +10062,40 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
 
 
 
-var _formConfig = _interopRequireDefault(__webpack_require__(/*! ./form.config.js */ 22));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };} /*
+var _formConfig = _interopRequireDefault(__webpack_require__(/*! ./form.config.js */ 23));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };} /*
                                                                                                                                                                      * 应用表单校验相关配置
                                                                                                                                                                      * 依赖：graceChecker.js 进行校验
                                                                                                                                                                      *
-                                                                                                                                                                     * 使用：引入该js到页面，let res = graceChecker.check({phoneNo:"",code:""},formRule.loginRule)
+                                                                                                                                                                     * 使用：
                                                                                                                                                                      */var equipmentForm = _formConfig.default.equipmentForm; //GPS设备的表单数据
-var _default = { /* GPS的设备表单校验 */equipmentRule: [{ name: equipmentForm.name.name, checkType: "string",
+var pastureForm = _formConfig.default.pastureForm; //牧场的表单数据
+var monitorForm = _formConfig.default.monitorForm; //摄像头的表单数据
+var _default = { /* 摄像头表单校验 */monitorRule: [{ name: monitorForm.name.name,
+    checkType: "string",
+    checkRule: "1,10",
+    errorMsg: "名称应为1-10个字符" },
+  {
+    name: monitorForm.code.name,
+    checkType: "string",
+    checkRule: "10,10",
+    errorMsg: "IP应为10个字符" },
+  {
+    name: monitorForm.phone.name,
+    checkType: "phoneno",
+    checkRule: "",
+    errorMsg: "请输入正确的手机号" },
+  {
+    name: monitorForm.pasture.name,
+    checkType: "notnull",
+    checkRule: "",
+    errorMsg: "绑定牧场不能为空" }],
+
+
+
+  /* GPS的设备表单校验 */
+  equipmentRule: [{
+    name: equipmentForm.name.name,
+    checkType: "string",
     checkRule: "1,10",
     errorMsg: "名称应为1-10个字符" },
   {
@@ -9972,6 +10113,35 @@ var _default = { /* GPS的设备表单校验 */equipmentRule: [{ name: equipment
     checkType: "notnull",
     checkRule: "",
     errorMsg: "绑定牲畜不能为空" }],
+
+
+
+  /* 牧场表单校验 */
+  pastureRule: [{
+    name: pastureForm.name.name,
+    checkType: "string",
+    checkRule: "1,10",
+    errorMsg: "名称应为1-10个字符" },
+  {
+    name: pastureForm.introduce.name,
+    checkType: "string",
+    checkRule: "10,100",
+    errorMsg: "牧场介绍不能少于10个,多于100个" },
+  {
+    name: pastureForm.map.name,
+    checkType: "notnull",
+    checkRule: "",
+    errorMsg: "牧场范围不能为空" },
+  {
+    name: pastureForm.livestock.name,
+    checkType: "notnull",
+    checkRule: "",
+    errorMsg: "绑定牲畜不能为空" },
+  {
+    name: pastureForm.record.name,
+    checkType: "notnull",
+    checkRule: "",
+    errorMsg: "绑定摄像头不能为空" }],
 
 
   /* 用户密码登录 */
@@ -10097,10 +10267,11 @@ var _default = { /* GPS的设备表单校验 */equipmentRule: [{ name: equipment
     errorMsg: '请输入6-18位密码' }] };exports.default = _default;
 
 /***/ }),
-/* 22 */
-/*!************************************************************************************!*\
-  !*** C:/Users/ASUS/Documents/HBuilderProjects/ThorUI组件库后台模板/config/form.config.js ***!
-  \************************************************************************************/
+
+/***/ 23:
+/*!******************************************************************!*\
+  !*** E:/Documents/HBuilderProjects/牧场管理系统/config/form.config.js ***!
+  \******************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -10123,6 +10294,60 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
     timeInterval: 7,
     user: 17,
     equipmentRemarks: "这是一个备注" },
+
+  //摄像头的表单信息
+  monitorForm: {
+    name: {
+      title: "名称",
+      name: "name" },
+
+    code: {
+      title: "IP地址",
+      name: "code" },
+
+    phone: {
+      title: "卡号",
+      name: "phone",
+      icon: [{
+        name: 'div',
+        attrs: {
+          class: 'cu-tag bg-blue ' },
+
+        children: [{
+          type: 'text',
+          text: '+86' }] },
+
+      {
+        name: 'div',
+        attrs: {
+          class: "cu-tag line-blue" },
+
+        children: [{
+          type: 'text',
+          text: '中国大陆' }] }] },
+
+
+
+    pasture: {
+      title: "绑定牧场",
+      type: "picker",
+      mode: "selector",
+      range: ["牧场1", "牧场2", "牧场3", "牧场4", "牧场5", "牧场6"],
+      value: 0,
+      name: "pasture" },
+
+    img: {
+      title: "摄像头图片",
+      type: "img",
+      name: "monitorImg",
+      value: [] },
+
+    remarks: {
+      title: "摄像头备注",
+      type: "textarea",
+      name: "monitorRemarks" } },
+
+
 
   //GPS表单的信息
   equipmentForm: {
@@ -10193,7 +10418,7 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
       title: "设备图片",
       type: "img",
       name: "equipmentImg",
-      imgList: [] },
+      value: [] },
 
     equipmentRemarks: {
       title: "设备备注",
@@ -10201,15 +10426,29 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
       name: "equipmentRemarks" } },
 
 
+  pastureData: {
+    pastureName: "测试人员1",
+    pastureIntroduce: "0123456789",
+    pastureRange: "18161218432",
+    pastureLivestock: "1,2",
+    pastureRecord: "1,2" },
+
   //牧场的表单信息
   pastureForm: {
     name: {
       title: "牧场名",
       name: "pastureName" },
 
+    introduce: {
+      title: "牧场介绍",
+      type: "textarea",
+      name: "pastureIntroduce" },
+
     map: {
       title: "地图范围",
       type: "map",
+      value: "",
+      name: "pastureRange",
       icon: [{
         name: 'div',
         attrs: {
@@ -10220,17 +10459,8 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
     livestock: {
       title: "绑定牲畜",
       type: "multipleSelect",
+      value: ["1", "2"], //默认选中项
       multipleSelect: {
-<<<<<<< HEAD
-        show: true, //是否显示 - 双向绑定
-        info: "", //数据信息
-        list: [{
-          label: "皮皮虾",
-          value: "1" },
-
-        {
-          label: "小龙虾",
-=======
         show: false, //是否显示 - 双向绑定
         info: "",
         list: [{
@@ -10239,39 +10469,11 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
 
         {
           label: "牲畜2",
->>>>>>> 0ebf11d1357c8177501705dac093e2e47c4a61f9
+
           value: "2",
           disabled: true //禁用
         },
         {
-<<<<<<< HEAD
-          label: "大龙虾",
-          value: "3" },
-
-        {
-          label: "石头蟹",
-          value: "4" },
-
-        {
-          label: "兰花蟹",
-          value: "5" },
-
-        {
-          label: "面包蟹",
-          value: "6" },
-
-        {
-          label: "石斑鱼",
-          value: "7" },
-
-        {
-          label: "鲫鱼",
-          value: "8" },
-
-        {
-          label: "鲨鱼",
-          value: "9" }],
-=======
           label: "牲畜3",
           value: "3" },
 
@@ -10281,47 +10483,11 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
 
         {
           label: "牲畜5",
-          value: "5" }],
->>>>>>> 0ebf11d1357c8177501705dac093e2e47c4a61f9
-        //数据源
-        defaultSelected: ["3", "5"] //默认选中项
-      },
-      name: "pastureLivestock",
-      icon: [{
-        name: 'text',
-        attrs: {
-<<<<<<< HEAD
-          class: "cuIcon-playfill",
-          style: 'color: bule;' } }] } } };exports.default = _default;
-=======
-          class: 'cuIcon-right text-olive text-lg' } }] },
-
-
-
-    equipment: {
-      title: "绑定GPS",
-      type: "multipleSelect",
-      multipleSelect: {
-        show: false, //是否显示 - 双向绑定
-        info: "",
-        list: [{
-          label: "曼德力1号",
-          value: "1" },
-
-        {
-          label: "德川康2号",
-          value: "2" },
-
-        {
-          label: "北斗3号",
-          value: "3" },
-
-        {
-          label: "朱沟里5",
           value: "5" }]
         //数据源
       },
-      name: "pastureEquipment",
+
+      name: "pastureLivestock",
       icon: [{
         name: 'div',
         attrs: {
@@ -10356,14 +10522,122 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
       icon: [{
         name: 'div',
         attrs: {
-          class: 'cuIcon-right text-olive text-lg' } }] } } };exports.default = _default;
->>>>>>> 0ebf11d1357c8177501705dac093e2e47c4a61f9
+          class: 'cuIcon-right text-olive text-lg' } }] },
+
+
+
+    img: {
+      title: "牧场图片",
+      type: "img",
+      name: "pastureImg",
+      value: [] } } };
+
+
+
+
+//demo样式
+/* [{
+					title:"设备名",
+					placeholder:"请输入设备名啦",
+					value:"小二狗",
+					name:"name",
+					rule:{name:"name", checkType : "string", checkRule:"1,10",  errorMsg:"名称应为1-10个字符"},
+				},{
+					title:"设备编码",
+					name:"code",
+					rule:{name:"code", checkType : "string", checkRule:"10,10",  errorMsg:"编码应为10个字符"},
+				},
+				{
+					title:"设备卡号",
+					name:"phone",
+					icon:`<view class='cu-tag bg-blue '>
+								+86
+							</view>
+							<view class="cu-tag line-blue">
+								中国大陆
+						  </view>`,
+					rule:{name:"phone", checkType : "phoneno", checkRule:"",  errorMsg:"请输入正确的手机号"},	  
+				},
+				{
+					title:"测试开关",
+					type:"switch",
+					name:"switch",
+					checked:true,
+				},
+ 				{
+					title:"测试单选",
+					type:"radio",
+					name:"radio",
+					radioValue:"2",
+					radios:[{
+						value:"1",
+						title:"品种1"
+					},{
+						value:"2",
+						title:"品种2"
+					},{
+						value:"3",
+						title:"品种3"
+					}],
+					checked:true,
+				},
+				{
+					title:"测试复选",
+					type:"checkbox",
+					name:"checkbox",
+					checkboxValue:"2",
+					checkboxs:[{
+						value:"1",
+						title:"品种1",
+						checked:false,
+					},{
+						value:"2",
+						title:"品种2",
+						checked:false,
+					},{
+						value:"3",
+						title:"品种3",
+						checked:true,
+					},{
+						value:"4",
+						title:"品种4",
+						checked:true,
+					}],
+				}, 
+				
+				{
+					title:"绑定牲畜",
+					type:"picker",
+					mode:"selector",
+					range:["牲畜1","牲畜2","牲畜3","牲畜4","牲畜5","牲畜6"],
+					value:0,
+					name:"livestock",
+					rule:{name:"livestock", checkType : "notnull", checkRule:"",  errorMsg:"绑定牲畜不能为空"},	
+				},{
+					title:"指令发送间隔",
+					name:"timeInterval",
+					value:0,
+					inputTpye:"number",
+					align:"right",
+					icon:`<view>分</view>`
+				},{
+					title:"设备图片",
+					type:"img",
+					name:"equipmentImg",
+					imgList:[],
+				},{
+					title:"设备备注",
+					type:"textarea",
+					name:"equipmentRemarks",
+
+				}] */exports.default = _default;
 
 /***/ }),
-/* 23 */
-/*!*****************************************************************************************!*\
-  !*** C:/Users/ASUS/Documents/HBuilderProjects/ThorUI组件库后台模板/config/constData.config.js ***!
-  \*****************************************************************************************/
+
+/***/ 24:
+/*!***********************************************************************!*\
+  !*** E:/Documents/HBuilderProjects/牧场管理系统/config/constData.config.js ***!
+  \***********************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -10458,10 +10732,11 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
   { state: 3, text: '评价' }] };exports.default = _default;
 
 /***/ }),
-/* 24 */
-/*!*****************************************************************************************!*\
-  !*** C:/Users/ASUS/Documents/HBuilderProjects/ThorUI组件库后台模板/config/websocket.config.js ***!
-  \*****************************************************************************************/
+
+/***/ 25:
+/*!***********************************************************************!*\
+  !*** E:/Documents/HBuilderProjects/牧场管理系统/config/websocket.config.js ***!
+  \***********************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -10526,18 +10801,19 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
   ping: 'site.ping' };exports.default = _default;
 
 /***/ }),
-/* 25 */
-/*!*************************************************************************************!*\
-  !*** C:/Users/ASUS/Documents/HBuilderProjects/ThorUI组件库后台模板/utils/request/index.js ***!
-  \*************************************************************************************/
+
+/***/ 26:
+/*!*******************************************************************!*\
+  !*** E:/Documents/HBuilderProjects/牧场管理系统/utils/request/index.js ***!
+  \*******************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.http = void 0;var _regenerator = _interopRequireDefault(__webpack_require__(/*! ./node_modules/@vue/babel-preset-app/node_modules/@babel/runtime/regenerator */ 8));var _request = _interopRequireDefault(__webpack_require__(/*! ./request */ 26));
-var _login = __webpack_require__(/*! @/api/login */ 27);
-var _index = _interopRequireDefault(__webpack_require__(/*! @/config/index.config */ 20));
-var _helper = _interopRequireDefault(__webpack_require__(/*! @/utils/helper */ 28));
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.http = void 0;var _regenerator = _interopRequireDefault(__webpack_require__(/*! ./node_modules/@vue/babel-preset-app/node_modules/@babel/runtime/regenerator */ 8));var _request = _interopRequireDefault(__webpack_require__(/*! ./request */ 27));
+var _login = __webpack_require__(/*! @/api/login */ 28);
+var _index = _interopRequireDefault(__webpack_require__(/*! @/config/index.config */ 21));
+var _helper = _interopRequireDefault(__webpack_require__(/*! @/utils/helper */ 29));
 var _store = _interopRequireDefault(__webpack_require__(/*! @/store */ 15));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {try {var info = gen[key](arg);var value = info.value;} catch (error) {reject(error);return;}if (info.done) {resolve(value);} else {Promise.resolve(value).then(_next, _throw);}}function _asyncToGenerator(fn) {return function () {var self = this,args = arguments;return new Promise(function (resolve, reject) {var gen = fn.apply(self, args);function _next(value) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);}function _throw(err) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);}_next(undefined);});};}function ownKeys(object, enumerableOnly) {var keys = Object.keys(object);if (Object.getOwnPropertySymbols) {var symbols = Object.getOwnPropertySymbols(object);if (enumerableOnly) symbols = symbols.filter(function (sym) {return Object.getOwnPropertyDescriptor(object, sym).enumerable;});keys.push.apply(keys, symbols);}return keys;}function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};if (i % 2) {ownKeys(Object(source), true).forEach(function (key) {_defineProperty(target, key, source[key]);});} else if (Object.getOwnPropertyDescriptors) {Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));} else {ownKeys(Object(source)).forEach(function (key) {Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));});}}return target;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}
 
 var http = new _request.default();
@@ -10592,17 +10868,16 @@ function handleRefreshToken(_x) {return _handleRefreshToken.apply(this, argument
                           isRefreshing = false;case 2:case "end":return _context2.stop();}}}, _callee2);}));return function (_x3) {return _ref2.apply(this, arguments);};}()));case 5:case "end":return _context3.stop();}}}, _callee3);}));return _handleRefreshToken.apply(this, arguments);}
 
 
-http.interceptor.response( /*#__PURE__*/function () {var _ref = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee(response) {return _regenerator.default.wrap(function _callee$(_context) {while (1) {switch (_context.prev = _context.next) {case 0:_context.t0 =
+http.interceptor.response( /*#__PURE__*/function () {var _ref = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee(response) {return _regenerator.default.wrap(function _callee$(_context) {while (1) {switch (_context.prev = _context.next) {case 0: /* 请求之后拦截器 */
+            console.log("code", response);_context.t0 =
             response.data.code;_context.next = _context.t0 ===
-            200 ? 3 : _context.t0 ===
+            200 ? 4 : _context.t0 ===
 
-            400 ? 4 : _context.t0 ===
-
-
-
-            401 ? 7 : _context.t0 ===
+            400 ? 5 : _context.t0 ===
 
 
+
+            401 ? 8 : _context.t0 ===
 
 
 
@@ -10634,21 +10909,23 @@ http.interceptor.response( /*#__PURE__*/function () {var _ref = _asyncToGenerato
 
 
 
-            405 ? 32 : _context.t0 ===
 
 
-            404 ? 34 : _context.t0 ===
+            405 ? 33 : _context.t0 ===
 
 
-            429 ? 36 : _context.t0 ===
+            404 ? 35 : _context.t0 ===
 
 
-            500 ? 38 : 40;break;case 3:return _context.abrupt("return", response.data);case 4:_helper.default.toast('错误的请求');return _context.abrupt("return", Promise.reject(response.data.message));case 7:isRefreshing = false; // refreshToken 的返回状态为401
-            if (!(response.config.url === _login.refreshToken)) {_context.next = 15;break;}uni.removeStorageSync('accessToken');_helper.default.backToLogin();throw response.data.message;case 15:if (_store.default.state.refreshToken) {_context.next = 20;break;}_helper.default.backToLogin();throw response.data.message;case 20:if (isRefreshing) {_context.next = 30;break;}isRefreshing = true; // 刷新token
-            _context.next = 24;return handleRefreshToken(_store.default.state.refreshToken, response);case 24:requests.forEach(function (cb) {return cb();});requests = [];isRefreshing = false;return _context.abrupt("return", http.request(response.config));case 30:return _context.abrupt("return", new Promise(function (resolve) {// 将resolve放进队列，用一个函数形式来保存，等token刷新后直接执行
-              requests.push(function () {resolve(http.request(response.config));});}));case 31:return _context.abrupt("break", 42);case 32:_helper.default.toast('当前操作不被允许');return _context.abrupt("return", Promise.reject(response.data.message));case 34:_helper.default.toast(response.data.message);return _context.abrupt("return", Promise.reject(response.data.message));case 36:_helper.default.toast('请求过多，先休息一下吧');return _context.abrupt("return", Promise.reject(response.data.message));case 38:_helper.default.toast('服务器打瞌睡了');return _context.abrupt("return", Promise.reject(response.data.message));case 40:
+            429 ? 37 : _context.t0 ===
+
+
+            500 ? 39 : 41;break;case 4:return _context.abrupt("return", response.data);case 5:_helper.default.toast('错误的请求');return _context.abrupt("return", Promise.reject(response.data.message));case 8:isRefreshing = false; // refreshToken 的返回状态为401
+            if (!(response.config.url === _login.refreshToken)) {_context.next = 16;break;}uni.removeStorageSync('accessToken');_helper.default.backToLogin();throw response.data.message;case 16:if (_store.default.state.refreshToken) {_context.next = 21;break;}_helper.default.backToLogin();throw response.data.message;case 21:if (isRefreshing) {_context.next = 31;break;}isRefreshing = true; // 刷新token
+            _context.next = 25;return handleRefreshToken(_store.default.state.refreshToken, response);case 25:requests.forEach(function (cb) {return cb();});requests = [];isRefreshing = false;return _context.abrupt("return", http.request(response.config));case 31:return _context.abrupt("return", new Promise(function (resolve) {// 将resolve放进队列，用一个函数形式来保存，等token刷新后直接执行
+              requests.push(function () {resolve(http.request(response.config));});}));case 32:return _context.abrupt("break", 43);case 33:_helper.default.toast('当前操作不被允许');return _context.abrupt("return", Promise.reject(response.data.message));case 35:_helper.default.toast(response.data.message);return _context.abrupt("return", Promise.reject(response.data.message));case 37:_helper.default.toast('请求过多，先休息一下吧');return _context.abrupt("return", Promise.reject(response.data.message));case 39:_helper.default.toast('服务器打瞌睡了');return _context.abrupt("return", Promise.reject(response.data.message));case 41:
             _helper.default.toast(response.data.message);return _context.abrupt("return",
-            Promise.reject(response.data.message));case 42:case "end":return _context.stop();}}}, _callee);}));return function (_x2) {return _ref.apply(this, arguments);};}(),
+            Promise.reject(response.data.message));case 43:case "end":return _context.stop();}}}, _callee);}));return function (_x2) {return _ref.apply(this, arguments);};}(),
 
 function (error) {
   return Promise.reject(error);
@@ -10656,10 +10933,11 @@ function (error) {
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 
 /***/ }),
-/* 26 */
-/*!***************************************************************************************!*\
-  !*** C:/Users/ASUS/Documents/HBuilderProjects/ThorUI组件库后台模板/utils/request/request.js ***!
-  \***************************************************************************************/
+
+/***/ 27:
+/*!*********************************************************************!*\
+  !*** E:/Documents/HBuilderProjects/牧场管理系统/utils/request/request.js ***!
+  \*********************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -11096,10 +11374,11 @@ Request = /*#__PURE__*/function () {function Request() {var _this = this;_classC
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 
 /***/ }),
-/* 27 */
-/*!***************************************************************************!*\
-  !*** C:/Users/ASUS/Documents/HBuilderProjects/ThorUI组件库后台模板/api/login.js ***!
-  \***************************************************************************/
+
+/***/ 28:
+/*!*********************************************************!*\
+  !*** E:/Documents/HBuilderProjects/牧场管理系统/api/login.js ***!
+  \*********************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -11146,16 +11425,17 @@ exports.smsCode = smsCode;var logout = '/tiny-shop/v1/site/logout';
 exports.logout = logout;var refreshToken = '/tiny-shop/v1/site/refresh';exports.refreshToken = refreshToken;
 
 /***/ }),
-/* 28 */
-/*!******************************************************************************!*\
-  !*** C:/Users/ASUS/Documents/HBuilderProjects/ThorUI组件库后台模板/utils/helper.js ***!
-  \******************************************************************************/
+
+/***/ 29:
+/*!************************************************************!*\
+  !*** E:/Documents/HBuilderProjects/牧场管理系统/utils/helper.js ***!
+  \************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 /* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _regenerator = _interopRequireDefault(__webpack_require__(/*! ./node_modules/@vue/babel-preset-app/node_modules/@babel/runtime/regenerator */ 8));var _router = _interopRequireDefault(__webpack_require__(/*! @/utils/router */ 17));
-var _constData = _interopRequireDefault(__webpack_require__(/*! @/config/constData.config */ 23));
+var _constData = _interopRequireDefault(__webpack_require__(/*! @/config/constData.config */ 24));
 var _store = _interopRequireDefault(__webpack_require__(/*! @/store */ 15));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {try {var info = gen[key](arg);var value = info.value;} catch (error) {reject(error);return;}if (info.done) {resolve(value);} else {Promise.resolve(value).then(_next, _throw);}}function _asyncToGenerator(fn) {return function () {var self = this,args = arguments;return new Promise(function (resolve, reject) {var gen = fn.apply(self, args);function _next(value) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);}function _throw(err) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);}_next(undefined);});};}
 //常用方法集合
 var _default = {
@@ -11432,10 +11712,42 @@ var _default = {
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 
 /***/ }),
-/* 29 */
-/*!************************************************************************************!*\
-  !*** C:/Users/ASUS/Documents/HBuilderProjects/ThorUI组件库后台模板/utils/graceChecker.js ***!
-  \************************************************************************************/
+
+/***/ 3:
+/*!***********************************!*\
+  !*** (webpack)/buildin/global.js ***!
+  \***********************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+var g;
+
+// This works in non-strict mode
+g = (function() {
+	return this;
+})();
+
+try {
+	// This works if eval is allowed (see CSP)
+	g = g || new Function("return this")();
+} catch (e) {
+	// This works if the window reference is available
+	if (typeof window === "object") g = window;
+}
+
+// g can still be undefined, but nothing to do about it...
+// We return undefined, instead of nothing here, so it's
+// easier to handle this case. if(!global) { ...}
+
+module.exports = g;
+
+
+/***/ }),
+
+/***/ 30:
+/*!******************************************************************!*\
+  !*** E:/Documents/HBuilderProjects/牧场管理系统/utils/graceChecker.js ***!
+  \******************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
@@ -11583,7 +11895,6 @@ module.exports = {
           }
           break;
         case 'notnull':
-          console.log("notnull?");
           if (data[rule[i].name] == null || data[rule[i].name].length < 1) {
             this.error = rule[i].errorMsg;
             this.name = rule[i].name;
@@ -11600,10 +11911,11 @@ module.exports = {
   } };
 
 /***/ }),
-/* 30 */
-/*!*******************************************************************************!*\
-  !*** C:/Users/ASUS/Documents/HBuilderProjects/ThorUI组件库后台模板/utils/payment.js ***!
-  \*******************************************************************************/
+
+/***/ 31:
+/*!*************************************************************!*\
+  !*** E:/Documents/HBuilderProjects/牧场管理系统/utils/payment.js ***!
+  \*************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -11613,12 +11925,12 @@ module.exports = {
 
 
 
-var _login = __webpack_require__(/*! @/api/login */ 27);
-var _basic = __webpack_require__(/*! @/api/basic */ 31);
-var _request = __webpack_require__(/*! @/utils/request */ 25);
-var _helper = _interopRequireDefault(__webpack_require__(/*! @/utils/helper */ 28));
+var _login = __webpack_require__(/*! @/api/login */ 28);
+var _basic = __webpack_require__(/*! @/api/basic */ 32);
+var _request = __webpack_require__(/*! @/utils/request */ 26);
+var _helper = _interopRequireDefault(__webpack_require__(/*! @/utils/helper */ 29));
 var _router = _interopRequireDefault(__webpack_require__(/*! @/utils/router */ 17));
-var _product = __webpack_require__(/*! @/api/product */ 32);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function ownKeys(object, enumerableOnly) {var keys = Object.keys(object);if (Object.getOwnPropertySymbols) {var symbols = Object.getOwnPropertySymbols(object);if (enumerableOnly) symbols = symbols.filter(function (sym) {return Object.getOwnPropertyDescriptor(object, sym).enumerable;});keys.push.apply(keys, symbols);}return keys;}function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};if (i % 2) {ownKeys(Object(source), true).forEach(function (key) {_defineProperty(target, key, source[key]);});} else if (Object.getOwnPropertyDescriptors) {Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));} else {ownKeys(Object(source)).forEach(function (key) {Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));});}}return target;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {try {var info = gen[key](arg);var value = info.value;} catch (error) {reject(error);return;}if (info.done) {resolve(value);} else {Promise.resolve(value).then(_next, _throw);}}function _asyncToGenerator(fn) {return function () {var self = this,args = arguments;return new Promise(function (resolve, reject) {var gen = fn.apply(self, args);function _next(value) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);}function _throw(err) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);}_next(undefined);});};}var _default =
+var _product = __webpack_require__(/*! @/api/product */ 33);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function ownKeys(object, enumerableOnly) {var keys = Object.keys(object);if (Object.getOwnPropertySymbols) {var symbols = Object.getOwnPropertySymbols(object);if (enumerableOnly) symbols = symbols.filter(function (sym) {return Object.getOwnPropertyDescriptor(object, sym).enumerable;});keys.push.apply(keys, symbols);}return keys;}function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};if (i % 2) {ownKeys(Object(source), true).forEach(function (key) {_defineProperty(target, key, source[key]);});} else if (Object.getOwnPropertyDescriptors) {Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));} else {ownKeys(Object(source)).forEach(function (key) {Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));});}}return target;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {try {var info = gen[key](arg);var value = info.value;} catch (error) {reject(error);return;}if (info.done) {resolve(value);} else {Promise.resolve(value).then(_next, _throw);}}function _asyncToGenerator(fn) {return function () {var self = this,args = arguments;return new Promise(function (resolve, reject) {var gen = fn.apply(self, args);function _next(value) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);}function _throw(err) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);}_next(undefined);});};}var _default =
 
 {
   // 判断是否公众号（微信H5）
@@ -11804,10 +12116,11 @@ var _product = __webpack_require__(/*! @/api/product */ 32);function _interopReq
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 
 /***/ }),
-/* 31 */
-/*!***************************************************************************!*\
-  !*** C:/Users/ASUS/Documents/HBuilderProjects/ThorUI组件库后台模板/api/basic.js ***!
-  \***************************************************************************/
+
+/***/ 32:
+/*!*********************************************************!*\
+  !*** E:/Documents/HBuilderProjects/牧场管理系统/api/basic.js ***!
+  \*********************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -11849,10 +12162,11 @@ exports.wechatConfig = wechatConfig;var notifyAnnounceIndex = '/tiny-shop/v1/com
 exports.notifyAnnounceIndex = notifyAnnounceIndex;var notifyAnnounceView = '/tiny-shop/v1/common/notify-announce/view';exports.notifyAnnounceView = notifyAnnounceView;
 
 /***/ }),
-/* 32 */
-/*!*****************************************************************************!*\
-  !*** C:/Users/ASUS/Documents/HBuilderProjects/ThorUI组件库后台模板/api/product.js ***!
-  \*****************************************************************************/
+
+/***/ 33:
+/*!***********************************************************!*\
+  !*** E:/Documents/HBuilderProjects/牧场管理系统/api/product.js ***!
+  \***********************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -11924,10 +12238,11 @@ exports.wholesaleView = wholesaleView;var wholesaleGroupState = '/tiny-shop/v1/m
 exports.wholesaleGroupState = wholesaleGroupState;var discountProductIndex = '/tiny-shop/v1/marketing/discount-product/index';exports.discountProductIndex = discountProductIndex;
 
 /***/ }),
-/* 33 */
-/*!**********************************************************************************!*\
-  !*** C:/Users/ASUS/Documents/HBuilderProjects/ThorUI组件库后台模板/config/aopConfig.js ***!
-  \**********************************************************************************/
+
+/***/ 34:
+/*!****************************************************************!*\
+  !*** E:/Documents/HBuilderProjects/牧场管理系统/config/aopConfig.js ***!
+  \****************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
@@ -11962,29 +12277,22 @@ Function.prototype.after = function (afterfn) {
 console.log("aop配置已开启");
 
 /***/ }),
-/* 34 */,
-/* 35 */,
-/* 36 */,
-/* 37 */,
-/* 38 */,
-/* 39 */,
-/* 40 */,
-/* 41 */,
-/* 42 */,
-/* 43 */,
-/* 44 */,
-/* 45 */,
-/* 46 */,
-/* 47 */,
-/* 48 */,
-/* 49 */,
-/* 50 */,
-/* 51 */,
-/* 52 */,
-/* 53 */
-/*!********************************************************************************************!*\
-  !*** C:/Users/ASUS/Documents/HBuilderProjects/ThorUI组件库后台模板/components/uni-icons/icons.js ***!
-  \********************************************************************************************/
+
+/***/ 4:
+/*!*******************************************************!*\
+  !*** E:/Documents/HBuilderProjects/牧场管理系统/pages.json ***!
+  \*******************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+
+
+/***/ }),
+
+/***/ 59:
+/*!**************************************************************************!*\
+  !*** E:/Documents/HBuilderProjects/牧场管理系统/components/uni-icons/icons.js ***!
+  \**************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -12122,27 +12430,26 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
   "shop": "\uE609" };exports.default = _default;
 
 /***/ }),
-/* 54 */,
-/* 55 */,
-/* 56 */,
-/* 57 */,
-/* 58 */,
-/* 59 */,
-/* 60 */,
-/* 61 */,
-/* 62 */,
-/* 63 */
-/*!***********************************************************************************!*\
-  !*** C:/Users/ASUS/Documents/HBuilderProjects/ThorUI组件库后台模板/pages/map/mapData.js ***!
-  \***********************************************************************************/
+
+/***/ 69:
+/*!*****************************************************************!*\
+  !*** E:/Documents/HBuilderProjects/牧场管理系统/pages/map/mapData.js ***!
+  \*****************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _assetsConfig = _interopRequireDefault(__webpack_require__(/*! ../../config/assets.config.js */ 19));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function ownKeys(object, enumerableOnly) {var keys = Object.keys(object);if (Object.getOwnPropertySymbols) {var symbols = Object.getOwnPropertySymbols(object);if (enumerableOnly) symbols = symbols.filter(function (sym) {return Object.getOwnPropertyDescriptor(object, sym).enumerable;});keys.push.apply(keys, symbols);}return keys;}function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};if (i % 2) {ownKeys(Object(source), true).forEach(function (key) {_defineProperty(target, key, source[key]);});} else if (Object.getOwnPropertyDescriptors) {Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));} else {ownKeys(Object(source)).forEach(function (key) {Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));});}}return target;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}var _default =
+Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _assetsConfig = _interopRequireDefault(__webpack_require__(/*! ../../config/assets.config.js */ 20));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function ownKeys(object, enumerableOnly) {var keys = Object.keys(object);if (Object.getOwnPropertySymbols) {var symbols = Object.getOwnPropertySymbols(object);if (enumerableOnly) symbols = symbols.filter(function (sym) {return Object.getOwnPropertyDescriptor(object, sym).enumerable;});keys.push.apply(keys, symbols);}return keys;}function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};if (i % 2) {ownKeys(Object(source), true).forEach(function (key) {_defineProperty(target, key, source[key]);});} else if (Object.getOwnPropertyDescriptors) {Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));} else {ownKeys(Object(source)).forEach(function (key) {Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));});}}return target;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}var _default =
 {
+  option: {
+    mode: "" },
+
+  windowHeight: "100%",
   model: "info",
-  editModel: "add",
+  isMapInput: false,
+  MapInputList: [],
+  mapInputValue: "",
+  editModel: " ",
   isLoading: false,
   showImg: true,
   popupType: "bottom",
@@ -12159,97 +12466,25 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
     color: 'olive',
     title: "距离本手机" }],
 
-  mapContext: null,
-  windowHeight: 0,
-  windowWidth: 0,
-  noSelectIcon: _assetsConfig.default.locationImg,
-  muchang: _assetsConfig.default.muchang,
-  array: ['中国-台湾-香港', '美国-旧金山-铁山大桥', '巴西-跑马场', '日本-红灯区'],
-  index: 0,
-  enableSatellite: true,
-  controlList: [],
+  mapContext: null, //地图的原生对象
+
+  noSelectIcon: _assetsConfig.default.locationImg, //没有选中的地图图标样式(修改模式)
+  muchang: _assetsConfig.default.muchang, //右上角的picker组件的图标内容
+  array: [], //右上角的picker组件的数据内容
+  index: 0, //右上角的picker组件的选中下标
+  enableSatellite: true, //卫星地图是否开启
+  controlList: [], //左上角控件的集合
   markers: [], //点标记
-  recordMarkers: [{
-    id: 112,
-    type: "record",
-    latitude: 39.77265852521458,
-    longitude: 116.37371063232422,
-    title: '摄像头',
-    zIndex: '1',
-    iconPath: _assetsConfig.default.recordImg,
-    rotate: 0,
-    width: 20,
-    height: 20,
-    anchor: {
-      x: 0.5,
-      y: 1 },
-
-    callout: {
-      content: '摄像头',
-      color: '#586e84',
-      fontSize: 10,
-      borderRadius: 4,
-      borderWidth: 1,
-      borderColor: '#00BFFF',
-      bgColor: '#1dececc4',
-      padding: '0.5',
-      display: 'ALWAYS' } },
-
-
-  {
-    id: 113,
-    type: "record",
-    latitude: 39.73729032077588,
-    longitude: 116.34933471679688,
-    title: '摄像头',
-    zIndex: '1',
-    iconPath: _assetsConfig.default.recordImg,
-    rotate: 0,
-    width: 20,
-    height: 20,
-    anchor: {
-      x: 0.5,
-      y: 1 },
-
-    callout: {
-      content: '摄像头2',
-      color: '#586e84',
-      fontSize: 10,
-      borderRadius: 4,
-      borderWidth: 1,
-      borderColor: '#00BFFF',
-      bgColor: '#1dececc4',
-      padding: '0.5',
-      display: 'ALWAYS' } }],
-
-  //视频的点标记
+  recordMarkers: [], //视频的点标记
   cacheMarkers: [], //点标记的缓存
-  //多边形的数据
-  polygons: [{
-    points: [{
-      latitude: 39.781892,
-      longitude: 116.293413 },
-
-    {
-      latitude: 39.787600,
-      longitude: 116.391842 },
-
-    {
-      latitude: 39.733187,
-      longitude: 116.417932 },
-
-    {
-      latitude: 39.704653,
-      longitude: 116.338255 }],
-
-
+  polygons: [{ //多边形的数据
+    points: [],
     fillColor: '#26a4e06e',
     strokeWidth: 3,
     strokeColor: '#26a4e0',
     zIndex: 11 }],
 
-  //点标记的模板
-  markerDemo: {
+  markerDemo: { //点标记的模板
     id: null,
     latitude: null,
     longitude: null,
@@ -12263,8 +12498,7 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
       y: 0.5 } },
 
 
-  //信息的控件data数据
-  controlListInfo: [{
+  controlListInfo: [{ //初始化的控件data数据
     id: 1,
     img: _assetsConfig.default.weixin,
     tap: function tap(e) {
@@ -12275,8 +12509,9 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
   {
     id: 2,
     img: _assetsConfig.default.messageImg,
+    badge: 15,
     tap: function tap(e) {
-      e.$mHelper.toast("点击了信息模块");
+      e.$mRouter.push({ route: "/pages/index/info/info" });
     } },
 
   {
@@ -12334,167 +12569,160 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
     } }] };exports.default = _default;
 
 /***/ }),
-/* 64 */,
-/* 65 */,
-/* 66 */,
-/* 67 */,
-/* 68 */,
-/* 69 */,
-/* 70 */,
-/* 71 */,
-/* 72 */,
-/* 73 */,
-/* 74 */,
-/* 75 */,
-/* 76 */,
-/* 77 */,
-/* 78 */,
-/* 79 */,
-/* 80 */,
-/* 81 */,
-/* 82 */,
-/* 83 */,
-/* 84 */,
-/* 85 */,
-/* 86 */,
-/* 87 */,
-/* 88 */,
-/* 89 */,
-/* 90 */,
-/* 91 */,
-/* 92 */,
-/* 93 */,
-/* 94 */,
-/* 95 */,
-/* 96 */,
-/* 97 */,
-/* 98 */
-/*!*****************************************************************************!*\
-  !*** C:/Users/ASUS/Documents/HBuilderProjects/ThorUI组件库后台模板/utils/utils.js ***!
-  \*****************************************************************************/
+
+/***/ 70:
+/*!*********************************************************************!*\
+  !*** E:/Documents/HBuilderProjects/牧场管理系统/pages/map/mapDataDemo.js ***!
+  \*********************************************************************/
 /*! no static exports found */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _assetsConfig = _interopRequireDefault(__webpack_require__(/*! ../../config/assets.config.js */ 20));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}var _default =
+{
+  //多边形的数据demo
+  polygons: [{
+    points: [{
+      latitude: 39.781892,
+      longitude: 116.293413 },
+
+    {
+      latitude: 39.787600,
+      longitude: 116.391842 },
+
+    {
+      latitude: 39.733187,
+      longitude: 116.417932 },
+
+    {
+      latitude: 39.704653,
+      longitude: 116.338255 }],
+
+
+    fillColor: '#26a4e06e',
+    strokeWidth: 3,
+    strokeColor: '#26a4e0',
+    zIndex: 11 }],
+
+  //视频的点标记的模板
+  recordMarkers: [{
+    id: 112,
+    type: "record",
+    latitude: 39.77265852521458,
+    longitude: 116.37371063232422,
+    title: '摄像头',
+    zIndex: '1',
+    iconPath: _assetsConfig.default.recordImg,
+    rotate: 0,
+    width: 20,
+    height: 20,
+    anchor: {
+      x: 0.5,
+      y: 1 },
+
+    callout: {
+      content: '摄像头',
+      color: '#586e84',
+      fontSize: 10,
+      borderRadius: 4,
+      borderWidth: 1,
+      borderColor: '#00BFFF',
+      bgColor: '#1dececc4',
+      padding: '0.5',
+      display: 'ALWAYS' } },
+
+
+  {
+    id: 113,
+    type: "record",
+    latitude: 39.73729032077588,
+    longitude: 116.34933471679688,
+    title: '摄像头',
+    zIndex: '1',
+    iconPath: _assetsConfig.default.recordImg,
+    rotate: 0,
+    width: 20,
+    height: 20,
+    anchor: {
+      x: 0.5,
+      y: 1 },
+
+    callout: {
+      content: '摄像头2',
+      color: '#586e84',
+      fontSize: 10,
+      borderRadius: 4,
+      borderWidth: 1,
+      borderColor: '#00BFFF',
+      bgColor: '#1dececc4',
+      padding: '0.5',
+      display: 'ALWAYS' } }],
+
+
+
+  //右上角的picker的选项目录					
+  array: ['中国-台湾-香港', '美国-旧金山-铁山大桥', '巴西-跑马场', '日本-红灯区'] };exports.default = _default;
+
+/***/ }),
+
+/***/ 8:
+/*!*********************************************************************************************!*\
+  !*** ./node_modules/@vue/babel-preset-app/node_modules/@babel/runtime/regenerator/index.js ***!
+  \*********************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__(/*! regenerator-runtime */ 9);
+
+/***/ }),
+
+/***/ 9:
+/*!************************************************************!*\
+  !*** ./node_modules/regenerator-runtime/runtime-module.js ***!
+  \************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
 
 /**
- * 时间格式的转化
- * @param {Object} time
+ * Copyright (c) 2014-present, Facebook, Inc.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  */
-function formatTime(time) {
-  if (typeof time !== 'number' || time < 0) {
-    return time;
-  }
 
-  var hour = parseInt(time / 3600);
-  time = time % 3600;
-  var minute = parseInt(time / 60);
-  time = time % 60;
-  var second = time;
+// This method of obtaining a reference to the global object needs to be
+// kept identical to the way it is obtained in runtime.js
+var g = (function() {
+  return this || (typeof self === "object" && self);
+})() || Function("return this")();
 
-  return [hour, minute, second].map(function (n) {
-    n = n.toString();
-    return n[1] ? n : '0' + n;
-  }).join(':');
-}
+// Use `getOwnPropertyNames` because not all browsers support calling
+// `hasOwnProperty` on the global `self` object in a worker. See #183.
+var hadRuntime = g.regeneratorRuntime &&
+  Object.getOwnPropertyNames(g).indexOf("regeneratorRuntime") >= 0;
 
-/**
-   * aop方法的自定义注入
-   */
-function aop(arr) {var isAllow = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : function () {return false;};var beforeFn = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : function () {};var afterFn = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : function () {};
-  if ((arr instanceof Object || arr instanceof Array) &&
-  beforeFn instanceof Function && afterFn instanceof Function) {
-    for (var i in arr) {
-      if (isAllow.apply(this, [arr, i].concat(Array.prototype.slice.call(arguments)))) {
-        arr[i] = arr[i].before(beforeFn).after(afterFn);
-      }
-    }
-    console.log("aop自定义方法注入初始化完毕");
-  } else {
-    console.log("参数不对");
-  }
+// Save the old regeneratorRuntime in case it needs to be restored later.
+var oldRuntime = hadRuntime && g.regeneratorRuntime;
 
-}
+// Force reevalutation of runtime.js.
+g.regeneratorRuntime = undefined;
 
-/**
-   * 表单自动填充数据
-   * @param {Object} data
-   * @param {Object} arr
-   */
-function hanleValue(data, arr) {
-  for (var i in data) {
-    var target = arr.find(function (f) {return f.name == i;});
-    if (target) {
-      target.value = data[i];
-    }
+module.exports = __webpack_require__(/*! ./runtime */ 10);
+
+if (hadRuntime) {
+  // Restore the original runtime.
+  g.regeneratorRuntime = oldRuntime;
+} else {
+  // Remove the global property added by runtime.js.
+  try {
+    delete g.regeneratorRuntime;
+  } catch(e) {
+    g.regeneratorRuntime = undefined;
   }
 }
 
-/**
-   * 路径格式的转化为对象
-   * @param {Object} longitude
-   * @param {Object} latitude
-   */
-function formatLocation(longitude, latitude) {
-  if (typeof longitude === 'string' && typeof latitude === 'string') {
-    longitude = parseFloat(longitude);
-    latitude = parseFloat(latitude);
-  }
-
-  longitude = longitude.toFixed(2);
-  latitude = latitude.toFixed(2);
-
-  return {
-    longitude: longitude.toString().split('.'),
-    latitude: latitude.toString().split('.') };
-
-}
-
-/**
-   * 日期转化工具
-   */
-var dateUtils = {
-  UNITS: {
-    '年': 31557600000,
-    '月': 2629800000,
-    '天': 86400000,
-    '小时': 3600000,
-    '分钟': 60000,
-    '秒': 1000 },
-
-  humanize: function humanize(milliseconds) {
-    var humanize = '';
-    for (var key in this.UNITS) {
-      if (milliseconds >= this.UNITS[key]) {
-        humanize = Math.floor(milliseconds / this.UNITS[key]) + key + '前';
-        break;
-      }
-    }
-    return humanize || '刚刚';
-  },
-  format: function format(dateStr) {
-    var date = this.parse(dateStr);
-    var diff = Date.now() - date.getTime();
-    if (diff < this.UNITS['天']) {
-      return this.humanize(diff);
-    }
-    var _format = function _format(number) {
-      return number < 10 ? '0' + number : number;
-    };
-    return date.getFullYear() + '/' + _format(date.getMonth() + 1) + '/' + _format(date.getDate()) + '-' +
-    _format(date.getHours()) + ':' + _format(date.getMinutes());
-  },
-  parse: function parse(str) {//将"yyyy-mm-dd HH:MM:ss"格式的字符串，转化为一个Date对象
-    var a = str.split(/[^0-9]/);
-    return new Date(a[0], a[1] - 1, a[2], a[3], a[4], a[5]);
-  } };
-
-
-module.exports = {
-  formatTime: formatTime,
-  formatLocation: formatLocation,
-  dateUtils: dateUtils,
-  aop: aop,
-  hanleValue: hanleValue };
 
 /***/ })
-]]);
+
+}]);
 //# sourceMappingURL=../../.sourcemap/mp-weixin/common/vendor.js.map

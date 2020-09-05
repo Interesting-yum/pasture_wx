@@ -84,6 +84,34 @@
 					"navigationBarTitleText": "牧场信息"
 				}
 		},
+		{
+				"path": "pages/index/info/info",
+				"style": {
+					"navigationBarTitleText": "信息中心"
+				}
+		},
+		{
+				"path": "pages/index/info/infoAll",
+				"style": {
+					"navigationBarTitleText": "gps信息",
+					 "enablePullDownRefresh": true
+				}
+		},
+		{
+				"path": "pages/index/info/infoWarn",
+				"style": {
+					"navigationBarTitleText": "报警信息",
+					 "enablePullDownRefresh": true
+				}
+		},
+		{
+				"path": "pages/index/info/infoRepair",
+				"style": {
+					"navigationBarTitleText": "报修信息",
+					 "enablePullDownRefresh": true
+				}
+		},
+		
 		
 
 		

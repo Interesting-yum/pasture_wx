@@ -6,27 +6,76 @@
 /* 图片加载中颜色 */
 /* 行为相关颜色 */
 /* 主题的图标颜色 */
-.title {
-  padding: 20rpx;
+.listItemContainer {
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+  -webkit-flex-flow: row wrap;
+          flex-flow: row wrap;
+  padding-top: 30rpx;
 }
-.uni-list-cell-card {
-  margin: 20rpx;
+.listItem {
+  padding: 20rpx;
+  -webkit-box-flex: 1;
+  -webkit-flex: 1 1 45%;
+          flex: 1 1 45%;
+  width: 50%;
+  float: left;
+  height: 100px;
+  overflow: hidden;
+}
+.listItem .titleView {
   border: solid 0.5px #ccc7c7;
   border-radius: 15rpx;
+  height: 100%;
+  -webkit-box-flex: 1;
+  -webkit-flex: 1 1 auto;
+          flex: 1 1 auto;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+  -webkit-flex-flow: row nowrap;
+          flex-flow: row nowrap;
+}
+.listItem .titleView .sub {
+  width: 35%;
+  padding: 5px;
+  margin-top: 10rpx;
+}
+.listItem .titleView .twice {
+  width: 65%;
+  padding: 5px;
+}
+.listItem .titleView .twice .content {
+  height: 50%;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: row;
+          flex-direction: row;
   -webkit-flex-wrap: wrap;
           flex-wrap: wrap;
+  padding-right: 10rpx;
+  word-break: break-all;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
-.collapse {
-  background-color: #f5f2f200;
-  width: 100%;
+.listItem .titleView .titleImg {
+  width: 80rpx;
+  height: 80rpx;
 }
-.uni-collapse-cell::after {
-  height: 0px !important;
+.uni-list {
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+  -webkit-flex-flow: row wrap;
+          flex-flow: row wrap;
 }
-.uni-collapse-cell title-view {
-  width: 100%;
+.uni-list .uni-item {
+  -webkit-box-flex: 1;
+  -webkit-flex: 1 1 45%;
+          flex: 1 1 45%;
 }
-.uni-collapse-cell uni-collapse {
+.uni-list .uni-item title-view {
   width: 100%;
 }
 

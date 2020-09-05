@@ -19,7 +19,7 @@
 						<view class="content">
 							<view class="cu-list grid" :class="['col-4','no-border']">
 								<view  @tap="navTo(item.url)"  class="cu-item" v-for="(item,index) in cuIconList" :key="index" v-if="index<5*2">
-									<view :class="['cuIcon-' + item.cuIcon,'text-' + item.color]">
+									<view :class="['cuIcon-' + item.cuIcon,'text-' + cuIconColor]">
 									</view>
 									<text>{{item.name}}</text>
 								</view>
@@ -65,21 +65,19 @@
 					text:"新增摄像"
 				}],
 				monitorImg:this.$mAssetsPath.monitorImg,
-				cuIconList: [{
-					cuIcon: 'location',
-					color: 'blue',
-					badge: 120,
+				cuIconColor:"blue",
+	            cuIconList: [{
+					cuIcon: 'form',
 					name: '信息',
 					url:"./monitorForm"
 				}, {
-					cuIcon: 'footprint',
-					color: 'blue',
-					badge: 1,
+					cuIcon: 'pullup',
 					name: '发送指令'
 				}, {
-					cuIcon: 'noticefill',
-					color: 'blue',
-					badge: 0,
+					cuIcon: 'circlefill',
+					name: '故障报修'
+				}, {
+					cuIcon: 'roundclose',
 					name: '删除'
 				}],
 				title: 'media-list',

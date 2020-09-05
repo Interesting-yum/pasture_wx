@@ -1,0 +1,78 @@
+@charset "UTF-8";
+/* 页面左右间距 */
+/* 文字尺寸 */
+/*文字颜色*/
+/* 边框颜色 */
+/* 图片加载中颜色 */
+/* 行为相关颜色 */
+/* 主题的图标颜色 */
+.header {
+  height: 150px;
+  width: 100%;
+}
+.header image {
+  height: 100%;
+  width: 100%;
+}
+.listItemContainer {
+  padding-top: 0rpx;
+}
+.listItemContainer .uniNoticeBar {
+  -webkit-box-align: start;
+  -webkit-align-items: start;
+          align-items: start;
+  margin-bottom: 50rpx;
+  margin: 15rpx;
+}
+.listItemContainer .bg-white {
+  /*  background-color: #33c1b4; */
+  background: -webkit-linear-gradient(top, #2f85fc 0%, #33c1b4 100%);
+  background: linear-gradient(to bottom, #2f85fc 0%, #33c1b4 100%);
+  font-size: 25rpx;
+}
+.listItemContainer .text-blue {
+  color: #fff;
+}
+.listItemContainer .cuIcon-right {
+  color: #fff;
+}
+.listItemContainer .flex-sub image {
+  width: 80rpx;
+  height: 80rpx;
+}
+.listItemContainer .small image {
+  width: 60rpx;
+  height: 60rpx;
+}
+.listItemContainer .threeSmall {
+  padding: 0px;
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+.listItemContainer .threeSmall .flex-twice {
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+          justify-content: center;
+}
+.listItemContainer .threeSmall image {
+  width: 60rpx;
+  height: 60rpx;
+}
+.listItemContainer .threeSmall .threeContent {
+  font-size: 25rpx;
+}
+.uni-list {
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+  -webkit-flex-flow: row wrap;
+          flex-flow: row wrap;
+}
+.uni-list .uni-item {
+  -webkit-box-flex: 1;
+  -webkit-flex: 1 1 45%;
+          flex: 1 1 45%;
+}
+.uni-list .uni-item title-view {
+  width: 100%;
+}
+

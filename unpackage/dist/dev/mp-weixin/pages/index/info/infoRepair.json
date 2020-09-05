@@ -1,0 +1,9 @@
+{
+  "navigationBarTitleText": "报修信息",
+  "enablePullDownRefresh": true,
+  "usingComponents": {
+    "list-item": "/components/listItem/listItem",
+    "uni-load-more": "/components/uni-load-more/uni-load-more",
+    "top-bar": "/components/topBar/topBar"
+  }
+}

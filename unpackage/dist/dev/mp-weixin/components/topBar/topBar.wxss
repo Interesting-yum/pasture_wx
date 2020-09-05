@@ -1,0 +1,27 @@
+@charset "UTF-8";
+/* 页面左右间距 */
+/* 文字尺寸 */
+/*文字颜色*/
+/* 边框颜色 */
+/* 图片加载中颜色 */
+/* 行为相关颜色 */
+/* 主题的图标颜色 */
+.topBar {
+  position: fixed;
+  top: 0px;
+  width: 100%;
+  z-index: 999;
+}
+.topBar .bg-seach {
+  background: -webkit-linear-gradient(top, #2f85fc 0%, #ffffff 100%);
+  background: linear-gradient(to bottom, #2f85fc 0%, #ffffff 100%);
+}
+.topBar .filter-view {
+  padding-left: 25rpx;
+  padding-right: 25rpx;
+  padding-bottom: 0rpx;
+}
+.topBar .filter-view:last-child {
+  padding-bottom: 10rpx;
+}
+

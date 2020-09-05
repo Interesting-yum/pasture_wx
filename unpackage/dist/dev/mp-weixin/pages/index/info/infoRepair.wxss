@@ -1,0 +1,97 @@
+@charset "UTF-8";
+/* 页面左右间距 */
+/* 文字尺寸 */
+/*文字颜色*/
+/* 边框颜色 */
+/* 图片加载中颜色 */
+/* 行为相关颜色 */
+/* 主题的图标颜色 */
+.timeline-view {
+  padding-top: 20px;
+  overflow: auto;
+}
+.timeline-view .state-0 {
+  background-color: #509ac3;
+  color: #ffffff;
+}
+.timeline-view .state-1 {
+  background-color: #e82061;
+  color: #ffffff;
+}
+.timeline-view .timeline-title {
+  height: 80rpx;
+}
+.timeline-view .uni-timeline {
+  margin: -5px 0;
+}
+.timeline-view .uni-timeline-item {
+  padding-bottom: 0px;
+}
+.timeline-view .uni-timeline-first-item .uni-timeline-item-keynode {
+  background-color: transparent;
+  text-align: center;
+}
+.timeline-view .uni-timeline-item-keynode {
+  -webkit-box-pack: right;
+  -webkit-justify-content: right;
+          justify-content: right;
+  background-color: #3cd1e0;
+  margin-right: 10px;
+  border-radius: 5px;
+  font-size: 25rpx;
+  height: 30px;
+  line-height: 30px;
+  text-align: center;
+  border-radius: 5px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  padding: 5px;
+}
+.timeline-view .uni-timeline-item-keynode image {
+  width: 15px;
+  height: 15px;
+}
+.timeline-view .timeline-view-content {
+  margin-top: 15rpx;
+}
+.model-content {
+  width: 100%;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-flow: column wrap;
+          flex-flow: column wrap;
+}
+.model-content .flex-sub {
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+          justify-content: center;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  border: solid 1px #000000;
+  border-right: 0px;
+  border-bottom: 0px;
+}
+.model-content .flex-sub:last-child {
+  border-bottom: 1px;
+}
+.model-content .flex-treble {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  text-align: left;
+  padding: 15rpx;
+  border: solid 1px #000000;
+  border-bottom: 0px;
+}
+.model-content .flex-treble:last-of-type {
+  border-bottom: 1px;
+}
+

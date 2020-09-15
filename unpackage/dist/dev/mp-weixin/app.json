@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 {
   "pages": [
     "pages/index/index",
@@ -69,4 +70,76 @@
     "rf-load-progress": "/components/rf-load-progress/rf-load-progress"
   },
   "sitemapLocation": "sitemap98.json"
+=======
+{
+  "pages": [
+    "pages/index/index",
+    "pages/map/map",
+    "pages/list/list",
+    "pages/user/user",
+    "pages/index/monitor/monitor",
+    "pages/index/monitor/monitorForm",
+    "pages/index/equipment/equipment",
+    "pages/index/equipment/equipmentForm",
+    "pages/index/pasture/pasture",
+    "pages/index/pasture/pastureMain",
+    "pages/index/pasture/pastureForm",
+    "pages/user/user_userInfo/userInfo"
+  ],
+  "subPackages": [],
+  "window": {
+    "navigationBarTextStyle": "white",
+    "navigationBarTitleText": "新闻资讯",
+    "navigationBarBackgroundColor": "#2F85FC",
+    "backgroundColor": "#FFFFFF"
+  },
+  "tabBar": {
+    "color": "#7A7E83",
+    "selectedColor": "#3cc51f",
+    "borderStyle": "black",
+    "backgroundColor": "#ffffff",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "iconPath": "static/tabBar/noSelected_index.png",
+        "selectedIconPath": "static/tabBar/selected_index.png",
+        "text": "首页"
+      },
+      {
+        "pagePath": "pages/map/map",
+        "iconPath": "static/tabBar/noSelected_map.png",
+        "selectedIconPath": "static/tabBar/selected_map.png",
+        "text": "地图"
+      },
+      {
+        "pagePath": "pages/list/list",
+        "iconPath": "static/tabBar/noSelected_equipment.png",
+        "selectedIconPath": "static/tabBar/selected_equipment.png",
+        "text": "列表"
+      },
+      {
+        "pagePath": "pages/user/user",
+        "iconPath": "static/tabBar/noSelected_user.png",
+        "selectedIconPath": "static/tabBar/selected_user.png",
+        "text": "信息"
+      }
+    ]
+  },
+  "permission": {
+    "scope.userLocation": {
+      "desc": "为了更好的方便服务您位置信息"
+    }
+  },
+  "usingComponents": {
+    "rf-image": "/components/rf-image/rf-image",
+    "rf-empty": "/components/rf-empty/index",
+    "rf-loading": "/components/rf-loading/rf-loading",
+    "rf-load-progress": "/components/rf-load-progress/rf-load-progress"
+  },
+<<<<<<< HEAD
+  "sitemapLocation": "sitemap42.json"
+=======
+  "sitemapLocation": "sitemap61.json"
+>>>>>>> 0ebf11d1357c8177501705dac093e2e47c4a61f9
+>>>>>>> dev
 }

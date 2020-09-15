@@ -101,4 +101,4 @@ export default {
 	renyuan : PATH + "/index/用户.png",
 	
 	
-}	
+}

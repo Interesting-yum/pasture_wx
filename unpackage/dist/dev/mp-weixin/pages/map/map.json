@@ -1,6 +1,16 @@
+<<<<<<< HEAD
 {
   "navigationBarTitleText": "地图信息",
   "usingComponents": {
     "map-page": "/pages/map/mapPage"
   }
+=======
+{
+  "navigationBarTitleText": "地图信息",
+  "usingComponents": {
+    "uni-popup": "/components/uni-popup/uni-popup",
+    "title-view": "/components/title-view/title-view",
+    "rf-loading": "/components/rf-loading/rf-loading"
+  }
+>>>>>>> dev
 }

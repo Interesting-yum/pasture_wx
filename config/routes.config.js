@@ -1,3 +1,4 @@
+
 /*
  * 路由表对象：
  * 该文件挂载在Vue原型中 $mRoutesConfig
@@ -38,7 +39,7 @@ export default {
 	},
 	login: {
 		name: '登录',
-		path: '/pages/public/login'
+		path: '/pages/user/user_login/login'
 	},
 	index: {
 		name: '注册',

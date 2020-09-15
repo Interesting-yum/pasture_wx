@@ -10,6 +10,13 @@
 				}
 				
 		}, 
+		
+		{
+				"path": "pages/user/user_login/login",
+				"style": {
+					"navigationBarTitleText": "登录"
+				}
+		},
 
 		{
 			"path": "pages/map/map",
